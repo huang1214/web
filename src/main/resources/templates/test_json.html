@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>table模块快速使用</title>
+    <link rel="stylesheet" href="asserts/js/layui/css/layui.css" media="all">
+    <script type="text/javascript" src="./asserts/js/jquery-3.2.1.slim.min.js"></script>
+
+    <style>
+        #demo22{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<!--<table id="demo" lay-filter="test"></table>-->
+<table class="layui-hide" id="demo" lay-filter="test"></table>
+
+<div class="site-demo-button" id="layerDemo" style="margin-bottom: 0;">
+    <input type="text" data-method="offset" data-type="t" class="layui-btn layui-btn-normal" id="get_id">
+</div>
+
+<div id="demo22">
+    <form class="layui-form" action="">
+        <label class="layui-form-label">部门名称：</label>
+        <div class="layui-inline">
+            <input class="layui-input" name="dname" id="dname" autocomplete="off" placeholder="请输入部门姓名">
+        </div>
+
+        部门主管：
+        <div class="layui-inline">
+            <input class="layui-input" name="dadmin" id="dadmin" autocomplete="off" placeholder="请输入部门主管">
+        </div>
+
+        <button type="button" class="layui-btn" data-type="reload" id="search">搜索</button>
+        <button type="reset" class="layui-btn">重置</button>
+
+    </form>
+
+    <table class="layui-hide" id="demo2" lay-filter="test"></table>
+</div>
+
+
+
+<script src="asserts/js/jquery-1.12.4.js"></script>
+<script src="asserts/js/layui/layui.all.js"></script>
+
+
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+    </div>
+</script>
+
+<script type="text/html" id="barDemo">
+    <button class="layui-btn layui-btn-xs"  lay-event="edit" name="edit_dept" id="edit_dept">编辑</button>
+    <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="dele" name="dele_dept">删除</button>
+</script>
+
+
+<script>
+
+    layui.define(['table','layer'], function(){
+        var table = layui.table;
+        var $ = layui.jquery;
+        var layer = layui.layer; //独立版的layer无需执行这一句
+
+
+        var active = {
+            offset: function(othis) {
+                var type = othis.data('type')  //这里我也不懂在干嘛，反正就是给后面弹出层id用的
+
+                layer.open({
+                    type: 1  //1为页面层
+                    ,title: '选择部门'  //弹出层标题
+                    ,area: ['800px', '400px']   //设置弹出层大小[宽，高]
+                    , offset: ['100px', '50px']   //设置弹出层位置 //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+                    , id: 'layerDemo' + type //防止重复弹出，点击这个input只能有一个弹出层
+                    ,content:$("#demo22")   //弹出层内容为demo22块，不能直接是表格id
+                    , btnAlign: 'c' //按钮居中
+                    , shade: 0 //不显示遮罩
+                    , yes: function () {  //确定按钮回调方法， 需要手动关闭弹出层
+                        layer.closeAll();
+                    }
+                });
+            }
+        }
+
+        //点击input，执行activ（就是展示弹出层），里面两行内容我没改，因为我也没看懂
+        $('#layerDemo .layui-btn').on('click', function(){
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            ,height: 312
+            ,url: 'http://localhost:8083/test/' //数据接口
+            ,method:"get"
+            ,page: true //开启分页
+            ,cols: [
+                [ //表头
+                    {field: 'dno', title: '部门编号', width:100, sort: true, fixed: 'left'}
+                    ,{field: 'dname', title: '部门名称', width:100}
+                    ,{field: 'dadmin', title: '部门主管', width:100}
+                    ,{field: 'dtel', title: '部门电话', width:120}
+                    ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+                ]
+            ]
+        });
+
+        //第二个表格，单选
+        table.render({
+            elem: '#demo2'
+            ,height: 312
+            ,url: 'http://localhost:8083/test/' //数据接口
+            ,method:"get"
+            ,page: true //开启分页
+            ,toolbar:'#toolbarDemo'
+            ,cols: [
+                [ //表头
+                    {type:'radio'}
+                    ,{field: 'dno', title: '部门编号', width:150, sort: true}
+                    ,{field: 'dname', title: '部门名称', width:150}
+                    ,{field: 'dadmin', title: '部门主管', width:150}
+                    ,{field: 'dtel', title: '部门电话', width:170}
+                ]
+            ]
+        });
+        //第一个表格实例的监听工具条
+        table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            // var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+
+            if(layEvent === 'detail'){ //查看
+
+                //do somehing
+            } else if(layEvent === 'dele'){ //删除
+                layer.confirm('真的删除行么', function(index) {
+                    obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                    layer.close(index);
+                    $.ajax(
+                        {
+                            url: 'http://localhost:8083/test/dele/?param=' + data.dno,     // 请求地址,访问controller中的ccc方法, 就是你的控制器, 如 test.com/home/index/index
+                            type: 'GET',   // 请求方式
+                            success: function (result) {
+                                console.log('success...'); // 请求成功后的回调函数, result 为响应内容
+                            },
+                            error: function () {
+                                console.log('Send Request Fail..'); // 请求失败时的回调函数
+                            }
+                        }
+                    );
+                });
+            } else if(layEvent === 'edit'){ //编辑
+                //do something
+                //同步更新缓存对应的值
+                console.log(data.dno);
+                $.ajax(
+                    {
+                        url: 'http://localhost:8083/test/edit',     // 请求地址, 就是你的控制器, 如 test.com/home/index/index
+                        type: 'POST',   // 请求方式
+                        data:JSON.stringify(data),
+                        dataType:"json",
+                        contentType:"application/json",
+                        success: function (result) {
+                            console.log('success...'); // 请求成功后的回调函数, result 为响应内容
+                        },
+                        error: function () {
+                            console.log('Send Request Fail..'); // 请求失败时的回调函数
+                        }
+                    }
+                );
+                layer.confirm(JSON.stringify(data));
+            } else if(layEvent === 'LAYTABLE_TIPS'){
+                layer.alert('Hi，头部工具栏扩展的右侧图标。');
+            }
+        });
+
+        //第二个表格实例的单选框的选择的监听工作条
+        table.on('toolbar(test)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+            switch(obj.event){
+                case 'getCheckData':
+                    var data = checkStatus.data;  //获取选中行数据
+                    document.getElementById("get_id").value = data[0].dno;  //将获取的数据中的dno值给input
+                    break;
+            };
+        });
+
+        //条件模糊查询
+        var $ = layui.$, act = {
+            reload: function () {
+                var dname = $('#dname').val();
+                var dadmin = $('#dadmin').val();
+                //执行重载
+                table.reload('demo2', {   //demo2为表格的id名
+                    method:'POST'
+                    ,page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    , where: {
+                        dname: dname,//逗号隔开
+                        dadmin: dadmin
+                    }
+                    ,url: 'http://localhost:8083/test/search/'    //访问controller中的方法
+                }, 'data');
+            }
+        };
+
+        $('#search').on('click', function () {      //点击查询调用表格重载，这两行我也没太看懂，就会改个名
+            var type = $(this).data('type');      //百度说固定用法，无需深究
+            act[type] ? act[type].call(this) : '';   //不太懂，反正就开始重载 了
+        });
+    });
+</script>
+</body>
+</html>
