@@ -21,7 +21,6 @@ spring:
     content-type: text/html
     cache: false
 
-
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.aca.springboot.entities
