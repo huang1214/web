@@ -10,6 +10,7 @@ public class Message {
     private String message;  //提示信息
     private Object data;    //返回数据
 
+
     public Message() {
     }
 
