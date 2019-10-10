@@ -63,7 +63,7 @@
     <select id="application_All" resultMap="applicationMap">
         select *  from application where applicantId= #{applicantId}
     </select>
-    
+
 <!--    通过关联处理，其中select元素指定的sql查询，而column则是指定传递给select的参数，是user对象id。
     当取出User的时候，MyBatis就知道下面的sql取出我们需要的级联信息。-->
     <resultMap id="applicationMap" type="com.aca.springboot.entities.application">
