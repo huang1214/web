@@ -1,59 +1,147 @@
 package com.aca.springboot.entities;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.sun.xml.internal.bind.v2.TODO;
-import oracle.sql.BLOB;
 
-import java.util.Date;
-
-//备案表对象
 public class bill {
 
-    @JSONField(ordinal = 1)
-    private String bid;
+  private String bid;
+  private String ctid;
+  private java.sql.Date cyear;
+  private String clevel;
+  private String cdesc;
+  private String groupleader;
+  private String groupname;
+  private String resultType;
+  private String workName;
+  private String preditfeedesc;
+  private String predictfee;
+  private String state;
+  private String attachfile;
+  private String note;
 
-    @JSONField(ordinal = 2)
-    private String ctid;
 
-    @JSONField(ordinal = 3)
-    private Date cyear;
+  public String getBid() {
+    return bid;
+  }
 
-    @JSONField(ordinal = 4)
-    private String clevel;  // 竞赛级别（国赛or省赛）
+  public void setBid(String bid) {
+    this.bid = bid;
+  }
 
-    @JSONField(ordinal = 5)
-    private String cdesc;   // 竞赛描述
 
-    @JSONField(ordinal = 6)
-    private String groupleader;     // 负责人
+  public String getCtid() {
+    return ctid;
+  }
 
-    @JSONField(ordinal = 7)
-    private String groupname;   // 团队名
+  public void setCtid(String ctid) {
+    this.ctid = ctid;
+  }
 
-    @JSONField(ordinal = 8)
-    private String team;    // 团队成员信息表
 
-    @JSONField(ordinal = 9)
-    private String teacher1;    //指导老师1
+  public java.sql.Date getCyear() {
+    return cyear;
+  }
 
-    @JSONField(ordinal = 10)
-    private String techaer2;    //指导老师2
+  public void setCyear(java.sql.Date cyear) {
+    this.cyear = cyear;
+  }
 
-    @JSONField(ordinal = 11)
-    private String result;      // 成果类型
 
-    @JSONField(ordinal = 12)
-    private String workname;    // 作品名称
+  public String getClevel() {
+    return clevel;
+  }
 
-    @JSONField(ordinal = 13)
-    private String preditfeedesc;   // 预算描述
+  public void setClevel(String clevel) {
+    this.clevel = clevel;
+  }
 
-    @JSONField(ordinal = 14)
-    private double predictfee;   // 预算金额
 
-    @JSONField(ordinal = 15)
-    private String state;   // 申请状态
+  public String getCdesc() {
+    return cdesc;
+  }
 
-    @JSONField(ordinal = 16)
-    private BLOB images;    // 一系列照片
+  public void setCdesc(String cdesc) {
+    this.cdesc = cdesc;
+  }
+
+
+  public String getGroupleader() {
+    return groupleader;
+  }
+
+  public void setGroupleader(String groupleader) {
+    this.groupleader = groupleader;
+  }
+
+
+  public String getGroupname() {
+    return groupname;
+  }
+
+  public void setGroupname(String groupname) {
+    this.groupname = groupname;
+  }
+
+
+  public String getResultType() {
+    return resultType;
+  }
+
+  public void setResultType(String resultType) {
+    this.resultType = resultType;
+  }
+
+
+  public String getWorkName() {
+    return workName;
+  }
+
+  public void setWorkName(String workName) {
+    this.workName = workName;
+  }
+
+
+  public String getPreditfeedesc() {
+    return preditfeedesc;
+  }
+
+  public void setPreditfeedesc(String preditfeedesc) {
+    this.preditfeedesc = preditfeedesc;
+  }
+
+
+  public String getPredictfee() {
+    return predictfee;
+  }
+
+  public void setPredictfee(String predictfee) {
+    this.predictfee = predictfee;
+  }
+
+
+  public String getState() {
+    return state;
+  }
+
+  public void setState(String state) {
+    this.state = state;
+  }
+
+
+  public String getAttachfile() {
+    return attachfile;
+  }
+
+  public void setAttachfile(String attachfile) {
+    this.attachfile = attachfile;
+  }
+
+
+  public String getNote() {
+    return note;
+  }
+
+  public void setNote(String note) {
+    this.note = note;
+  }
+
 }
