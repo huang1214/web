@@ -1,0 +1,28 @@
+server:
+  port: 8081
+  context-path: /
+  tomcat:
+    uri-encoding: utf-8
+spring:
+  mvc:
+    date-format: yyyy-MM-dd
+  messages:
+    basename: i18n.login
+
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521/orcl
+    username:
+    password:
+    driver-class-name: oracle.jdbc.OracleDriver
+
+  thymeleaf:
+    mode: LEGACYHTML5
+    encoding: UTF-8
+    content-type: text/html
+    cache: false
+
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.aca.springboot.entities
+
