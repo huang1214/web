@@ -5,7 +5,7 @@
 <!--        add(comName,applicantId,teacher1Id,teacher2Id,unit,leader,teamNum,team,studentPrice,teacherPrice,
         awardTypeId,awardDate,applicantBankCard,workName,workBriefIntro)-->
 <mapper namespace="com.aca.springboot.mapper.ApplicationMapper">
-    <insert id="add" parameterType="com.aca.springboot.entities.application" >
+    <insert id="add" parameterType="com.aca.springboot.entities.Application" >
         insert into Application(appId,ctid,applicantId,unit,leader,studentPrice,teacherPrice,awardTypeId,awardDate,applicantBankCard,workName,workBriefIntro，certificateImg)
         values (application_id_Seq.Nextval,#{ctid},#{applicantId},#{unit},#{leader},#{studentPrice},#{teacherPrice},#{awardTypeId},to_date(substr(#{awardDate},1,7),'yyyy-mm'),#{applicantBankCard},#{workName},#{workBriefIntro},#{certificateImg,jdbcType=BLOB})
     </insert>
@@ -16,7 +16,7 @@
         values (#{appId},#{appTmId},#{appType},#{appOrder})
     </insert>
     <!-- 查询全部比赛名称 -->
-    <resultMap id="com_name_all" type="com.aca.springboot.entities.application">
+    <resultMap id="com_name_all" type="com.aca.springboot.entities.Application">
         <result property="competition_name" column="ctname"/>
     </resultMap>
     <select id="com_name" resultMap="com_name_all">
@@ -71,7 +71,7 @@
 
 <!--    通过关联处理，其中select元素指定的sql查询，而column则是指定传递给select的参数，是user对象id。
     当取出User的时候，MyBatis就知道下面的sql取出我们需要的级联信息。-->
-    <resultMap id="applicationMap" type="com.aca.springboot.entities.application">
+    <resultMap id="applicationMap" type="com.aca.springboot.entities.Application">
         <!--<association property="award" column="awardTypeId" select="com.aca.springboot.mapper.AwardMapper.findAwardTypeByAtid"/>-->
     </resultMap>
 

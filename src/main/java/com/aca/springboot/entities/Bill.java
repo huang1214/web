@@ -1,7 +1,7 @@
 package com.aca.springboot.entities;
 
 
-public class bill {
+public class Bill {
 
   private String bid;
   private String ctid;

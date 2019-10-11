@@ -1,6 +1,6 @@
 package com.aca.springboot.entities;
 
-public class award {
+public class Award {
     private String atid;
     private String com_type;
     private String result_type;

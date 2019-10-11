@@ -2,42 +2,19 @@ package com.aca.springboot.entities;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
-public class teacher {
+public class Teacher {
 
-    @JSONField(ordinal = 1)
     private String tno;
-
-    @JSONField(ordinal = 2)
     private String tname;
-
-    @JSONField(ordinal = 3)
     private String tsex;
-
-    @JSONField(ordinal = 4)
     private String tbirthday;
-
-    @JSONField(ordinal = 5)
     private String dno;
-
-    @JSONField(ordinal = 6)
     private String dname;
-
-    @JSONField(ordinal = 7)
     private String dcollege;
-
-    @JSONField(ordinal = 8)
     private String ttel;
-
-    @JSONField(ordinal = 9)
     private String ttitle;
-
-    @JSONField(ordinal = 10)
     private String tpwd;
-
-    @JSONField(ordinal = 11)
     private String tstate;
-
-    @JSONField(ordinal = 12)
     private String card_num;
 
     public String getTno() {
