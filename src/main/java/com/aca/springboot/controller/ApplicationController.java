@@ -108,16 +108,13 @@ public class ApplicationController {
             int result = applicationService.add(app);
             result+=applicationService.addMultMember(tms,appid,1);
             result+=applicationService.addMultMember(ts,appid,2);
-            if (result == 1) {
-                System.out.println("成功！");
 
-            } else {
-                System.out.println("失败！");
-            }
 
         } catch (Exception e) {
+            System.out.println("失败");
             e.printStackTrace();
         }
+        System.out.println("成功");
         return mv;
     }
 
