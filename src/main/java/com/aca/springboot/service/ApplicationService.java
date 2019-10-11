@@ -42,6 +42,7 @@ public class ApplicationService {
 *//*        String strImg = new String(img);*//*
       *//*  map.put("certificateImg",strImg);*//*
         byte[] imgs=img;*/
+        System.out.println(app.toString());
         return applicationMapper.add(app);
     }
 

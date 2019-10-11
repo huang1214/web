@@ -86,18 +86,17 @@ public class ApplicationController {
 //                is = new FileInputStream(targetFile);
 //                byte[] bytes = FileCopyUtils.copyToByteArray(is);//得到byte
             app.setCtid(ctId);
-            app.setApplicantid(applicantId);
+            app.setApplicantId(applicantId);
             app.setUnit(unit);
             app.setLeader(leader);
             //TODO 金额
 //                app.setStudentprice((Integer.parseInt(studentPrice)*100)+"");
 //                app.setTeacherprice((Integer.parseInt(teacherPrice)*100)+"");
-            app.setAwardtypeid(applicantId);
-            //TODO 需要str2date
-//                app.setAwardDate(awardDate);
-            app.setApplicantbankcard(applicantBankCard);
-            app.setWorkname(workName);
-            app.setWorkbriefintro(workBriefIntro);
+            app.setApplicantId(applicantId);
+            app.setAwardDate(awardDate);
+            app.setApplicantBankCard(applicantBankCard);
+            app.setWorkName(workName);
+            app.setWorkBriefIntro(workBriefIntro);
             //TODO 图片没有存储
 //                app.setCertificateimg(bytes);
             /*int result = applicationService.add(comName, applicantId, teacher1Id, teacher2Id, unit, leader, teamNum, team, studentPrice, teacherPrice, awardTypeId, awardDate, applicantBankCard, workName, workBriefIntro, bytes);//添加到数据库中*/
