@@ -35,6 +35,8 @@
         //第一个实例
         //第一个实例
         //第一个实例
+
+
         table.render({
             elem: '#application_state'
             ,height: 312
@@ -43,15 +45,15 @@
             ,page: true //开启分页
             ,cols: [
                 [ //表头
+                    //详情中含有 指导老师，团队具体人员，第一单位，
                     {field: 'appId', title: '申请编号', width:109, sort: true, fixed: 'left'}
                     ,{field: 'comName', title: '比赛名称', width:300}
-                    ,{field: 'applicantId', title: '申请人ID', width:105, sort: true}
-                    ,{field: 'teacher1Id', title: '指导老师1', width:97}
-                    ,{field: 'teacher2Id', title: '指导老师2', width: 98}
-                    ,{field: 'unit', title: '第一单位', width: 108, sort: true}
+                    ,{field: 'applicantId', title: '申请人', width:105, sort: true}
+                    ,{field: 'leader', title: '项目组长', width:105, sort: true}
                     ,{field: 'studentPrice', title: '学生奖励金额', width: 133, sort: true}
                     ,{field: 'teacherPrice', title: '老师奖励金额', width: 119}
                     ,{field: 'awardDate', title: '申请时间', width: 135, sort: true}
+                    ,{fixed: 'status', title:'状态', toolbar: '#bar',width:80}
                     ,{fixed: 'right', title:'操作', toolbar: '#bar',width:80}
                 ]
             ]

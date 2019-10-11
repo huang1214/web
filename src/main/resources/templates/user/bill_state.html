@@ -3,8 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <title>备案状态</title>
+    <link rel="stylesheet" href="https://www.layuicdn.com/layui/css/layui.css">
+    <script src="https://www.layuicdn.com/layui/layui.js"></script>
+
+    <style>
+        .layui-input:focus, .layui-textarea:focus{
+            border-color:#5FB878!important
+        }
+    </style>
 </head>
 <body>
-这是“备案状态”页面
+<div class="form-data">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
+        <legend>备案状态表</legend>
+    </fieldset>
+    <table class="layui-hide" id="bill_state" lay-filter="test"></table>
+</div>
+
+
+<script src="../asserts/js/jquery-1.12.4.js"></script>
+<script src="../asserts/js/layui/layui.all.js"></script>
+
+<script type="text/html" id="bar">
+    <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="make" name="makeure" disabled>确认</button>
+</script>
+
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+        //第一个实例
+        //第一个实例
+        //第一个实例
+        table.render({
+            elem: '#bill_state'
+            ,height: 312
+            ,url: '/application/listAllApplication' //数据接口
+            ,method:"get"
+            ,page: true //开启分页
+            ,cols: [
+                [ //表头
+                    //详情：竞赛描述,clevel获奖级别类型，照片附件
+                    {field: 'bid', title: '备案编号', width:109, sort: true, fixed: 'left'}
+                    ,{field: 'ctid', title: '竞赛名称', width:300}
+                    ,{field: 'workName', title: '参赛作品名', width:300}
+                    ,{field: 'applicantId', title: '申请人', width:105}
+                    ,{field: 'groupleader', title: '项目负责人', width:97}
+                    ,{field: 'cyear', title: '参赛时间', width: 108, sort: true}
+                    ,{field: 'predictfee', title: '预算费用', width: 133, sort: true}
+                    ,{field: 'state', title: '状态', width: 119}
+                    ,{fixed: 'right', title:'操作', toolbar: '#bar',width:80}
+                ]
+            ]
+        });
+
+        table.on('tool(test)', function(obj){
+            var layEvent = obj.event;
+            if(layEvent === 'make'){
+                console.log("确认");
+            }
+        });
+
+    });
+</script>
 </body>
 </html>
