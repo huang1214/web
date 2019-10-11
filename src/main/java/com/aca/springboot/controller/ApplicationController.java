@@ -45,12 +45,12 @@ public class ApplicationController {
                             @RequestParam(value = "workBriefIntro", required = false) String workBriefIntro) throws Exception {
         ModelAndView mv = new ModelAndView("redirect:/user/application_form");
         Application app = new Application();
-//        String awardTypeId = getawardtype(comName, level_type, prize_type);  //获取获奖类型编号
-        /* System.out.println("获奖编号"+awardTypeId);*/
+        String awardTypeId = getawardtype(ctId, level_type, prize_type);  //获取获奖类型编号
+
         //获取学生获奖金额stu_price
-//        String studentPrice = applicationService.get_price(awardTypeId).get("STUDENT_PRICE").toString();
+        String studentPrice = applicationService.get_price(awardTypeId).get("STUDENT_PRICE").toString();
         //获取老师获奖金额tea_price
-//        String teacherPrice = applicationService.get_price(awardTypeId).get("TEACHER_PRICE").toString();
+        String teacherPrice = applicationService.get_price(awardTypeId).get("TEACHER_PRICE").toString();
 /*        System.out.println("学生获奖金额"+studentPrice);
         System.out.println("老师获奖金额"+teacherPrice);*/
 //        System.out.println("上传的图片" + file);
