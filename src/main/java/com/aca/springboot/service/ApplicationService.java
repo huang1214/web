@@ -1,5 +1,6 @@
 package com.aca.springboot.service;
 
+import com.aca.springboot.entities.ApplicationMember;
 import com.aca.springboot.entities.application;
 import com.aca.springboot.entities.json;
 import com.aca.springboot.entities.test;
@@ -18,7 +19,7 @@ public class ApplicationService {
     ApplicationMapper applicationMapper;
 
     /**
-     * 插入数据
+     * 插入申请表数据
      */
 /*    add(comName,applicantId,teacher1Id,teacher2Id,unit,leader,teamNum,team,studentPrice,teacherPrice,
         awardTypeId,awardDate,applicantBankCard,workName,workBriefIntro)*/
@@ -44,6 +45,14 @@ public class ApplicationService {
       *//*  map.put("certificateImg",strImg);*//*
         byte[] imgs=img;*/
         return applicationMapper.add(app);
+    }
+
+    /**
+     * 插入申请对应表数据
+     * @return
+     */
+    public int addApplicationMember(ApplicationMember applicationMember){
+        return applicationMapper.addApplicationMember(applicationMember);
     }
 
     public List com_name(){
