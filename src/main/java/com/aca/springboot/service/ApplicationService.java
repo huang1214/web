@@ -1,7 +1,7 @@
 package com.aca.springboot.service;
 
+import com.aca.springboot.entities.Application;
 import com.aca.springboot.entities.ApplicationMember;
-import com.aca.springboot.entities.application;
 import com.aca.springboot.entities.json;
 import com.aca.springboot.entities.test;
 import com.aca.springboot.mapper.ApplicationMapper;
@@ -23,7 +23,7 @@ public class ApplicationService {
      */
 /*    add(comName,applicantId,teacher1Id,teacher2Id,unit,leader,teamNum,team,studentPrice,teacherPrice,
         awardTypeId,awardDate,applicantBankCard,workName,workBriefIntro)*/
-    public int add(application app) {
+    public int add(Application app) {
         /*Map map = new HashMap<String,String>();
         map.put("comName",comName);
         map.put("applicantId",applicantId);
@@ -49,12 +49,28 @@ public class ApplicationService {
     }
 
     /**
-     * 插入申请对应表数据
+     * 插入一条申请对应表数据
      * @return
      */
     public int addApplicationMember(ApplicationMember applicationMember){
         return applicationMapper.addApplicationMember(applicationMember);
     }
+
+    /**
+     *插入申请表对于数据
+     * 多条插入
+     * @return
+     */
+    public int addMoreApplicationMember(List<ApplicationMember> addMoreApplicationMember){
+        int result;
+        int moreResult=0;    //成功条数
+        for(int i=0;i<addMoreApplicationMember.size();i++){
+            result = addApplicationMember(addMoreApplicationMember.get(i));
+            moreResult = moreResult+result;
+        }
+        return moreResult;
+    }
+
 
     public List com_name(){
         return applicationMapper.com_name();
@@ -96,9 +112,9 @@ public class ApplicationService {
     //申请状态
     //表格初始化
     public JSONObject application_All(int page, int limit,String applicantId){
-        List<application> lists = applicationMapper.application_All(applicantId);   //select后结果放入lists集合中
+        List<Application> lists = applicationMapper.application_All(applicantId);   //select后结果放入lists集合中
         System.out.println(lists);
-        List<application> list = new ArrayList<>();
+        List<Application> list = new ArrayList<>();
         int theLastPage = page * limit ;          //这里用于判断最后一页的最后一条理论上是第几条，然后跟实际的进行比较
         if( theLastPage > lists.size())   //如果是最后一页，就是说最后一页的最后一条大于此集合的大小，只显示到集合的最后一条
         {
