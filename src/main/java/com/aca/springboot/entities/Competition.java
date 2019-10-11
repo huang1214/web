@@ -1,6 +1,6 @@
 package com.aca.springboot.entities;
 
-public class competition {
+public class Competition {
     private String ctid;
     private String ctname;
     private String host_unit;

@@ -1,6 +1,6 @@
 package com.aca.springboot.controller;
 
-import com.aca.springboot.entities.application;
+import com.aca.springboot.entities.Application;
 import com.aca.springboot.service.ApplicationService;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +47,7 @@ public class ApplicationController {
                             @RequestParam("file") MultipartFile file,
                             Map<String, Object> map, HttpSession session) throws Exception {
         ModelAndView mv = new ModelAndView("redirect:/user/application_form");
-        application app = new application();
+        Application app = new Application();
         String awardTypeId = getawardtype(comName, level_type, prize_type);  //获取获奖类型编号
         /* System.out.println("获奖编号"+awardTypeId);*/
         //获取学生获奖金额stu_price

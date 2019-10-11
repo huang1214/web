@@ -1,11 +1,11 @@
 package com.aca.springboot.entities;
 
 
-public class application {
+public class Application {
 
   private String appid;
-  private String ctid;
-  private String applicantid;
+  private String ctid;  //比赛的ID
+  private String applicantid;  //申请人ID
   private String unit;
   private String leader;
   private String studentprice;
@@ -20,6 +20,7 @@ public class application {
   private String highlight;
   private String status;
   private String note;
+  private Competition competition;
 
 
   public String getAppid() {

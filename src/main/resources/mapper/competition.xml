@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aca.springboot.mapper.CompetitionMapper">
-    <resultMap id="com_class" type="com.aca.springboot.entities.competition">
+    <resultMap id="com_class" type="com.aca.springboot.entities.Competition">
         <id property="ctid" column="ctid"/>
         <result property="ctname" column="ctname"/>
         <result property="host_unit" column="host_unit"/>
