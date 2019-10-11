@@ -3,6 +3,7 @@ package com.aca.springboot.controller;
 import com.aca.springboot.entities.Application;
 import com.aca.springboot.service.ApplicationService;
 import com.alibaba.fastjson.JSONObject;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
@@ -16,6 +17,8 @@ import java.io.*;
 import java.util.*;
 
 @Controller
+@RequestMapping("/app")
+@Api(value = "激励")
 public class ApplicationController {
     @Autowired
     ApplicationService applicationService;
@@ -29,8 +32,8 @@ public class ApplicationController {
      * @throws Exception
      */
     @ResponseBody
-    @PostMapping(value = "/add")
-    public ModelAndView add(@RequestParam("comName") String comName,
+    @RequestMapping(value = "/add")
+    public ModelAndView add(@RequestParam(value = "ctId",required = false) String ctId,
                             @RequestParam("workName") String workName,
                             @RequestParam("awardDate") String awardDate,
                             @RequestParam("unit") String unit,
@@ -48,12 +51,12 @@ public class ApplicationController {
                             Map<String, Object> map, HttpSession session) throws Exception {
         ModelAndView mv = new ModelAndView("redirect:/user/application_form");
         Application app = new Application();
-        String awardTypeId = getawardtype(comName, level_type, prize_type);  //获取获奖类型编号
+//        String awardTypeId = getawardtype(comName, level_type, prize_type);  //获取获奖类型编号
         /* System.out.println("获奖编号"+awardTypeId);*/
         //获取学生获奖金额stu_price
-        String studentPrice = applicationService.get_price(awardTypeId).get("STUDENT_PRICE").toString();
+//        String studentPrice = applicationService.get_price(awardTypeId).get("STUDENT_PRICE").toString();
         //获取老师获奖金额tea_price
-        String teacherPrice = applicationService.get_price(awardTypeId).get("TEACHER_PRICE").toString();
+//        String teacherPrice = applicationService.get_price(awardTypeId).get("TEACHER_PRICE").toString();
 /*        System.out.println("学生获奖金额"+studentPrice);
         System.out.println("老师获奖金额"+teacherPrice);*/
         System.out.println("上传的图片" + file);
@@ -88,22 +91,21 @@ public class ApplicationController {
             try {
                 is = new FileInputStream(targetFile);
                 byte[] bytes = FileCopyUtils.copyToByteArray(is);//得到byte
-                app.setComName(comName);
-                app.setApplicantId(applicantId);
-                app.setTeacher1Id(teacher1Id);
-                app.setTeacher2Id(teacher2Id);
+                app.setCtid(ctId);
+                app.setApplicantid(applicantId);
                 app.setUnit(unit);
                 app.setLeader(leader);
-                app.setTeamNum(teamNum);
-                app.setTeam(team);
-                app.setStudentPrice(studentPrice);
-                app.setTeacherPrice(teacherPrice);
-                app.setAwardTypeId(awardTypeId);
-                app.setAwardDate(awardDate);
-                app.setApplicantBankCard(applicantBankCard);
-                app.setWorkName(workName);
-                app.setWorkBriefIntro(workBriefIntro);
-                app.setCertificateImg(bytes);
+                //TODO 金额
+//                app.setStudentprice((Integer.parseInt(studentPrice)*100)+"");
+//                app.setTeacherprice((Integer.parseInt(teacherPrice)*100)+"");
+                app.setAwardtypeid(applicantId);
+                //TODO 需要str2date
+//                app.setAwardDate(awardDate);
+                app.setApplicantbankcard(applicantBankCard);
+                app.setWorkname(workName);
+                app.setWorkbriefintro(workBriefIntro);
+                //TODO 图片没有存储
+//                app.setCertificateimg(bytes);
                 /*int result = applicationService.add(comName, applicantId, teacher1Id, teacher2Id, unit, leader, teamNum, team, studentPrice, teacherPrice, awardTypeId, awardDate, applicantBankCard, workName, workBriefIntro, bytes);//添加到数据库中*/
                 int result = applicationService.add(app);
 
@@ -112,7 +114,6 @@ public class ApplicationController {
 
                 } else {
                     System.out.println("失败！");
-
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();

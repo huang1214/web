@@ -38,31 +38,31 @@
         select teacher_price,student_price from award_type where atid = #{atid}
     </select>
 
-    <resultMap id="workresult" type="com.aca.springboot.entities.work">
-        <id column="app_id" property="app_id"/>
-        <result column="competition_name" property="competition_name"/>
-        <result column="work_name" property="work_name"/>
-        <result column="leader_id" property="leader_id"/>
-        <result column="teacher_id" property="teacher_id"/>
-        <result column="date_year" property="date_year"/>
-        <result column="stu_price" property="student_price"/>
-        <result column="tea_price" property="teacher_price"/>
-        <result column="is_check" property="is_check"/>
-    </resultMap>
-    <select id="workresult" resultMap="workresult">
-        select a.app_id,a.competition_name,a.work_name,a.leader_id,a.teacher_id,a.date_year,s.stu_price,s.tea_price,s.is_check
-        from application a,application_succ s
-        where a.app_id = s.app_id and
-            s.leader_id = #{leader_id}
-        order by app_id
-    </select>
+    <!--<resultMap id="workresult" type="com.aca.springboot.entities.work">-->
+        <!--<id column="app_id" property="app_id"/>-->
+        <!--<result column="competition_name" property="competition_name"/>-->
+        <!--<result column="work_name" property="work_name"/>-->
+        <!--<result column="leader_id" property="leader_id"/>-->
+        <!--<result column="teacher_id" property="teacher_id"/>-->
+        <!--<result column="date_year" property="date_year"/>-->
+        <!--<result column="stu_price" property="student_price"/>-->
+        <!--<result column="tea_price" property="teacher_price"/>-->
+        <!--<result column="is_check" property="is_check"/>-->
+    <!--</resultMap>-->
+    <!--<select id="workresult" resultMap="workresult">-->
+        <!--select a.app_id,a.competition_name,a.work_name,a.leader_id,a.teacher_id,a.date_year,s.stu_price,s.tea_price,s.is_check-->
+        <!--from application a,application_succ s-->
+        <!--where a.app_id = s.app_id and-->
+            <!--s.leader_id = #{leader_id}-->
+        <!--order by app_id-->
+    <!--</select>-->
 
-    <select id="work_paaAll" resultMap="workresult">
-        select a.app_id,a.competition_name,a.work_name,a.leader_id,a.teacher_id,a.date_year,s.stu_price,s.tea_price,s.is_check
-        from application a,application_succ s
-        where a.app_id = s.app_id
-        order by app_id
-    </select>
+    <!--<select id="work_paaAll" resultMap="workresult">-->
+        <!--select a.app_id,a.competition_name,a.work_name,a.leader_id,a.teacher_id,a.date_year,s.stu_price,s.tea_price,s.is_check-->
+        <!--from application a,application_succ s-->
+        <!--where a.app_id = s.app_id-->
+        <!--order by app_id-->
+    <!--</select>-->
 
     <!--申请表和获奖类型表一对一级联-->
     <select id="application_All" resultMap="applicationMap">

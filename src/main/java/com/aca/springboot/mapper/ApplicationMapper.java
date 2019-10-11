@@ -22,7 +22,7 @@ public interface ApplicationMapper {
 
     public application get(int app_id);
 
-    public List work_paaAll();
+//    public List work_paaAll();
 
     public List com_name(); // 查询全部比赛名称
 
@@ -30,5 +30,5 @@ public interface ApplicationMapper {
 
     //申请状态列出所有的申请信息
     public List application_All(@Param("applicantId") String applicantId);
-    public List workresult(Map map);
+//    public List workresult(Map map);
 }
