@@ -8,7 +8,6 @@ public class ApplicationMember {
   private String appType;
   private String appOrder;
 
-
   public String getAppId() {
     return appId;
   }

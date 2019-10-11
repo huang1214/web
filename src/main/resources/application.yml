@@ -10,9 +10,9 @@ spring:
     basename: i18n.login
 
   datasource:
-    url: jdbc:oracle:thin:@localhost:1521/orcl
-    username:
-    password:
+    url: jdbc:oracle:thin:@222.204.6.175:8085/orcl
+    username: academic
+    password: xkjs409
     driver-class-name: oracle.jdbc.OracleDriver
 
   thymeleaf:
