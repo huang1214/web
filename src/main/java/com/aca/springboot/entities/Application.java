@@ -1,33 +1,50 @@
 package com.aca.springboot.entities;
 
 
+import java.sql.Date;
+
 public class Application {
 
   private String appid;
   private String ctid;  //比赛的ID
-  private String applicantid;  //申请人ID
+  private String applicantId;  //申请人ID
   private String unit;
   private String leader;
-  private String studentprice;
-  private String teacherprice;
-  private String awardtypeid;
-  private java.sql.Date awarddate;
-  private String applicantbankcard;
-  private String workname;
-  private String workbriefintro;
-  private String certificateimg;
-  private String getawardimg;
-  private String highlight;
+  private String studentPrice;
+  private String teacherPrice;
+  private String awardTypeId;
+  private String awardDate;
+  private String applicantBankCard;
+  private String workName;
+  private String workBriefIntro;
+  private String certificateImg;
+  private String getawardImg;
+  private String highLight;
   private String status;
   private String note;
-  private Competition competition;
 
-  public Competition getCompetition() {
-    return competition;
-  }
-
-  public void setCompetition(Competition competition) {
-    this.competition = competition;
+  @Override
+  public String toString() {
+    return "Application{" +
+            "appid='" + appid + '\'' +
+            ", ctid='" + ctid + '\'' +
+            ", applicantId='" + applicantId + '\'' +
+            ", unit='" + unit + '\'' +
+            ", leader='" + leader + '\'' +
+            ", studentPrice='" + studentPrice + '\'' +
+            ", teacherPrice='" + teacherPrice + '\'' +
+            ", awardTypeId='" + awardTypeId + '\'' +
+            ", awardDate=" + awardDate +
+            ", applicantBankCard='" + applicantBankCard + '\'' +
+            ", workName='" + workName + '\'' +
+            ", workBriefIntro='" + workBriefIntro + '\'' +
+            ", certificateImg='" + certificateImg + '\'' +
+            ", getawardImg='" + getawardImg + '\'' +
+            ", highLight='" + highLight + '\'' +
+            ", status='" + status + '\'' +
+            ", note='" + note + '\'' +
+            ", competition=" + competition +
+            '}';
   }
 
   public String getAppid() {
@@ -38,7 +55,6 @@ public class Application {
     this.appid = appid;
   }
 
-
   public String getCtid() {
     return ctid;
   }
@@ -47,15 +63,13 @@ public class Application {
     this.ctid = ctid;
   }
 
-
-  public String getApplicantid() {
-    return applicantid;
+  public String getApplicantId() {
+    return applicantId;
   }
 
-  public void setApplicantid(String applicantid) {
-    this.applicantid = applicantid;
+  public void setApplicantId(String applicantId) {
+    this.applicantId = applicantId;
   }
-
 
   public String getUnit() {
     return unit;
@@ -65,7 +79,6 @@ public class Application {
     this.unit = unit;
   }
 
-
   public String getLeader() {
     return leader;
   }
@@ -74,96 +87,85 @@ public class Application {
     this.leader = leader;
   }
 
-
-  public String getStudentprice() {
-    return studentprice;
+  public String getStudentPrice() {
+    return studentPrice;
   }
 
-  public void setStudentprice(String studentprice) {
-    this.studentprice = studentprice;
+  public void setStudentPrice(String studentPrice) {
+    this.studentPrice = studentPrice;
   }
 
-
-  public String getTeacherprice() {
-    return teacherprice;
+  public String getTeacherPrice() {
+    return teacherPrice;
   }
 
-  public void setTeacherprice(String teacherprice) {
-    this.teacherprice = teacherprice;
+  public void setTeacherPrice(String teacherPrice) {
+    this.teacherPrice = teacherPrice;
   }
 
-
-  public String getAwardtypeid() {
-    return awardtypeid;
+  public String getAwardTypeId() {
+    return awardTypeId;
   }
 
-  public void setAwardtypeid(String awardtypeid) {
-    this.awardtypeid = awardtypeid;
+  public void setAwardTypeId(String awardTypeId) {
+    this.awardTypeId = awardTypeId;
   }
 
-
-  public java.sql.Date getAwarddate() {
-    return awarddate;
+  public String getAwardDate() {
+    return awardDate;
   }
 
-  public void setAwarddate(java.sql.Date awarddate) {
-    this.awarddate = awarddate;
+  public void setAwardDate(String awardDate) {
+    this.awardDate = awardDate;
   }
 
-
-  public String getApplicantbankcard() {
-    return applicantbankcard;
+  public String getApplicantBankCard() {
+    return applicantBankCard;
   }
 
-  public void setApplicantbankcard(String applicantbankcard) {
-    this.applicantbankcard = applicantbankcard;
+  public void setApplicantBankCard(String applicantBankCard) {
+    this.applicantBankCard = applicantBankCard;
   }
 
-
-  public String getWorkname() {
-    return workname;
+  public String getWorkName() {
+    return workName;
   }
 
-  public void setWorkname(String workname) {
-    this.workname = workname;
+  public void setWorkName(String workName) {
+    this.workName = workName;
   }
 
-
-  public String getWorkbriefintro() {
-    return workbriefintro;
+  public String getWorkBriefIntro() {
+    return workBriefIntro;
   }
 
-  public void setWorkbriefintro(String workbriefintro) {
-    this.workbriefintro = workbriefintro;
+  public void setWorkBriefIntro(String workBriefIntro) {
+    this.workBriefIntro = workBriefIntro;
   }
 
-
-  public String getCertificateimg() {
-    return certificateimg;
+  public String getCertificateImg() {
+    return certificateImg;
   }
 
-  public void setCertificateimg(String certificateimg) {
-    this.certificateimg = certificateimg;
+  public void setCertificateImg(String certificateImg) {
+    this.certificateImg = certificateImg;
   }
 
-
-  public String getGetawardimg() {
-    return getawardimg;
+  public String getGetawardImg() {
+    return getawardImg;
   }
 
-  public void setGetawardimg(String getawardimg) {
-    this.getawardimg = getawardimg;
+  public void setGetawardImg(String getawardImg) {
+    this.getawardImg = getawardImg;
   }
 
-
-  public String getHighlight() {
-    return highlight;
+  public String getHighLight() {
+    return highLight;
   }
 
-  public void setHighlight(String highlight) {
-    this.highlight = highlight;
+  public void setHighLight(String highLight) {
+    this.highLight = highLight;
   }
-
 
   public String getStatus() {
     return status;
@@ -173,7 +175,6 @@ public class Application {
     this.status = status;
   }
 
-
   public String getNote() {
     return note;
   }
@@ -181,5 +182,15 @@ public class Application {
   public void setNote(String note) {
     this.note = note;
   }
+
+  public Competition getCompetition() {
+    return competition;
+  }
+
+  public void setCompetition(Competition competition) {
+    this.competition = competition;
+  }
+
+  private Competition competition;
 
 }
