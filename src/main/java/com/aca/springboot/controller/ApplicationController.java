@@ -2,6 +2,7 @@ package com.aca.springboot.controller;
 
 import com.aca.springboot.entities.Application;
 import com.aca.springboot.service.ApplicationService;
+import com.aca.springboot.utils.StrUtils;
 import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,9 @@ public class ApplicationController {
                             @RequestParam(value = "applicantId", required = false) String applicantId,
                             @RequestParam(value = "applicantBankCard", required = false) String applicantBankCard,
                             @RequestParam(value = "leader", required = false) String leader,
-                            @RequestParam(value = "workBriefIntro", required = false) String workBriefIntro) throws Exception {
+                            @RequestParam(value = "workBriefIntro", required = false) String workBriefIntro,
+                            @RequestParam(value = "tms", required=false)String tms,
+                            @RequestParam(value = "ts", required=false)String ts) throws Exception {
         ModelAndView mv = new ModelAndView("redirect:/user/application_form");
         Application app = new Application();
         String awardTypeId = getawardtype(ctId, level_type, prize_type);  //获取获奖类型编号
@@ -82,9 +85,11 @@ public class ApplicationController {
 //            }
         //添加
         InputStream is = null;//得到文件流
+        String appid= StrUtils.timeStamp();
         try {
 //                is = new FileInputStream(targetFile);
 //                byte[] bytes = FileCopyUtils.copyToByteArray(is);//得到byte
+            app.setAppid(appid);
             app.setCtid(ctId);
             app.setApplicantId(applicantId);
             app.setUnit(unit);
@@ -96,17 +101,20 @@ public class ApplicationController {
             app.setApplicantBankCard(applicantBankCard);
             app.setWorkName(workName);
             app.setWorkBriefIntro(workBriefIntro);
+            app.setAwardTypeId(awardTypeId);
             //TODO 图片没有存储
 //                app.setCertificateimg(bytes);
             /*int result = applicationService.add(comName, applicantId, teacher1Id, teacher2Id, unit, leader, teamNum, team, studentPrice, teacherPrice, awardTypeId, awardDate, applicantBankCard, workName, workBriefIntro, bytes);//添加到数据库中*/
             int result = applicationService.add(app);
-
+            result+=applicationService.addMultMember(tms,appid,1);
+            result+=applicationService.addMultMember(ts,appid,2);
             if (result == 1) {
                 System.out.println("成功！");
 
             } else {
                 System.out.println("失败！");
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

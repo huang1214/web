@@ -70,6 +70,25 @@ public class ApplicationService {
         return moreResult;
     }
 
+    public int addMultMember(String list,String appid,int type){
+        List<ApplicationMember> list1=new ArrayList<>();
+        if(type==1){
+            String[] split = list.split(",");
+            for(int i =0;i<split.length;i++){
+                if(split[i].length()>0){
+                    list1.add(new ApplicationMember(appid,split[i],"1",i+1+""));
+                }
+            }
+        }else{
+            String[] split = list.split(",");
+            for(int i =0;i<split.length;i++){
+                if(split[i].length()>0){
+                    list1.add(new ApplicationMember(appid,split[i],"2",i+1+""));
+                }
+            }
+        }
+        return addMoreApplicationMember(list1);
+    }
 
     public List com_name(){
         return applicationMapper.com_name();
@@ -88,6 +107,7 @@ public class ApplicationService {
         map.put("u_ctId",ctId);
         map.put("u_level_type",level_type);
         map.put("u_prize_type",prize_type);
+        System.out.println(map.toString());
         applicationMapper.getawardtype(map);
         String rewardtype = (String)map.get("awardtype");
         return rewardtype;

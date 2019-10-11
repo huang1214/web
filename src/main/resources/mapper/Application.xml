@@ -6,8 +6,8 @@
         awardTypeId,awardDate,applicantBankCard,workName,workBriefIntro)-->
 <mapper namespace="com.aca.springboot.mapper.ApplicationMapper">
     <insert id="add" parameterType="com.aca.springboot.entities.Application" >
-        insert into Application(appId,ctid,applicantId,unit,leader,awardDate,applicantBankCard,workName,workBriefIntro,certificateImg)
-        values (application_id_Seq.Nextval,#{ctid},#{applicantId},#{unit},#{leader},to_date(substr(#{awardDate},1,10),'yyyy-mm-dd'),#{applicantBankCard},#{workName},#{workBriefIntro},#{certificateImg,jdbcType=BLOB})
+        insert into Application(appId,ctid,applicantId,unit,leader,awardDate,applicantBankCard,workName,workBriefIntro,certificateImg,studentPrice,teacherPrice,awardTypeId)
+        values (#{appid},#{ctid},#{applicantId},#{unit},#{leader},to_date(substr(#{awardDate},1,10),'yyyy-mm-dd'),#{applicantBankCard},#{workName},#{workBriefIntro},#{certificateImg,jdbcType=BLOB},#{studentPrice},#{teacherPrice},#{awardTypeId})
     </insert>
 
     <!--插入奖金申请表对应表-->

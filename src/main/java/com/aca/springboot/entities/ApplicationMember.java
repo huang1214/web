@@ -43,4 +43,10 @@ public class ApplicationMember {
     this.appOrder = appOrder;
   }
 
+  public ApplicationMember(String appId, String appTmId, String appType, String appOrder) {
+    this.appId = appId;
+    this.appTmId = appTmId;
+    this.appType = appType;
+    this.appOrder = appOrder;
+  }
 }
