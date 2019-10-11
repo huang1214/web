@@ -3,7 +3,6 @@ package com.aca.springboot.service;
 import com.aca.springboot.entities.Application;
 import com.aca.springboot.entities.ApplicationMember;
 import com.aca.springboot.entities.json;
-import com.aca.springboot.entities.test;
 import com.aca.springboot.mapper.ApplicationMapper;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -78,15 +77,15 @@ public class ApplicationService {
 
     /**
      * 通过输入的竞赛名称，作品类型，所获奖项类型，所获奖项等级，来获得奖金类型
-     * @param comName
+     * @param ctId
      * @param level_type
      * @param prize_type
      */
-    public String getawardtype(String comName,
+    public String getawardtype(String ctId,
                              String level_type,
                              String prize_type){
         Map map = new HashMap<String,String>();
-        map.put("u_comName",comName);
+        map.put("u_ctId",ctId);
         map.put("u_level_type",level_type);
         map.put("u_prize_type",prize_type);
         applicationMapper.getawardtype(map);

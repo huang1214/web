@@ -89,9 +89,8 @@ public class ApplicationController {
             app.setApplicantId(applicantId);
             app.setUnit(unit);
             app.setLeader(leader);
-            //TODO 金额
-//                app.setStudentprice((Integer.parseInt(studentPrice)*100)+"");
-//                app.setTeacherprice((Integer.parseInt(teacherPrice)*100)+"");
+            app.setStudentPrice((Integer.parseInt(studentPrice) * 100) + "");
+            app.setTeacherPrice((Integer.parseInt(teacherPrice) * 100) + "");
             app.setApplicantId(applicantId);
             app.setAwardDate(awardDate);
             app.setApplicantBankCard(applicantBankCard);
