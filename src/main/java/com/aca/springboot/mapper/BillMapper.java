@@ -1,6 +1,6 @@
 package com.aca.springboot.mapper;
 
-import com.aca.springboot.entities.bill;
+import com.aca.springboot.entities.Bill;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -11,14 +11,14 @@ public interface BillMapper {
      * 查询所有账单信息
      * @return 账单信息列表
      */
-    public List<bill> findAllBill();
+    public List<Bill> findAllBill();
 
     /**
      * 根据账单状态查询
      * @param state 账单状态
      * @return 账单列表
      */
-    public List<bill> findBillByState(@Param("state") String state);
+    public List<Bill> findBillByState(@Param("state") String state);
 
     /**
      * 添加账单信息

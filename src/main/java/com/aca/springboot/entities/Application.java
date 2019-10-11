@@ -21,7 +21,23 @@ public class Application {
   private String status;
   private String note;
   private Competition competition;
+  private Student student;
 
+  public Competition getCompetition() {
+    return competition;
+  }
+
+  public void setCompetition(Competition competition) {
+    this.competition = competition;
+  }
+
+  public Student getStudent() {
+    return student;
+  }
+
+  public void setStudent(Student student) {
+    this.student = student;
+  }
 
   public String getAppid() {
     return appid;

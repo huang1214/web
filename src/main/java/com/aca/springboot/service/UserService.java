@@ -1,14 +1,11 @@
 package com.aca.springboot.service;
 
-import com.aca.springboot.entities.User;
 import com.aca.springboot.entities.json;
-import com.aca.springboot.entities.teacher;
+import com.aca.springboot.entities.Teacher;
 import com.aca.springboot.entities.test;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.session.defaults.DefaultSqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -138,8 +135,8 @@ public class UserService {
     //查询教师
     public JSONObject teacher_search(int page, int limit, String tname, String tsex, String dname,
                                      String dcollege, String ttitle){
-        List<teacher> lists = UserMapper.teacher_search(tname, tsex, dname, dcollege, ttitle);   //select后结果放入lists集合中
-        List<teacher> list = new ArrayList<>();
+        List<Teacher> lists = UserMapper.teacher_search(tname, tsex, dname, dcollege, ttitle);   //select后结果放入lists集合中
+        List<Teacher> list = new ArrayList<>();
         int theLastPage = page * limit ;          //这里用于判断最后一页的最后一条理论上是第几条，然后跟实际的进行比较
         if( theLastPage > lists.size())   //如果是最后一页，就是说最后一页的最后一条大于此集合的大小，只显示到集合的最后一条
         {

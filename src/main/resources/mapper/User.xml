@@ -71,7 +71,7 @@
     </insert>
 
     <!--返回所有教师信息-->
-    <resultMap id="teacher_class" type="com.aca.springboot.entities.teacher">
+    <resultMap id="teacher_class" type="com.aca.springboot.entities.Teacher">
     </resultMap>
 
     <select id="teacher_All" resultMap="teacher_class">
