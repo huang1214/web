@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aca.springboot.mapper.BillMapper">
+    <resultMap id="resultStudent" type="com.aca.springboot.entities.Student">
+        <id property="sno" column="sno"/>
+        <result property="sname" column="sname"/>
+        <result property="ssex" column="ssex"/>
+        <result property="sbirthday" column="sbirthday"/>
+        <result property="sdomitory" column="sdomitory"/>
+        <result property="cno" column="cno"/>
+        <result property="spwd" column="spwd"/>
+        <result property="stel" column="stel"/>
+        <result property="state" column="state"/>
+        <result property="card_num" column="card_num"/>
+        <association property="studentClass" javaType="com.aca.springboot.entities.StudentClass">
+            <id property="cno" column="cno"/>
+            <result property="cname" column="cname"/>
+            <result property="dno" column="dno"/>
+            <result property="cgrade" column="cgrade"/>
+            <result property="cadmin" column="cadmin"/>
+            <result property="cadmintel" column="cadmintel"/>
+            <result property="cmaster" column="cmaster"/>
+            <result property="cmastertel" column="cmastertel"/>
+            <association property="dept" javaType="com.aca.springboot.entities.Dept">
+                <id property="dno" column="dno"/>
+                <result property="dname" column="dname"/>
+                <result property="dadmin" column="dadmin"/>
+                <result property="dtel" column="dtel"/>
+                <result property="dcollege" column="dcollege"/>
+            </association>
+        </association>
+    </resultMap>
+    <select id="selectStudent" resultMap="resultStudent">
+        select distinct * from STUDENT ,CLASS,DEPT where sno = #{sno} and STUDENT.CNO = CLASS.CNO
+                                                     and CLASS.DNO = DEPT.DNO
+    </select>
+</mapper>
