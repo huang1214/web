@@ -1,6 +1,7 @@
 package com.aca.springboot.controller;
 
 import com.aca.springboot.entities.Application;
+import com.aca.springboot.entities.Message;
 import com.aca.springboot.service.ApplicationService;
 import com.aca.springboot.utils.StrUtils;
 import com.alibaba.fastjson.JSONObject;
@@ -177,4 +178,10 @@ public class ApplicationController {
         }
         return mv;
     }*/
+
+    @ResponseBody
+    @PostMapping("/list")
+    public Message get_list(){
+        return new Message(0,"成功",applicationService.get_list());
+    }
 }

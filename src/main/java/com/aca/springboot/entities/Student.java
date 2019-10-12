@@ -18,7 +18,6 @@ public class Student {
     private String stel;
     private String state;
     private String card_num;
-    private StudentClass studentClass;
 
     public String getSno() {
         return sno;
@@ -100,11 +99,4 @@ public class Student {
         this.card_num = card_num;
     }
 
-    public StudentClass getStudentClass() {
-        return studentClass;
-    }
-
-    public void setStudentClass(StudentClass studentClass) {
-        this.studentClass = studentClass;
-    }
 }

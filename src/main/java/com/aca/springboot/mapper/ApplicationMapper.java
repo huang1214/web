@@ -2,6 +2,7 @@ package com.aca.springboot.mapper;
 import com.aca.springboot.entities.Application;
 import com.aca.springboot.entities.ApplicationMember;
 
+import com.aca.springboot.vo.AppComAppLeaderVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -31,4 +32,6 @@ public interface ApplicationMapper {
     //申请状态列出所有的申请信息
     public List application_All(@Param("applicantId") String applicantId);
 //    public List workresult(Map map);
+    //获取列表
+    public List<AppComAppLeaderVO> get_application_list();
 }

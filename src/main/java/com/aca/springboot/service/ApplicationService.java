@@ -4,6 +4,7 @@ import com.aca.springboot.entities.Application;
 import com.aca.springboot.entities.ApplicationMember;
 import com.aca.springboot.entities.json;
 import com.aca.springboot.mapper.ApplicationMapper;
+import com.aca.springboot.vo.AppComAppLeaderVO;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -159,4 +160,11 @@ public class ApplicationService {
         return jsonObj;   //返回json对象（json数据）
     }
 
+    /**
+     * 获取申请列表
+     * @return
+     */
+    public List<AppComAppLeaderVO> get_list(){
+        return applicationMapper.get_application_list();
+    }
 }
