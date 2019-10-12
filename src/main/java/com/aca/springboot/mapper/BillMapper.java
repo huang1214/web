@@ -2,11 +2,13 @@ package com.aca.springboot.mapper;
 
 import com.aca.springboot.entities.Bill;
 import com.aca.springboot.entities.BillMember;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
 
+@Mapper
 public interface BillMapper {
     /**
      * 查询所有账单信息
