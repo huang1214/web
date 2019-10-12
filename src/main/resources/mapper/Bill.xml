@@ -12,7 +12,7 @@
     <!--插入账单表-->
     <insert id="addBill" parameterType="com.aca.springboot.entities.Bill">
         insert into BILL(bid, ctid, cyear, clevel, cdesc, groupleader, groupname, RESULT_TYPE, WORK_NAME, preditfeedesc, predictfee, state, attachfile, note)
-        values (#{bid}, #{ctid}, #{cyear}, #{clevel}, #{cdesc}, #{groupleader}, #{groupname}, #{resultType}, #{workName}, #{preditfeedesc}, #{predictfee}, #{state}, #{attachfile}, #{note})
+        values (#{bid}, #{ctid}, to_date(substr(#{cyear},1,10),'yyyy-mm-dd'), #{clevel}, #{cdesc}, #{groupleader}, #{groupname}, #{resultType}, #{workName}, #{preditfeedesc}, #{predictfee}, #{state}, #{attachfile}, #{note})
     </insert>
 
     <!--插入账单对应表-->
