@@ -21,10 +21,12 @@ public class BillController {
         this.billService=billService;
     }
 
+    //添加一条报销记录
     @PostMapping(value = "add")
     public Message addAward(Bill bill){
         Message addAwardMessage=new Message();
-        bill.setBid(TimeUtil.getBillNumber());
+        bill.setBid(TimeUtil.getBillNumber());  //获取报销编号
+
         return addAwardMessage;
     }
 

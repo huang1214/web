@@ -25,10 +25,10 @@ public interface BillMapper {
 
     /**
      * 添加账单信息
-     * @param map 账单信息的映射
+     * @param bill 账单信息的映射
      * @return  执行是否成功
      */
-    public int addBill(Map map);
+    public int addBill(Bill bill);
 
     public void deleteBill();
 
