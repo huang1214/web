@@ -3,7 +3,19 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aca.springboot.mapper.BillMapper">
-    <!--插入报销对应表-->
+    <!--根据竞赛编号，参赛年费，团队负责人查询报销-->
+    <select id="selectBillByCtidCyearGroupleader" parameterType="com.aca.springboot.entities.Bill">
+        select * from BILL where CTID= #{ctid} and CYEAR between to_date(substr(#{cyear}||'-01-01',1,10),'yyyy-mm-dd')and to_date(substr(#{cyear}||'-12-31',1,10),'yyyy-mm-dd') and
+            GROUPLEADER = #{groupleader}
+    </select>
+
+    <!--插入账单表-->
+    <insert id="addBill" parameterType="com.aca.springboot.entities.Bill">
+        insert into BILL(bid, ctid, cyear, clevel, cdesc, groupleader, groupname, RESULT_TYPE, WORK_NAME, preditfeedesc, predictfee, state, attachfile, note)
+        values (#{bid}, #{ctid}, #{cyear}, #{clevel}, #{cdesc}, #{groupleader}, #{groupname}, #{resultType}, #{workName}, #{preditfeedesc}, #{predictfee}, #{state}, #{attachfile}, #{note})
+    </insert>
+
+    <!--插入账单对应表-->
     <insert id="addBillMember" parameterType="com.aca.springboot.entities.BillMember">
         insert into BILL_MEMBER(BILL_ID, BILL_TM_ID,BILL_TYPE ,BILL_ORDER)
         values (#{billId},#{billTmId},#{billType},#{billOrder})

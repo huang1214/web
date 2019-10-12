@@ -24,9 +24,20 @@ public interface BillMapper {
     public List<Bill> findBillByState(@Param("state") String state);
 
     /**
+     * 根据竞赛编号，参赛年费，团队负责人查询
+     * @param ctid 竞赛编号
+     * @param cyear 参赛年份，（这里只传参赛的年份，具体的月份和日期不要）
+     * @param groupleader 项目负责人id
+     * @return 一条账单数据
+     */
+    public Bill selectBillByCtidCyearGroupleader(@Param("ctid") String ctid,
+                                                 @Param("cyear") String cyear,
+                                                 @Param("groupleader") String groupleader);
+
+    /**
      * 添加账单信息
      * @param bill 账单信息的映射
-     * @return  执行是否成功
+     * @return  执行成功的条数，1为成功
      */
     public int addBill(Bill bill);
 
