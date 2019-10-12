@@ -1,6 +1,7 @@
 package com.aca.springboot.mapper;
 
 import com.aca.springboot.entities.Bill;
+import com.aca.springboot.entities.BillMember;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -28,6 +29,11 @@ public interface BillMapper {
     public int addBill(Map map);
 
     public void deleteBill();
+
+    /**
+     * 插入账单对应表
+     */
+    public int addBillMember(BillMember billMember);
 
 
 }

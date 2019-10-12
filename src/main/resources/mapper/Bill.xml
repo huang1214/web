@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aca.springboot.mapper.BillMapper">
+    <!--插入报销对应表-->
+    <insert id="addBillMember" parameterType="com.aca.springboot.entities.BillMember">
+        insert into BILL_MEMBER(BILL_ID, BILL_TM_ID,BILL_TYPE ,BILL_ORDER)
+        values (#{billId},#{billTmId},#{billType},#{billOrder})
+    </insert>
+</mapper>
