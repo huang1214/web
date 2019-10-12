@@ -58,4 +58,9 @@ public class TimeUtil {
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(d);
     }
+    public static String getBillNumber(){
+        SimpleDateFormat time=new SimpleDateFormat("yyyMMddHHmmsss");
+        String result="B"+time.format(new Date());
+        return result;
+    }
 }

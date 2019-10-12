@@ -1,3 +1,36 @@
+package com.aca.springboot.controller;
+
+
+import com.aca.springboot.entities.Bill;
+import com.aca.springboot.entities.Message;
+import com.aca.springboot.service.BillService;
+import com.aca.springboot.utils.TimeUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping(value = "/bill")
+public class BillController {
+
+    private final BillService billService;
+
+    @Autowired
+    public BillController(BillService billService){
+        this.billService=billService;
+    }
+
+    @PostMapping(value = "add")
+    public Message addAward(Bill bill){
+        Message addAwardMessage=new Message();
+        bill.setBid(TimeUtil.getBillNumber());
+        return addAwardMessage;
+    }
+
+
+
+}
 /*
 package com.aca.springboot.controller;
 
