@@ -7,9 +7,7 @@ import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -105,11 +103,12 @@ public class ApplicationController {
             //TODO 图片没有存储
 //                app.setCertificateimg(bytes);
             /*int result = applicationService.add(comName, applicantId, teacher1Id, teacher2Id, unit, leader, teamNum, team, studentPrice, teacherPrice, awardTypeId, awardDate, applicantBankCard, workName, workBriefIntro, bytes);//添加到数据库中*/
-            int result = applicationService.add(app);
-            result+=applicationService.addMultMember(tms,appid,1);
-            result+=applicationService.addMultMember(ts,appid,2);
-
-
+            //插入application
+            applicationService.add(app);
+            //插入相关学生
+            applicationService.addMultMember(tms,appid,1);
+            //插入相关老师
+            applicationService.addMultMember(ts,appid,2);
         } catch (Exception e) {
             System.out.println("失败");
             e.printStackTrace();
