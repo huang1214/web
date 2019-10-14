@@ -144,4 +144,23 @@ public class Bill {
     this.note = note;
   }
 
+  @Override
+  public String toString() {
+    return "Bill{" +
+            "bid='" + bid + '\'' +
+            ", ctid='" + ctid + '\'' +
+            ", cyear=" + cyear +
+            ", clevel='" + clevel + '\'' +
+            ", cdesc='" + cdesc + '\'' +
+            ", groupleader='" + groupleader + '\'' +
+            ", groupname='" + groupname + '\'' +
+            ", resultType='" + resultType + '\'' +
+            ", workName='" + workName + '\'' +
+            ", preditfeedesc='" + preditfeedesc + '\'' +
+            ", predictfee='" + predictfee + '\'' +
+            ", state='" + state + '\'' +
+            ", attachfile='" + attachfile + '\'' +
+            ", note='" + note + '\'' +
+            '}';
+  }
 }

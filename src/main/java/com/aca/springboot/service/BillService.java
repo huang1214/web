@@ -6,6 +6,7 @@ import com.aca.springboot.mapper.BillMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Service
@@ -17,11 +18,17 @@ public class BillService {
      * 添加一条报销记录
      */
     public Bill addBill(Bill bill){
-        int result=billMapper.addBill(bill);
-        if(result!=0){
-            return bill;
-        }else {
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy");
+        String year=simpleDateFormat.format(bill.getCyear());  //只要年份
+        if(billMapper.selectBillByCtidCyearGroupleader(bill.getCtid(),year,bill.getGroupleader())!=null){
             return null;
+        }else {
+            int result=billMapper.addBill(bill);
+            if(result!=0){
+                return bill;
+            }else {
+                return null;
+            }
         }
     }
 

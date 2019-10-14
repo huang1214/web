@@ -8,7 +8,13 @@ import com.aca.springboot.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 @Controller
 @RequestMapping(value = "/bill")
@@ -23,10 +29,20 @@ public class BillController {
 
     //添加一条报销记录
     @PostMapping(value = "add")
-    public Message addAward(Bill bill){
+    public Message addAward(@RequestBody Bill bill){
         Message addAwardMessage=new Message();
         bill.setBid(TimeUtil.getBillNumber());  //获取报销编号
-
+        System.out.println(bill);
+        Bill bill1=billService.addBill(bill);
+        if(bill1!=null){
+            addAwardMessage.setCode(200);
+            addAwardMessage.setMessage("提交申请成功！");
+            addAwardMessage.setData(bill1);
+        }else {
+            addAwardMessage.setCode(201);
+            addAwardMessage.setMessage("你已经申请过了，不能重复申请！");
+            addAwardMessage.setData(bill);  //待添加查询
+        }
         return addAwardMessage;
     }
 
