@@ -27,23 +27,21 @@ public class BillController {
         this.billService=billService;
     }
 
-    //添加一条报销记录
+    //添加一条报销记录,通过测试
     @PostMapping(value = "add")
     @ResponseBody
     public Message addAward(@RequestBody Bill bill){
         Message addAwardMessage=new Message();
         bill.setBid(TimeUtil.getBillNumber());  //获取报销编号
-        System.out.println(bill);
         Bill bill1=billService.addBill(bill);
-        if(bill1!=null){
+        if(bill1==null){
             addAwardMessage.setCode(200);
             addAwardMessage.setMessage("提交申请成功！");
-            addAwardMessage.setData(bill1);
+            addAwardMessage.setData(bill);
         }else {
-            System.out.println("进来4");
             addAwardMessage.setCode(201);
-            addAwardMessage.setMessage("你已经申请过了，不能重复申请！");
-            addAwardMessage.setData(bill);  //待添加查询
+            addAwardMessage.setMessage("已经申请过了，不能重复申请！");
+            addAwardMessage.setData(bill1);
         }
         return addAwardMessage;
     }

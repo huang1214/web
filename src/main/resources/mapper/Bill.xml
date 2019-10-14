@@ -4,8 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aca.springboot.mapper.BillMapper">
     <!--根据竞赛编号，参赛年费，团队负责人查询报销-->
+
     <select id="selectBillByCtidCyearGroupleader" parameterType="com.aca.springboot.entities.Bill" resultType="com.aca.springboot.entities.Bill">
-        select * from BILL where CTID= #{ctid} and CYEAR=#{cyear} and
+        select bid, ctid, cyear, clevel, cdesc, groupleader, groupname, RESULT_TYPE, WORK_NAME, preditfeedesc, predictfee, state,note from BILL where CTID= #{ctid} and CYEAR=#{cyear} and
             GROUPLEADER = #{groupleader}
     </select>
 
