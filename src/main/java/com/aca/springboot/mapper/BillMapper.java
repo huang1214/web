@@ -2,10 +2,12 @@ package com.aca.springboot.mapper;
 
 import com.aca.springboot.entities.Bill;
 import com.aca.springboot.entities.BillMember;
+import com.aca.springboot.vo.BillVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface BillMapper {
@@ -47,5 +49,6 @@ public interface BillMapper {
      */
     public int addBillMember(BillMember billMember);
 
-
+    //获取报销列表
+    public List<BillVO> get_bill_list(Map map);
 }
