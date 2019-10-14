@@ -90,6 +90,7 @@ public class ApplicationController {
 //                byte[] bytes = FileCopyUtils.copyToByteArray(is);//得到byte
             app.setAppid(appid);
             app.setCtid(ctId);
+            //TODO 从session里面读取sno
             app.setApplicantId(applicantId);
             app.setUnit(unit);
             app.setLeader(leader);
@@ -181,14 +182,23 @@ public class ApplicationController {
 
     @ResponseBody
     @PostMapping("/list")
-    public Message get_list(@RequestParam(value = "sno",required = true,defaultValue = "111")String sno){
+    public Message get_list(@RequestParam(value = "sno",required = false,defaultValue = "111")String sno,
+                            @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum,
+                            @RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize){
         //TODO 从session里面获取SNO
         return new Message(0,"成功",applicationService.get_list(sno));
     }
-
+    @ResponseBody
+    @PostMapping("/list_test")
+    public Message get_list_test(@RequestParam(value = "sno",required = false,defaultValue = "111")String sno,
+                            @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum,
+                            @RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize){
+        //TODO 从session里面获取SNO
+        return new Message(0,"成功",applicationService.get_list_with_page(sno,pageNum,pageSize));
+    }
     @ResponseBody
     @PostMapping("/detail")
-    public Message get_detail(@RequestParam(value = "sno",required = true,defaultValue = "111")String sno,
+    public Message get_detail(@RequestParam(value = "sno",required = false,defaultValue = "111")String sno,
                             @RequestParam(value = "appid",required = true,defaultValue = "1")String appid){
         //TODO 从session里面获取SNO
         return new Message(0,"成功",applicationService.get_detail(appid));
