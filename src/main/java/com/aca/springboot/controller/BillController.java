@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 @Controller
 @RequestMapping(value = "/bill")
@@ -37,14 +34,15 @@ public class BillController {
         if(bill1==null){
             addAwardMessage.setCode(200);
             addAwardMessage.setMessage("提交申请成功！");
-            addAwardMessage.setData(bill);
+            addAwardMessage.setData(bill);  //返回新增记录
         }else {
             addAwardMessage.setCode(201);
             addAwardMessage.setMessage("已经申请过了，不能重复申请！");
-            addAwardMessage.setData(bill1);
+            addAwardMessage.setData(bill1);   //返回之前申请记录
         }
         return addAwardMessage;
     }
+
 
 
 
