@@ -3,6 +3,7 @@ import com.aca.springboot.entities.Application;
 import com.aca.springboot.entities.ApplicationMember;
 
 import com.aca.springboot.vo.AppComAppLeaderVO;
+import com.aca.springboot.vo.AppComDetailVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -33,5 +34,8 @@ public interface ApplicationMapper {
     public List application_All(@Param("applicantId") String applicantId);
 //    public List workresult(Map map);
     //获取列表
-    public List<AppComAppLeaderVO> get_application_list();
+    public List<AppComAppLeaderVO> get_application_list(Map map);
+
+    public AppComDetailVO get_application_detail(Map map);
+
 }

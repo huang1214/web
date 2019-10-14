@@ -5,6 +5,7 @@ import com.aca.springboot.entities.ApplicationMember;
 import com.aca.springboot.entities.json;
 import com.aca.springboot.mapper.ApplicationMapper;
 import com.aca.springboot.vo.AppComAppLeaderVO;
+import com.aca.springboot.vo.AppComDetailVO;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -164,7 +165,24 @@ public class ApplicationService {
      * 获取申请列表
      * @return
      */
-    public List<AppComAppLeaderVO> get_list(){
-        return applicationMapper.get_application_list();
+    public List<AppComAppLeaderVO> get_list(String sno){
+        Map map = new HashMap<String,String>();
+        map.put("SNO",sno);
+        return applicationMapper.get_application_list(map);
+    }
+
+
+    /**
+     * 获取详情
+     * @param appid
+     * @return
+     */
+    public AppComDetailVO get_detail(String appid){
+        Map map = new HashMap<String,String>();
+        map.put("APPID",appid);
+        AppComDetailVO application_detail = applicationMapper.get_application_detail(map);
+
+
+        return application_detail;
     }
 }

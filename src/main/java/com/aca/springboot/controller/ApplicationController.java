@@ -181,7 +181,16 @@ public class ApplicationController {
 
     @ResponseBody
     @PostMapping("/list")
-    public Message get_list(){
-        return new Message(0,"成功",applicationService.get_list());
+    public Message get_list(@RequestParam(value = "sno",required = true,defaultValue = "111")String sno){
+        //TODO 从session里面获取SNO
+        return new Message(0,"成功",applicationService.get_list(sno));
+    }
+
+    @ResponseBody
+    @PostMapping("/detail")
+    public Message get_detail(@RequestParam(value = "sno",required = true,defaultValue = "111")String sno,
+                            @RequestParam(value = "appid",required = true,defaultValue = "1")String appid){
+        //TODO 从session里面获取SNO
+        return new Message(0,"成功",applicationService.get_detail(appid));
     }
 }
