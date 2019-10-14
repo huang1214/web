@@ -67,7 +67,7 @@
                B.PREDITFEEDESC,B.PREDICTFEE,B.state,B.ATTACHFILE,B.NOTE,
                C.CTID c_id,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE,C.RESULT_TYPE,
                S.SNO,S.SNAME, S.SSEX, S.SBIRTHDAY, S.SDOMITORY,S.CNO, S.SPWD, S.STEL, S.STATE s_state, S.CARD_NUM
-        from (select * from bill  order by bill.STATE desc) B JOIN
+        from (select * from BILL where BID IN (SELECT BILL_ID FROM BILL_MEMBER WHERE BILL_TM_ID = #{SNO}) order by bill.STATE desc) B JOIN
                  (select * from com_table ) C ON B.ctid=C.ctid JOIN
                  (select * from STUDENT) S ON S.SNO=B.GROUPLEADER
     </select>
