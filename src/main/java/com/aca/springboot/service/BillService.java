@@ -1,5 +1,6 @@
 package com.aca.springboot.service;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.aca.springboot.entities.Bill;
 import com.aca.springboot.entities.BillMember;
 import com.aca.springboot.mapper.BillMapper;
@@ -18,15 +19,20 @@ public class BillService {
      * 添加一条报销记录
      */
     public Bill addBill(Bill bill){
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy");
-        String year=simpleDateFormat.format(bill.getCyear());  //只要年份
-        if(billMapper.selectBillByCtidCyearGroupleader(bill.getCtid(),year,bill.getGroupleader())!=null){
+        //SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy");
+      //  String year=simpleDateFormat.format(bill.getCyear());  //只要年份
+        Bill bill1=billMapper.selectBillByCtidCyearGroupleader(bill.getCtid(),bill.getCyear(),bill.getGroupleader());
+        System.out.println(bill1);
+        if(bill1!=null){
+            System.out.println("进来1");
             return null;
         }else {
             int result=billMapper.addBill(bill);
             if(result!=0){
+                System.out.println("进来2");
                 return bill;
             }else {
+                System.out.println("进来3");
                 return null;
             }
         }

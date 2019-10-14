@@ -4,15 +4,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aca.springboot.mapper.BillMapper">
     <!--根据竞赛编号，参赛年费，团队负责人查询报销-->
-    <select id="selectBillByCtidCyearGroupleader" parameterType="com.aca.springboot.entities.Bill">
-        select * from BILL where CTID= #{ctid} and CYEAR between to_date(#{startOfYear},'yyyy-mm-dd')and to_date(#{endOfYear},'yyyy-mm-dd') and
+    <select id="selectBillByCtidCyearGroupleader" parameterType="com.aca.springboot.entities.Bill" resultType="com.aca.springboot.entities.Bill">
+        select * from BILL where CTID= #{ctid} and CYEAR=#{cyear} and
             GROUPLEADER = #{groupleader}
     </select>
 
     <!--插入账单表-->
     <insert id="addBill" parameterType="com.aca.springboot.entities.Bill">
         insert into BILL(bid, ctid, cyear, clevel, cdesc, groupleader, groupname, RESULT_TYPE, WORK_NAME, preditfeedesc, predictfee, state, attachfile, note)
-        values (#{bid}, #{ctid}, to_date(substr(#{cyear},1,10),'yyyy-mm-dd'), #{clevel}, #{cdesc}, #{groupleader}, #{groupname}, #{resultType}, #{workName}, #{preditfeedesc}, #{predictfee}, #{state}, #{attachfile}, #{note})
+        values (#{bid}, #{ctid}, #{cyear}, #{clevel}, #{cdesc}, #{groupleader}, #{groupname}, #{resultType}, #{workName}, #{preditfeedesc}, #{predictfee}, #{state}, #{attachfile}, #{note})
     </insert>
 
     <!--插入账单对应表-->

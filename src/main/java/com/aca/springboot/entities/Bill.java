@@ -5,7 +5,7 @@ public class Bill {
 
   private String bid;
   private String ctid;
-  private java.sql.Date cyear;
+  private String cyear;
   private String clevel;
   private String cdesc;
   private String groupleader;
@@ -37,14 +37,13 @@ public class Bill {
   }
 
 
-  public java.sql.Date getCyear() {
+  public String getCyear() {
     return cyear;
   }
 
-  public void setCyear(java.sql.Date cyear) {
+  public void setCyear(String cyear) {
     this.cyear = cyear;
   }
-
 
   public String getClevel() {
     return clevel;

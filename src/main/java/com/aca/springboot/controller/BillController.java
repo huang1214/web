@@ -29,6 +29,7 @@ public class BillController {
 
     //添加一条报销记录
     @PostMapping(value = "add")
+    @ResponseBody
     public Message addAward(@RequestBody Bill bill){
         Message addAwardMessage=new Message();
         bill.setBid(TimeUtil.getBillNumber());  //获取报销编号
@@ -39,6 +40,7 @@ public class BillController {
             addAwardMessage.setMessage("提交申请成功！");
             addAwardMessage.setData(bill1);
         }else {
+            System.out.println("进来4");
             addAwardMessage.setCode(201);
             addAwardMessage.setMessage("你已经申请过了，不能重复申请！");
             addAwardMessage.setData(bill);  //待添加查询
