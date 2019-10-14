@@ -5,7 +5,7 @@
 <mapper namespace="com.aca.springboot.mapper.BillMapper">
     <!--根据竞赛编号，参赛年费，团队负责人查询报销-->
     <select id="selectBillByCtidCyearGroupleader" parameterType="com.aca.springboot.entities.Bill">
-        select * from BILL where CTID= #{ctid} and CYEAR between to_date(substr(#{cyear}||'-01-01',1,10),'yyyy-mm-dd')and to_date(substr(#{cyear}||'-12-31',1,10),'yyyy-mm-dd') and
+        select * from BILL where CTID= #{ctid} and CYEAR between to_date(#{startOfYear},'yyyy-mm-dd')and to_date(#{endOfYear},'yyyy-mm-dd') and
             GROUPLEADER = #{groupleader}
     </select>
 

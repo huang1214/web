@@ -25,12 +25,14 @@ public interface BillMapper {
     /**
      * 根据竞赛编号，参赛年费，团队负责人查询
      * @param ctid 竞赛编号
-     * @param cyear 参赛年份，（这里只传参赛的年份，具体的月份和日期不要）
+     * @param startOfYear 参赛年份那一年的第一天，（这里只传参赛那一年的一月一号，如：2012-01-01）
+     * @param endOfYear 参赛年份那一年的最后一天，（这里只传参赛那一年的12月31号，如：2012-12-31）
      * @param groupleader 项目负责人id
      * @return 一条账单数据
      */
     public Bill selectBillByCtidCyearGroupleader(@Param("ctid") String ctid,
-                                                 @Param("cyear") String cyear,
+                                                 @Param("startOfYear") String startOfYear,
+                                                 @Param("endOfYear") String endOfYear,
                                                  @Param("groupleader") String groupleader);
 
     /**
