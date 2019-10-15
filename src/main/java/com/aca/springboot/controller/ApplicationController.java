@@ -47,7 +47,7 @@ public class ApplicationController {
                             @RequestParam(value = "ts", required=false)String ts) throws Exception {
         ModelAndView mv = new ModelAndView("redirect:/user/application_form");
         Application app = new Application();
-        String awardTypeId = getawardtype(ctId, level_type, prize_type);  //获取获奖类型编号
+        String awardTypeId = getawardtype(ctId,level_type,prize_type);  //获取获奖类型编号
 
         //获取学生获奖金额stu_price
         String studentPrice = applicationService.get_price(awardTypeId).get("STUDENT_PRICE").toString();
