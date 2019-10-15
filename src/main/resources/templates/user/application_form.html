@@ -297,10 +297,11 @@
             <!--</div>-->
         </div>
 
-        <div class="layui-form-item" style="display: none">
+
+        <div class="layui-form-item" style="display: block">
             <div class="layui-inline ">
                 <label class="layui-form-label">真实指导老师</label>
-                <input type="text" name="ts" id="ts" lay-filter="ts" data-method="offset" data-type="t" autocomplete="off" class="layui-input layui-btn layui-btn-primary">
+                <input type="text" name="ts" id="ts" lay-filter="ts" data-method="offset" value="" data-type="t" autocomplete="off" class="layui-input layui-btn layui-btn-primary">
             </div>
         </div>
 
@@ -648,8 +649,8 @@
                     var data = checkStatus.data;  //获取选中行数据
                     // document.getElementById("get_teacher2Id").value = data[0].tno;  //将获取的数据中的dno值给input
                     // document.getElementById("get_teacher2Id").value = "(工号："+data[0].tno+")" + data[0].tname;
-                    temp.value="(工号："+data[0].tno+")" + data[0].tname;
-                    $(temp).next().value=data[0].tno;
+                    $(temp).attr("value","(工号："+data[0].tno+")" + data[0].tname);
+                    $(temp).next().attr("value",data[0].tno);
                     if (document.getElementById("ts").value != ""){
                         document.getElementById("ts").value = document.getElementById("ts").value+","+ data[0].tno;
                     }else{
@@ -785,14 +786,15 @@
         //自定义验证规则
         form.verify({
             verify_ctname: function(value){
-                alert("111");
-                $("#teacherArea").find(".teacherIDBox").each(function (index,domEle) {
-                    if ($("#ts").value != ""){
-                        $("#ts").value = $("#ts")+","+ domEle.value;
-                    }else{
-                        $("#ts").value = domEle.value;
-                    }
-                })
+                // alert("111");
+                // $("#teacherArea").find(".teacherIDBox").each(function (index,domEle) {
+                //     if ($("#ts").value != ""){
+                //         $("#ts").value = $("#ts").value+","+ domEle.value;
+                //     }else{
+                //         $("#ts").value = domEle.value;
+                //     }
+                // })
+                // alert($("#ts").value);
                 // console.log(t22)
                 // alert(t22)
                 if(value==null|| value == ""){
