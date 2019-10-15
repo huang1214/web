@@ -1,20 +1,23 @@
 package com.aca.springboot.service;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import com.aca.springboot.entities.Bill;
 import com.aca.springboot.entities.BillMember;
-import com.aca.springboot.entities.Message;
 import com.aca.springboot.mapper.BillMapper;
+import com.aca.springboot.vo.BillVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Service
 public class BillService {
+
+    private final BillMapper billMapper;
+
     @Autowired
-    BillMapper billMapper;
+    public BillService(BillMapper billMapper){
+        this.billMapper=billMapper;
+    }
 
     /**
      * 添加一条报销记录
@@ -30,9 +33,16 @@ public class BillService {
             return null;   //申请提交成功
         }
     }
+    //根据比赛ID，年份，团队负责人ID来查询报销记录
     public Bill queryBillByCtidCyearGroupleader(String ctid,String cyear,String groupLeader){
         return billMapper.selectBillByCtidCyearGroupleader(ctid,cyear,groupLeader);
     }
+    //返回所有的报销记录
+    public List<BillVO> queryAllBill(){
+        List<BillVO> listBill=billMapper.get_bill_list();
+        return listBill;
+    }
+
 
     /**
      * 插入一条备案对应表数据

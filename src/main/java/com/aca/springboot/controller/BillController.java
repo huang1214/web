@@ -1,29 +1,29 @@
 package com.aca.springboot.controller;
 
-
 import com.aca.springboot.entities.Bill;
 import com.aca.springboot.entities.Message;
 import com.aca.springboot.service.BillService;
 import com.aca.springboot.utils.TimeUtil;
+import com.aca.springboot.vo.BillVO;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 @Controller
+@Api
 @RequestMapping(value = "/bill")
 public class BillController {
 
     private final BillService billService;
 
+
     @Autowired
     public BillController(BillService billService){
         this.billService=billService;
     }
-
     //添加一条报销记录,通过测试
     @PostMapping(value = "add")
     @ResponseBody
@@ -42,6 +42,18 @@ public class BillController {
         }
         return addAwardMessage;
     }
+    //获取所有的报销记录
+    @GetMapping(value = "query")
+    @ResponseBody
+    public Message getAllBill(){
+        Message billListMessage=new Message();
+        List<BillVO> billList=billService.queryAllBill();
+        billListMessage.setCode(200);
+        billListMessage.setMessage("查询成功");
+        billListMessage.setData(billList);
+        return billListMessage;
+    }
+
 
 
 

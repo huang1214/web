@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 /**
  * @ClassName TimeUtil
@@ -62,5 +63,27 @@ public class TimeUtil {
         SimpleDateFormat time=new SimpleDateFormat("yyyMMddHHmmsss");
         String result="B"+time.format(new Date());
         return result;
+    }
+    //获取文件名，不会重复
+    public static String getFileID() {
+        SimpleDateFormat sfDate = new SimpleDateFormat("yyyyMMddHHmmssSSS");//格式化当前时间
+        String strDate = sfDate.format(new Date());//得到17位时间
+        String random = getRandom620(3);//为了防止高并发重复,再获取3个随机数
+        String produceID=strDate+random;//最后得到20位编号。
+        return produceID;
+    }
+    private static String getRandom620(Integer length) {
+        StringBuffer result=new StringBuffer();
+        Random rand = new Random();
+        int n = 20;
+        if (null != length && length > 0) {
+            n = length;
+        }
+        int randInt = 0;
+        for (int i = 0; i < n; i++) {
+            randInt = rand.nextInt(10);
+            result.append(randInt);
+        }
+        return result.toString();
     }
 }

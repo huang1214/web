@@ -3,11 +3,18 @@ server:
   context-path: /
   tomcat:
     uri-encoding: utf-8
+web:
+  upload-path: D:/localServeResource/XKJSPicture/
+
 spring:
   mvc:
     date-format: yyyy-MM-dd
+    static-path-pattern: /**
   messages:
     basename: i18n.login
+  resources:
+    static-locations: "classpath:/META-INF/resources/,classpath:/resources/,\
+    classpath:/static/,classpath:/public/,file:${web.upload-path}"
 
   datasource:
     url: jdbc:oracle:thin:@222.204.6.175:8085/orcl
@@ -25,7 +32,9 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.aca.springboot.entities
 
+#持久化日志进入调试模式
 logging:
   level:
     com.aca.springboot.mapper: debug
+
 
