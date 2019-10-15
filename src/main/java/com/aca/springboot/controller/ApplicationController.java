@@ -129,20 +129,6 @@ public class ApplicationController {
         String id = session.getAttribute("loginUser").toString();
         return applicationService.workresult(id);
     }*/
-    @ResponseBody
-    @RequestMapping(value = "/application/listAllApplication")
-    public JSONObject application_All(HttpServletRequest request, HttpSession session) {
-        int page = Integer.parseInt(request.getParameter("page"));   //获取第几页
-        int limit = Integer.parseInt(request.getParameter("limit")); //获取每页的最大条数
-        String applicantId = session.getAttribute("loginUser").toString();
-        int applicantId_len = applicantId.length();
-        int app_short = 10 - applicantId_len;
-        for (int i = 0; i < app_short; i++) {
-            applicantId = applicantId + " ";       //applicantId 一定是10位
-        }
-        System.out.println("用户" + applicantId);
-        return applicationService.application_All(page, limit, applicantId);
-    }
 
     /**
      * 获取全部的比赛名称
@@ -182,7 +168,7 @@ public class ApplicationController {
     }*/
 
     @ResponseBody
-    @PostMapping("/list")
+    @RequestMapping("/list")
     public json get_list(@RequestParam(value = "sno",required = false,defaultValue = "111")String sno,
                          @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum,
                          @RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize){
@@ -190,7 +176,7 @@ public class ApplicationController {
         return applicationService.get_list_json(sno,pageNum,pageSize);
     }
     @ResponseBody
-    @PostMapping("/list_test")
+    @RequestMapping("/list_test")
     public Message get_list_test(@RequestParam(value = "sno",required = false,defaultValue = "111")String sno,
                             @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum,
                             @RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize){
@@ -198,10 +184,12 @@ public class ApplicationController {
         return new Message(0,"成功",applicationService.get_list_with_page(sno,pageNum,pageSize));
     }
     @ResponseBody
-    @PostMapping("/detail")
+    @RequestMapping("/detail")
     public Message get_detail(@RequestParam(value = "sno",required = false,defaultValue = "111")String sno,
-                            @RequestParam(value = "appid",required = true,defaultValue = "1")String appid){
+                            @RequestParam(value = "appid",required = true,defaultValue = "1")String appid
+                                ){
         //TODO 从session里面获取SNO
+        System.out.println(appid);
         return new Message(0,"成功",applicationService.get_detail(appid));
     }
 }

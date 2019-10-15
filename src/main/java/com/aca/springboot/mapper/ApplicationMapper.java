@@ -31,7 +31,7 @@ public interface ApplicationMapper {
     public void getawardtype(Map map); //查询获奖类型
 
     //申请状态列出所有的申请信息
-    public List application_All(@Param("applicantId") String applicantId);
+//    public List application_All(@Param("applicantId") String applicantId);
 //    public List workresult(Map map);
     //获取列表
     public List<AppComAppLeaderVO> get_application_list(Map map);
