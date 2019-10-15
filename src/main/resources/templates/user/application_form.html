@@ -152,12 +152,12 @@
         <div class="layui-row">
             <label class="layui-form-label">学生编号：</label>
             <div class="layui-inline" style="margin-right: 50px">
-                <input class="layui-input" name="search_tno2" id="search_sno" autocomplete="off" placeholder="" >
+                <input class="layui-input" name="search_sno" id="search_sno" autocomplete="off" placeholder="输入学生编号" >
             </div>
 
-            学生姓名姓名：
+            <label class="layui-form-label">学生姓名：</label>
             <div class="layui-inline">
-                <input class="layui-input" name="search_tname2" id="search_nname" autocomplete="off" placeholder="">
+                <input class="layui-input" name="search_sname" id="search_sname" autocomplete="off" placeholder="输入学生姓名">
             </div>
             <br>
 
@@ -231,11 +231,11 @@
             <div class="layui-input-inline">
                 <select name="prize_type" lay-verify="verify_prize_type">
                     <option value="">--</option>
-                    <option value="0">特等奖</option>
-                    <option value="1">一等奖</option>
-                    <option value="2">二等奖</option>
-                    <option value="3">三等奖</option>
-                    <option value="4">优秀奖</option>
+                    <option value="1">特等奖</option>
+                    <option value="2">一等奖</option>
+                    <option value="3">二等奖</option>
+                    <option value="4">三等奖</option>
+                    <option value="5">优秀奖</option>
                 </select>
             </div>
         </div>
@@ -254,22 +254,19 @@
             </div>
         </div>
 
-        <div class="layui-form-item"  id="teacherArea">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <div>
+                    <button type="button" class="layui-btn" id="addteacher">添加指导老师</button>
+                </div>
+            </div>
 
-            <button type="button" class="layui-btn" id="addteacher">添加老师</button>
-
-<!--            <div class="layui-inline" id="teacher1">-->
-
-<!--            </div>-->
-<!--            <div class="layui-inline" id="teacher2">-->
-
-<!--            </div>-->
             <div class="layui-inline" style="margin-left: 0px; display: none" id="teacher1">
                 <div class="layui-input-inline">
                     <input type="text" name="teacher1Id" id="get_teacher1Id"  data-method="offset" data-type="t" autocomplete="off" class="layui-input layui-btn layui-btn-primary" placeholder="点击选取一名指导老师">
                 </div>
             </div>
-            <div class="layui-inline" style="margin-left: 0px; display: none" id="teacher2">
+            <div class="layui-inline" style="display: none" id="teacher2">
                 <div class="layui-input-inline">
                     <input type="text" name="teacher2Id" id="get_teacher2Id"  data-method="offset" data-type="t" autocomplete="off" class="layui-input layui-btn layui-btn-primary" placeholder="点击再选取一名指导老师">
                 </div>
@@ -287,7 +284,7 @@
             <div class="layui-inline" id="div_leader">
                 <label class="layui-form-label">项目组长</label>
                 <div class="layui-input-block">
-                    <input type="text" name="leader" id="leader" autocomplete="off" class="layui-input">
+                    <input type="text" name="leader" id="leader" autocomplete="off" class="layui-input layui-btn layui-btn-primary">
                 </div>
             </div>
         </div>
@@ -359,6 +356,12 @@
         <button class="layui-btn layui-btn-sm" lay-event="getCheckData_teacher2Id">获取选中行数据</button>
     </div>
 </script>
+<!--获得学生-获取选中行数据-->
+<script type="text/html" id="nstude">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData_studentId">获取选中行数据</button>
+    </div>
+</script>
 <script>
     layui.define(['table','layer'], function(){
         var table = layui.table;
@@ -368,14 +371,6 @@
         var teacherInputCount = 0;
         // TODO 后面会加入学生的按钮计算
 
-        //TODO 这里是对点击指导老师之后的一个处理
-        // $(function(){
-        //     //输入框的值改变时触发
-        //     $("#get_teacher1Id").on("input",function(e){
-        //         //获取input输入的值
-        //         console.log(e.delegateTarget.value);
-        //     });
-        // });
 
         var active = {
             offset: function(othis) {
@@ -426,7 +421,7 @@
                     ,area: ['800px', '400px']   //设置弹出层大小[宽，高]
                     , offset: 'auto'   //设置弹出层位置 //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
                     , id: 'layerDemo_teacher2Id' + type //防止重复弹出，点击这个input只能有一个弹出层
-                    ,content:$("#layer_teacher2Id")   //弹出层内容为layer_ctname块，不能直接是表格id
+                    ,content:$("#layer_teacher2Id")
                     , btnAlign: 'c' //按钮居中
                     , shade: 0 //不显示遮罩
                     , yes: function () {  //确定按钮回调方法， 需要手动关闭弹出层
@@ -442,11 +437,11 @@
 
                 layer.open({
                     type: 1  //1为页面层
-                    ,title: '负责人'  //弹出层标题
+                    ,title: '项目组长'  //弹出层标题
                     ,area: ['800px', '400px']   //设置弹出层大小[宽，高]
-                    , offset: 'auto'   //设置弹出层位置 //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
-                    , id: 'layerDemo_studentId' + type //防止重复弹出，点击这个input只能有一个弹出层
-                    ,content:$("#layer_studentId")   //弹出层内容为layer_ctname块，不能直接是表格id
+                    ,offset: 'auto'   //设置弹出层位置 //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+                    ,id: 'layerDemo_studentId' + type //防止重复弹出，点击这个input只能有一个弹出层
+                    ,content:$("#layer_studentId")   //弹出层内容为数据块，不能直接是表格id
                     , btnAlign: 'c' //按钮居中
                     , shade: 0 //不显示遮罩
                     , yes: function () {  //确定按钮回调方法， 需要手动关闭弹出层
@@ -475,6 +470,7 @@
         });
         // TODO 学生弹出层
         $('#leader').on('click', function(){
+            alert("点我了");
             var othis = $(this), method = othis.data('method');
             active_layer_studentId[method] ? active_layer_studentId[method].call(this, othis) : '';
         });
@@ -552,10 +548,10 @@
         table.render({
             elem: '#layer_studentId_table'
             ,height: 312
-            ,url: '/getAllStudent' //TODO 待修改API
+            ,url: '' //TODO 待修改API
             ,method:"get"
             ,page: true //开启分页
-            ,toolbar:'#toolbar_teacher2Id'
+            ,toolbar:'#toolbar_studentId'
             ,cols: [
                 [ //表头
                     //TODO 也不是所有信息都要显示出来，这里到时候改改
@@ -649,27 +645,24 @@
 
 
         $('#btn_search_ctname').on('click', function () {      //点击查询调用表格重载，这两行我也没太看懂，就会改个名
-            alert("btn_search_ctname已经按下");
             var type = $(this).data('type');      //百度说固定用法，无需深究
             act1[type] ? act1[type].call(this) : '';   //不太懂，反正就开始重载 了
         });
 
-        $('#btn_search_teacher1Id').on('click', function () {      //点击查询调用表格重载，这两行我也没太看懂，就会改个名
-            alert("btn_search_teacher1Id已经按下");
-            var type = $(this).data('type');      //百度说固定用法，无需深究
-            act2[type] ? act2[type].call(this) : '';   //不太懂，反正就开始重载 了
+        $('#btn_search_teacher1Id').on('click', function () {
+            var type = $(this).data('type');
+            act2[type] ? act2[type].call(this) : '';
         });
 
-        $('#btn_search_teacher2Id').on('click', function () {      //点击查询调用表格重载，这两行我也没太看懂，就会改个名
-            alert("btn_search_teacher2Id已经按下");
-            var type = $(this).data('type');      //百度说固定用法，无需深究
-            act3[type] ? act3[type].call(this) : '';   //不太懂，反正就开始重载 了
+        $('#btn_search_teacher2Id').on('click', function () {
+            var type = $(this).data('type');
+            act3[type] ? act3[type].call(this) : '';
         });
 
-        $('#btn_search_studentId').on('click', function () {      //点击查询调用表格重载，这两行我也没太看懂，就会改个名
+        $('#btn_search_studentId').on('click', function () {
             alert("btn_search_studentId已经按下");
-            var type = $(this).data('type');      //百度说固定用法，无需深究
-            act3[type] ? act3[type].call(this) : '';   //不太懂，反正就开始重载 了
+            var type = $(this).data('type');
+            act3[type] ? act3[type].call(this) : '';
         });
 
         //比赛名称条件模糊查询
