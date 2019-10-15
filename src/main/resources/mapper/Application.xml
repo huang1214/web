@@ -78,6 +78,15 @@
             <result property="result_type" column="result_type"/>
             <result property="reference_paper" column="reference_paper"/>
         </association>
+        <association property="awar" javaType="com.aca.springboot.entities.Award">
+            <id property="atid" column="atid"></id>
+            <result property="com_type" column="com_type"/>
+            <result property="result_type" column="result_type"/>
+            <result property="level_type" column="level_type"/>
+            <result property="prize_type" column="prize_type"/>
+            <result property="teacher_price" column="teacher_price"/>
+            <result property="student_price" column="student_price"/>
+        </association>
         <collection property="stus" ofType="com.aca.springboot.entities.Student">
             <id property="sno" column="sno"/>
             <result property="sname" column="sname"/>
@@ -165,6 +174,7 @@
       from
 			(select * from APPLICATION_MEMBER WHERE APP_ID=#{APPID} ) AM JOIN
 			(select * from application ) A ON AM.APP_ID=A.APPID JOIN
+			(select * from award_type) AT on AT.ATID = A.AWARDTYPEID JOIN
       (select * from com_table ) C ON A.ctid=C.ctid LEFT JOIN
       (select * from STUDENT) S ON S.SNO=AM.APP_TM_ID LEFT JOIN
       (select TNO,TNAME,TSEX,TBIRTHDAY,DNO,TTEL,TTITLE,TPWD,TSTATE,CARD_NUM TCARD_NUM from TEACHER) T ON T.TNO=AM.APP_TM_ID

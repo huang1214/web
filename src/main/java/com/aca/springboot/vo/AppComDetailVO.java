@@ -1,9 +1,6 @@
 package com.aca.springboot.vo;
 
-import com.aca.springboot.entities.Application;
-import com.aca.springboot.entities.Competition;
-import com.aca.springboot.entities.Student;
-import com.aca.springboot.entities.Teacher;
+import com.aca.springboot.entities.*;
 
 import java.util.List;
 
@@ -16,8 +13,17 @@ import java.util.List;
 public class AppComDetailVO extends Application {
     private Competition com;
     private Student appStu;
+    private Award awar;
     private List<Student> stus;
     private List<Teacher> teas;
+
+    public Award getAwar() {
+        return awar;
+    }
+
+    public void setAwar(Award awar) {
+        this.awar = awar;
+    }
 
     public Competition getCom() {
         return com;
