@@ -50,5 +50,5 @@ public interface BillMapper {
     public int addBillMember(BillMember billMember);
 
     //获取报销列表
-    public List<BillVO> get_bill_list();
+    public List<BillVO> get_bill_list(Map map);
 }

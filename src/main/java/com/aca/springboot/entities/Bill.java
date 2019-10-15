@@ -1,6 +1,8 @@
 package com.aca.springboot.entities;
 
 
+import java.util.List;
+
 public class Bill {
 
   private String bid;
@@ -17,7 +19,15 @@ public class Bill {
   private String state;
   private String attachfile;
   private String note;
+  private List<BillMember> billMembers;
 
+  public List<BillMember> getBillMembers() {
+    return billMembers;
+  }
+
+  public void setBillMembers(List<BillMember> billMembers) {
+    this.billMembers = billMembers;
+  }
 
   public String getBid() {
     return bid;

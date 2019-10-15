@@ -7,7 +7,9 @@ import com.aca.springboot.vo.BillVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BillService {
@@ -29,7 +31,12 @@ public class BillService {
         if(bill1!=null){
             return bill1;  //已经申请过了
         }else {
-            billMapper.addBill(bill);
+            billMapper.addBill(bill);  //插入bill表
+            List<BillMember> billMembers=bill.getBillMembers();
+            for(int i=0;i<billMembers.size();i++){
+                billMembers.get(i).setBillId(bill.getBid());
+            }
+            addMoreBillMember(billMembers);  //写bill对应表
             return null;   //申请提交成功
         }
     }
@@ -39,11 +46,11 @@ public class BillService {
     }
     //返回所有的报销记录
     public List<BillVO> queryAllBill(){
-        List<BillVO> listBill=billMapper.get_bill_list();
+        Map map=new HashMap();
+        map.put("SNO","8002117247");
+        List<BillVO> listBill=billMapper.get_bill_list(map);
         return listBill;
     }
-
-
     /**
      * 插入一条备案对应表数据
      */
@@ -51,7 +58,6 @@ public class BillService {
 
         return billMapper.addBillMember(billMember);
     }
-
     /**
      * 多条备案对应表插入
      */

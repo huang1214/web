@@ -1,8 +1,8 @@
 package com.aca.springboot.vo;
 
-import com.aca.springboot.entities.Bill;
-import com.aca.springboot.entities.Competition;
-import com.aca.springboot.entities.Student;
+import com.aca.springboot.entities.*;
+
+import java.util.List;
 
 /**
  * @Author: 周全
@@ -10,8 +10,27 @@ import com.aca.springboot.entities.Student;
  * @Description: 查询报销列表
  */
 public class BillVO extends Bill {
+
     private Competition competition;
     private Student student;
+    private List<Student>  students;
+    private List<Teacher> teachers;
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
+    public List<Teacher> getTeachers() {
+        return teachers;
+    }
+
+    public void setTeachers(List<Teacher> teachers) {
+        this.teachers = teachers;
+    }
 
     public Competition getCompetition() {
         return competition;
