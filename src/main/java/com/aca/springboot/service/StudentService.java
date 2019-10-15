@@ -40,7 +40,7 @@ public class StudentService {
         Map params=new HashMap();
         params.put("sname","%"+name+"%");
         PageHelper.startPage(pageNum,pageSize);
-        PageInfo<Student> re=new PageInfo<>(studentMapper.selectByName(params));
+        PageInfo re=new PageInfo(studentMapper.selectByName(params));
         return re;
     }
 }

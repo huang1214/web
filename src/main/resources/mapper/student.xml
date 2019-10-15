@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aca.springboot.mapper.BillMapper">
+<mapper namespace="com.aca.springboot.mapper.StudentMapper">
     <resultMap id="resultStudent" type="com.aca.springboot.entities.Student">
         <id property="sno" column="sno"/>
         <result property="sname" column="sname"/>
@@ -25,6 +25,6 @@
     <parameterMap id="selectByNameParams" type="java.util.Map">
     </parameterMap>
     <select id="selectByName" parameterMap="selectByNameParams" resultMap="resultStudent">
-        select distinct * from STUDENT where sname like #{sname};
+        select distinct * from STUDENT where sname like #{sname}
     </select>
 </mapper>
