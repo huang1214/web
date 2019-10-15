@@ -185,6 +185,23 @@ public class ApplicationService {
     }
 
     /**
+     * 获取申请列表
+     * @return
+     */
+    public json get_list_json(String sno, int pageNum, int pageSize){
+        PageHelper.startPage(pageNum,pageSize);
+        Map map = new HashMap<String,String>();
+        map.put("SNO",sno);
+        json result=new json();
+        PageInfo re=new PageInfo(applicationMapper.get_application_list(map));
+        result.setCode(0);
+        result.setMsg("成功");
+        result.setCount(re.getSize());
+        JSONArray jsonArray=new JSONArray(re.getList());
+        result.setData(jsonArray);
+        return result;
+    }
+    /**
      * 获取详情
      * @param appid
      * @return

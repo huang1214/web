@@ -2,6 +2,7 @@ package com.aca.springboot.controller;
 
 import com.aca.springboot.entities.Application;
 import com.aca.springboot.entities.Message;
+import com.aca.springboot.entities.json;
 import com.aca.springboot.service.ApplicationService;
 import com.aca.springboot.utils.StrUtils;
 import com.alibaba.fastjson.JSONObject;
@@ -182,11 +183,11 @@ public class ApplicationController {
 
     @ResponseBody
     @PostMapping("/list")
-    public Message get_list(@RequestParam(value = "sno",required = false,defaultValue = "111")String sno,
-                            @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum,
-                            @RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize){
+    public json get_list(@RequestParam(value = "sno",required = false,defaultValue = "111")String sno,
+                         @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum,
+                         @RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize){
         //TODO 从session里面获取SNO
-        return new Message(0,"成功",applicationService.get_list(sno));
+        return applicationService.get_list_json(sno,pageNum,pageSize);
     }
     @ResponseBody
     @PostMapping("/list_test")

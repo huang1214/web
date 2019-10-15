@@ -1,5 +1,7 @@
 package com.aca.springboot.controller;
 
+import com.aca.springboot.entities.Message;
+import com.aca.springboot.service.StudentService;
 import com.aca.springboot.service.UserService;
 import com.aca.springboot.service.testService;
 import com.alibaba.fastjson.JSONObject;
@@ -23,6 +25,8 @@ public class userController {
 
     @Autowired
     private testService testService;
+    @Autowired
+    private StudentService studentService;
 
     /**
      * 修改密码
@@ -233,5 +237,24 @@ public class userController {
         int page = Integer.parseInt(request.getParameter("page"));   //获取第几页
         int limit = Integer.parseInt(request.getParameter("limit")); //获取每页的最大条数
         return userService.teacher_search(page,limit,tname,tsex,dname,dcollege,ttitle);
+    }
+
+    /**
+     * add by hwg
+     * @param sno
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/queryBySno")
+    public Message qbs(@RequestParam(value = "sno",required = true,defaultValue = "111")String sno){
+        return new Message(0,"成功",studentService.selectBySno(sno));
+    }
+
+    @ResponseBody
+    @PostMapping("/queryBySname")
+    public Message qbsname(@RequestParam(value = "sname",required = true,defaultValue = "111")String sname,
+                           @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum,
+                           @RequestParam(value = "pageSize",required = false,defaultValue = "1")int pageSize){
+        return new Message(0,"成功",studentService.selectByName(sname,pageNum,pageSize));
     }
 }

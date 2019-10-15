@@ -14,25 +14,17 @@
         <result property="stel" column="stel"/>
         <result property="state" column="state"/>
         <result property="card_num" column="card_num"/>
-        <!--<association property="studentClass" javaType="com.aca.springboot.entities.StudentClass">-->
-            <!--<id property="cno" column="cno"/>-->
-            <!--<result property="cname" column="cname"/>-->
-            <!--<result property="dno" column="dno"/>-->
-            <!--<result property="cgrade" column="cgrade"/>-->
-            <!--<result property="cadmin" column="cadmin"/>-->
-            <!--<result property="cadmintel" column="cadmintel"/>-->
-            <!--<result property="cmaster" column="cmaster"/>-->
-            <!--<result property="cmastertel" column="cmastertel"/>-->
-            <!--<association property="dept" javaType="com.aca.springboot.entities.Dept">-->
-                <!--<id property="dno" column="dno"/>-->
-                <!--<result property="dname" column="dname"/>-->
-                <!--<result property="dadmin" column="dadmin"/>-->
-                <!--<result property="dtel" column="dtel"/>-->
-                <!--<result property="dcollege" column="dcollege"/>-->
-            <!--</association>-->
-        <!--</association>-->
     </resultMap>
+
+    <!--通过学号精确查询-->
     <select id="selectStudent" resultMap="resultStudent">
         select distinct * from STUDENT where sno = #{sno}
+    </select>
+
+    <!--通过姓名模糊查询-->
+    <parameterMap id="selectByNameParams" type="java.util.Map">
+    </parameterMap>
+    <select id="selectByName" parameterMap="selectByNameParams" resultMap="resultStudent">
+        select distinct * from STUDENT where sname like #{sname};
     </select>
 </mapper>
