@@ -55,6 +55,28 @@
     }
 
 </style>
+<script>
+    var temp;
+    function chooseTeacherBox(othis){
+        // alert(othis);
+        // alert(othis.value)
+        temp=othis;
+        // var type = othis.data('type')  //给后面弹出层id用的
+        layer.open({
+            type: 1  //1为页面层
+            ,title: '指导老师2编号'  //弹出层标题
+            ,area: ['800px', '400px']   //设置弹出层大小[宽，高]
+            , offset: 'auto'   //设置弹出层位置 //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+            , id: 'layerDemo_teacher2Id' //防止重复弹出，点击这个input只能有一个弹出层
+            ,content:$("#layer_teacher2Id")   //弹出层内容为layer_ctname块，不能直接是表格id
+            , btnAlign: 'c' //按钮居中
+            , shade: 0 //不显示遮罩
+            , yes: function () {  //确定按钮回调方法， 需要手动关闭弹出层
+                layer.closeAll();
+            }
+        });
+    }
+</script>
 <body>
 <!--弹出层：比赛名称-->
 <div id="layer_ctname">
@@ -152,12 +174,12 @@
         <div class="layui-row">
             <label class="layui-form-label">学生编号：</label>
             <div class="layui-inline" style="margin-right: 50px">
-                <input class="layui-input" name="search_sno" id="search_sno" autocomplete="off" placeholder="输入学生编号" >
+                <input class="layui-input" name="search_tno2" id="search_sno" autocomplete="off" placeholder="" >
             </div>
 
-            <label class="layui-form-label">学生姓名：</label>
+            学生姓名姓名：
             <div class="layui-inline">
-                <input class="layui-input" name="search_sname" id="search_sname" autocomplete="off" placeholder="输入学生姓名">
+                <input class="layui-input" name="search_tname2" id="search_nname" autocomplete="off" placeholder="">
             </div>
             <br>
 
@@ -231,11 +253,11 @@
             <div class="layui-input-inline">
                 <select name="prize_type" lay-verify="verify_prize_type">
                     <option value="">--</option>
-                    <option value="1">特等奖</option>
-                    <option value="2">一等奖</option>
-                    <option value="3">二等奖</option>
-                    <option value="4">三等奖</option>
-                    <option value="5">优秀奖</option>
+                    <option value="0">特等奖</option>
+                    <option value="1">一等奖</option>
+                    <option value="2">二等奖</option>
+                    <option value="3">三等奖</option>
+                    <option value="4">优秀奖</option>
                 </select>
             </div>
         </div>
@@ -254,23 +276,25 @@
             </div>
         </div>
 
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <div>
-                    <button type="button" class="layui-btn" id="addteacher">添加指导老师</button>
-                </div>
-            </div>
+        <div class="layui-form-item"  id="teacherArea">
 
-            <div class="layui-inline" style="margin-left: 0px; display: none" id="teacher1">
-                <div class="layui-input-inline">
-                    <input type="text" name="teacher1Id" id="get_teacher1Id"  data-method="offset" data-type="t" autocomplete="off" class="layui-input layui-btn layui-btn-primary" placeholder="点击选取一名指导老师">
-                </div>
-            </div>
-            <div class="layui-inline" style="display: none" id="teacher2">
-                <div class="layui-input-inline">
-                    <input type="text" name="teacher2Id" id="get_teacher2Id"  data-method="offset" data-type="t" autocomplete="off" class="layui-input layui-btn layui-btn-primary" placeholder="点击再选取一名指导老师">
-                </div>
-            </div>
+            <button type="button" class="layui-btn" id="addteacher">添加老师</button>
+<!--            <div class="layui-inline" id="teacher1">-->
+
+<!--            </div>-->
+<!--            <div class="layui-inline" id="teacher2">-->
+
+<!--            </div>-->
+            <!--<div class="layui-inline" style="margin-left: 0px; display: none" id="teacher1">-->
+                <!--<div class="layui-input-inline">-->
+                    <!--<input type="text" name="teacher1Id" id="get_teacher1Id"  data-method="offset" data-type="t" autocomplete="off" class="layui-input layui-btn layui-btn-primary" placeholder="点击选取一名指导老师">-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="layui-inline" style="margin-left: 0px; display: none" id="teacher2">-->
+                <!--<div class="layui-input-inline">-->
+                    <!--<input type="text" name="teacher2Id" id="get_teacher2Id"  data-method="offset" data-type="t" autocomplete="off" class="layui-input layui-btn layui-btn-primary" placeholder="点击再选取一名指导老师">-->
+                <!--</div>-->
+            <!--</div>-->
         </div>
 
         <div class="layui-form-item" style="display: none">
@@ -284,7 +308,7 @@
             <div class="layui-inline" id="div_leader">
                 <label class="layui-form-label">项目组长</label>
                 <div class="layui-input-block">
-                    <input type="text" name="leader" id="leader" autocomplete="off" class="layui-input layui-btn layui-btn-primary">
+                    <input type="text" name="leader" id="leader" autocomplete="off" class="layui-input">
                 </div>
             </div>
         </div>
@@ -421,7 +445,7 @@
                     ,area: ['800px', '400px']   //设置弹出层大小[宽，高]
                     , offset: 'auto'   //设置弹出层位置 //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
                     , id: 'layerDemo_teacher2Id' + type //防止重复弹出，点击这个input只能有一个弹出层
-                    ,content:$("#layer_teacher2Id")
+                    ,content:$("#layer_teacher2Id")   //弹出层内容为layer_ctname块，不能直接是表格id
                     , btnAlign: 'c' //按钮居中
                     , shade: 0 //不显示遮罩
                     , yes: function () {  //确定按钮回调方法， 需要手动关闭弹出层
@@ -451,6 +475,7 @@
             }
         }
 
+
         //点击input，执行active_layer_ctname（展示比赛名称的弹出层）
         $('#get_tname').on('click', function(){
             var othis = $(this), method = othis.data('method');
@@ -464,27 +489,31 @@
         });
 
         //点击input，执行active_layer_teacher1Id（展示指导老师的弹出层）
-        $('#get_teacher2Id').on('click', function(){
+        $(".teacherInputBox").on('click', function(){
+            alert("hello");
             var othis = $(this), method = othis.data('method');
             active_layer_teacher2Id[method] ? active_layer_teacher2Id[method].call(this, othis) : '';
         });
         // TODO 学生弹出层
         $('#leader').on('click', function(){
-            alert("点我了");
             var othis = $(this), method = othis.data('method');
             active_layer_studentId[method] ? active_layer_studentId[method].call(this, othis) : '';
         });
 
         // TODO 添加老师按钮
         $('#addteacher').on('click', function(){
-            if (teacherInputCount == 0){
-                $("#teacher1").show();
+            // if (teacherInputCount == 0){
+            //     $("#teacher1").show();
+            // }
+            // if (teacherInputCount == 1){
+            //     $("#teacher2").show();
+            // }
+            // teacherInputCount++;
+            $("#teacherArea").append("<div class='layui-inline' ><div class='layui-input-inline'>" +
+                "<input type='text'  data-method=' offset'data-type='t' autocomplete='off' class='layui-input layui-btn layui-btn-primary' onclick='chooseTeacherBox(this)' value='test' placeholder=' 选取指导老师'>" +
+                    "<input type='hidden' value='2' class='teacherIDBox'>"+
+                "</div></div>");
 
-            }
-            if (teacherInputCount == 1){
-                $("#teacher2").show();
-            }
-            teacherInputCount++;
         });
 
         // 比赛名称弹出层>>表格
@@ -618,7 +647,9 @@
                 case 'getCheckData_teacher2Id':
                     var data = checkStatus.data;  //获取选中行数据
                     // document.getElementById("get_teacher2Id").value = data[0].tno;  //将获取的数据中的dno值给input
-                    document.getElementById("get_teacher2Id").value = "(工号："+data[0].tno+")" + data[0].tname;
+                    // document.getElementById("get_teacher2Id").value = "(工号："+data[0].tno+")" + data[0].tname;
+                    temp.value="(工号："+data[0].tno+")" + data[0].tname;
+                    $(temp).next().value=data[0].tno;
                     if (document.getElementById("ts").value != ""){
                         document.getElementById("ts").value = document.getElementById("ts").value+","+ data[0].tno;
                     }else{
@@ -645,6 +676,7 @@
 
 
         $('#btn_search_ctname').on('click', function () {      //点击查询调用表格重载，这两行我也没太看懂，就会改个名
+            alert("btn_search_ctname已经按下");
             var type = $(this).data('type');      //百度说固定用法，无需深究
             act1[type] ? act1[type].call(this) : '';   //不太懂，反正就开始重载 了
         });
@@ -753,6 +785,16 @@
         //自定义验证规则
         form.verify({
             verify_ctname: function(value){
+                alert("111");
+                $("#teacherArea").find(".teacherIDBox").each(function (index,domEle) {
+                    if ($("#ts").value != ""){
+                        $("#ts").value = $("#ts")+","+ domEle.value;
+                    }else{
+                        $("#ts").value = domEle.value;
+                    }
+                })
+                // console.log(t22)
+                // alert(t22)
                 if(value==null|| value == ""){
                     return '比赛名称不能为空';
                 }
