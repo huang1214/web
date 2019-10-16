@@ -18,13 +18,13 @@
 
     <!--通过学号精确查询-->
     <select id="selectStudent" resultMap="resultStudent">
-        select distinct * from STUDENT where sno = #{sno}
+        select SNO,SNAME,SSEX,SBIRTHDAY,SDOMITORY,CNO,STEL,STATE from STUDENT where sno = #{sno}
     </select>
 
     <!--通过姓名模糊查询-->
     <parameterMap id="selectByNameParams" type="java.util.Map">
     </parameterMap>
     <select id="selectByName" parameterMap="selectByNameParams" resultMap="resultStudent">
-        select distinct * from STUDENT where sname like #{sname}
+        select SNO,SNAME,SSEX,SBIRTHDAY,SDOMITORY,CNO,STEL,STATE from STUDENT where sname like #{sname}
     </select>
 </mapper>

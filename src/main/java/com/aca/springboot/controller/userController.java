@@ -1,6 +1,7 @@
 package com.aca.springboot.controller;
 
 import com.aca.springboot.entities.Message;
+import com.aca.springboot.entities.json;
 import com.aca.springboot.service.StudentService;
 import com.aca.springboot.service.UserService;
 import com.aca.springboot.service.testService;
@@ -246,15 +247,15 @@ public class userController {
      */
     @ResponseBody
     @PostMapping("/queryBySno")
-    public Message qbs(@RequestParam(value = "sno",required = true,defaultValue = "111")String sno){
-        return new Message(0,"成功",studentService.selectBySno(sno));
+    public json qbs(@RequestParam(value = "sno",required = true,defaultValue = "111")String sno){
+        return studentService.selectBySno(sno);
     }
 
     @ResponseBody
     @PostMapping("/queryBySname")
-    public Message qbsname(@RequestParam(value = "sname",required = true,defaultValue = "111")String sname,
+    public json qbsname(@RequestParam(value = "sname",required = true,defaultValue = "111")String sname,
                            @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum,
                            @RequestParam(value = "pageSize",required = false,defaultValue = "1")int pageSize){
-        return new Message(0,"成功",studentService.selectByName(sname,pageNum,pageSize));
+        return studentService.selectByName(sname,pageNum,pageSize);
     }
 }
