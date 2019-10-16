@@ -27,7 +27,7 @@
             <result property="result_type" column="result_type"/>
             <result property="reference_paper" column="reference_paper"/>
         </association>
-        <association property="student" javaType="com.aca.springboot.entities.Student">
+        <association property="student"  javaType="com.aca.springboot.entities.Student">
             <id property="sno" column="sno"/>
             <result property="sname" column="sname"/>
             <result property="ssex" column="ssex"/>
@@ -39,6 +39,31 @@
             <result property="state" column="state"/>
             <result property="card_num" column="card_num"/>
         </association>
+        <collection property="students" javaType="java.util.ArrayList" ofType="com.aca.springboot.entities.Student">
+            <id property="sno" column="ST_SNO"/>
+            <result property="sname" column="ST_SNAME"/>
+            <result property="ssex" column="ST_SSEX"/>
+            <result property="sbirthday" column="ST_SBIRTHDAY"/>
+            <result property="sdomitory" column="ST_SDOMITORY"/>
+            <result property="cno" column="ST_CNO"/>
+            <result property="spwd" column="ST_SPWD"/>
+            <result property="stel" column="ST_STEL"/>
+            <result property="state" column="ST_STATE"/>
+            <result property="card_num" column="ST_CARD_NUM"/>
+        </collection>
+        <collection property="teachers" ofType="com.aca.springboot.entities.Teacher">
+            <id property="tno" column="TE_TNO"/>
+            <result property="tname" column="TE_TNAME"/>
+            <result property="tsex" column="TE_TSEX"/>
+            <result property="tbirthday" column="TE_TBIRTHDAY"/>
+            <result property="dno" column="TE_DNO"/>
+            <result property="ttel" column="TE_TTEL"/>
+            <result property="ttitle" column="TE_TTITLE"/>
+            <result property="tpwd" column="TE_TPWD"/>
+            <result property="tstate" column="TE_TSTATE"/>
+            <result property="card_num" column="TE_CARD_NUM"/>
+        </collection>
+
     </resultMap>
 
     <!--根据竞赛编号，参赛年费，团队负责人查询报销-->
@@ -63,12 +88,17 @@
     <parameterMap id="get_bill_list_params" type="java.util.Map">
     </parameterMap>
     <select id="get_bill_list" parameterMap="get_bill_list_params" resultMap="BVO">
-        select B.BID,B.CTID,B.CYEAR,B.CLEVEL,B.CDESC,B.GROUPLEADER,B.GROUPNAME,B.RESULT_TYPE,B.WORK_NAME,
-               B.PREDITFEEDESC,B.PREDICTFEE,B.state,B.ATTACHFILE,B.NOTE,
-               C.CTID c_id,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE,C.RESULT_TYPE,
-               S.SNO,S.SNAME, S.SSEX, S.SBIRTHDAY, S.SDOMITORY,S.CNO, S.SPWD, S.STEL, S.STATE s_state, S.CARD_NUM
-        from (select * from BILL where BID IN (SELECT BILL_ID FROM BILL_MEMBER WHERE BILL_TM_ID = #{SNO}) order by bill.STATE desc) B JOIN
-                 (select * from com_table ) C ON B.ctid=C.ctid JOIN
-                 (select * from STUDENT) S ON S.SNO=B.GROUPLEADER
+        select
+            B.BID, B.CTID, B.CYEAR, B.CLEVEL,B.CDESC, B.GROUPLEADER, B.GROUPNAME, B.RESULT_TYPE, B.WORK_NAME, B.PREDITFEEDESC, B.PREDICTFEE,B.STATE,B.ATTACHFILE,B.NOTE
+            ,C.CTID,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE,C.REFERENCE_PAPER
+            ,S.SNO,S.SNAME,S.SSEX,S.SBIRTHDAY,S.SDOMITORY,S.CNO,S.SPWD,S.STEL,S.STATE,S.CARD_NUM
+            ,ST.SNO ST_SNO,ST.SNAME ST_SNAME,ST.SSEX ST_SSEX,ST.SBIRTHDAY ST_SBIRTHDAY,ST.SDOMITORY ST_SDOMITORY,ST.CNO ST_CNO,ST.SPWD ST_SPWD,ST.STEL ST_STEL,ST.STATE ST_STATE,ST.CARD_NUM ST_CARD_NUM
+            ,TE.TNO TE_TNO,TE.TNAME TE_TNAME,TE.TSEX TE_TSEX,TE.TBIRTHDAY TE_TBIRTHDAY,TE.DNO TE_DNO,TE.TTEL TE_TTEL,TE.TTITLE TE_TTITLE,TE.TPWD TE_TPWD,TE.TSTATE TE_TSTATE,TE.CARD_NUM TE_CARD_NUM
+        from (select * from BILL where BID IN (SELECT BILL_ID FROM BILL_MEMBER WHERE BILL_TM_ID = #{SNO} ) order by bill.STATE desc) B
+                 JOIN (select * from BILL_MEMBER) BM on BM.BILL_ID = B.BID
+                 JOIN (select * from com_table ) C ON B.ctid=C.ctid
+                 JOIN (select * from STUDENT) S ON S.SNO=B.GROUPLEADER
+                 left join (select * from STUDENT) ST on BM.BILL_TM_ID = ST.SNO and BM.BILL_TYPE = '1'
+                 left join (select * from TEACHER) TE on BM.BILL_TM_ID = TE.DNO and BM.BILL_TYPE = '2'
     </select>
 </mapper>
