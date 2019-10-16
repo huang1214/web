@@ -158,6 +158,18 @@ public class ApplicationService {
      * 获取申请列表
      * @return
      */
+    public PageInfo<AppComAppLeaderVO> get_list_with_page_m(int status, int pageNum, int pageSize){
+        PageHelper.startPage(pageNum,pageSize);
+        Map map = new HashMap<String,String>();
+        map.put("status",status);
+        PageInfo re=new PageInfo(applicationMapper.get_application_list_m(map));
+        return re;
+    }
+
+    /**
+     * 获取申请列表
+     * @return
+     */
     public json get_list_json(String sno, int pageNum, int pageSize){
         PageHelper.startPage(pageNum,pageSize);
         Map map = new HashMap<String,String>();
@@ -181,7 +193,21 @@ public class ApplicationService {
         map.put("APPID",appid);
         AppComDetailVO application_detail = applicationMapper.get_application_detail(map);
 
-
         return application_detail;
+    }
+
+    public boolean update_state(String appid,int status,String note){
+        Map map=new HashMap();
+        map.put("appid",appid);
+        map.put("status",status);
+        map.put("note",note);
+
+        int i = applicationMapper.update_state(map);
+        if(i==1){
+            return true;
+        }
+
+        return false;
+
     }
 }

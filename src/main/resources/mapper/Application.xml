@@ -154,7 +154,7 @@
       select
       A.Appid,A.CTID,A.APPLICANTID,
       A.UNIT,A.LEADER,A.STUDENTPRICE,A.TEACHERPRICE,A.AWARDTYPEID,
-      A.AWARDDATE,A.WORKNAME,A.WORKBRIEFINTRO,A.STATUS,
+      A.AWARDDATE,A.WORKNAME,A.WORKBRIEFINTRO,A.STATUS,A.NOTE,
       C.CTID c_ctid,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE,C.REFERENCE_PAPER,
       S1.SNO S1_SNO,S1.SNAME S1_SNAME,S2.SNO S2_SNO,S2.SNAME S2_SNAME
 
@@ -163,7 +163,22 @@
       (select * from STUDENT) S1 ON S1.SNO=A.APPLICANTID JOIN
       (select * from STUDENT) S2 ON S2.SNO=A.LEADER
     </select>
+    <!--管理员列表-->
+    <parameterMap id="get_app_list_params_m" type="java.util.Map">
+    </parameterMap>
+    <select id="get_application_list_m" parameterMap="get_app_list_params_m" resultMap="ACALVO">
+      select
+      A.Appid,A.CTID,A.APPLICANTID,
+      A.UNIT,A.LEADER,A.STUDENTPRICE,A.TEACHERPRICE,A.AWARDTYPEID,
+      A.AWARDDATE,A.WORKNAME,A.WORKBRIEFINTRO,A.STATUS,A.NOTE,
+      C.CTID c_ctid,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE,C.REFERENCE_PAPER,
+      S1.SNO S1_SNO,S1.SNAME S1_SNAME,S2.SNO S2_SNO,S2.SNAME S2_SNAME
 
+      from (select * from application where STATUS=#{status} order by APPID desc) A JOIN
+      (select * from com_table ) C ON A.ctid=C.ctid JOIN
+      (select * from STUDENT) S1 ON S1.SNO=A.APPLICANTID JOIN
+      (select * from STUDENT) S2 ON S2.SNO=A.LEADER
+    </select>
 
     <!--取得detail-->
     <parameterMap id="get_app_detail_params" type="java.util.Map">
@@ -175,10 +190,16 @@
 			(select * from APPLICATION_MEMBER WHERE APP_ID=#{APPID} ) AM JOIN
 			(select * from application ) A ON AM.APP_ID=A.APPID JOIN
 			(select * from award_type) AT on AT.ATID = A.AWARDTYPEID JOIN
-      (select * from com_table ) C ON A.ctid=C.ctid LEFT JOIN
-      (select * from STUDENT) S ON S.SNO=AM.APP_TM_ID LEFT JOIN
-      (select TNO,TNAME,TSEX,TBIRTHDAY,DNO,TTEL,TTITLE,TPWD,TSTATE,CARD_NUM TCARD_NUM from TEACHER) T ON T.TNO=AM.APP_TM_ID
+            (select * from com_table ) C ON A.ctid=C.ctid LEFT JOIN
+            (select * from STUDENT) S ON S.SNO=AM.APP_TM_ID LEFT JOIN
+            (select TNO,TNAME,TSEX,TBIRTHDAY,DNO,TTEL,TTITLE,TPWD,TSTATE,CARD_NUM TCARD_NUM from TEACHER) T ON T.TNO=AM.APP_TM_ID
     </select>
+    <!--更新状态-->
+    <parameterMap id="update_state_params" type="java.util.Map">
+    </parameterMap>
+    <update id="update_state" parameterMap="update_state_params">
+        update APPLICATION set status =#{status},NOTE=#{note} where APPID=#{appid}
+    </update>
     <!--<resultMap id="workresult" type="com.aca.springboot.entities.work">-->
     <!--<id column="app_id" property="app_id"/>-->
     <!--<result column="competition_name" property="competition_name"/>-->
@@ -207,7 +228,7 @@
 
     <!--申请表和获奖类型表一对一级联-->
     <!--<select id="application_All" resultMap="applicationMap">-->
-        <!--select *  from application where applicantId= #{applicantId}-->
+    <!--select *  from application where applicantId= #{applicantId}-->
     <!--</select>-->
 
 </mapper>

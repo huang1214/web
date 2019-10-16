@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.*;
@@ -44,11 +45,11 @@ public class ApplicationController {
                             @RequestParam(value = "applicantBankCard", required = false) String applicantBankCard,
                             @RequestParam(value = "leader", required = false) String leader,
                             @RequestParam(value = "workBriefIntro", required = false) String workBriefIntro,
-                            @RequestParam(value = "tms", required=false)String tms,
-                            @RequestParam(value = "ts", required=false)String ts) throws Exception {
+                            @RequestParam(value = "tms", required = false) String tms,
+                            @RequestParam(value = "ts", required = false) String ts) throws Exception {
         ModelAndView mv = new ModelAndView("redirect:/user/application_form");
         Application app = new Application();
-        String awardTypeId = getawardtype(ctId,level_type,prize_type);  //获取获奖类型编号
+        String awardTypeId = getawardtype(ctId, level_type, prize_type);  //获取获奖类型编号
 
         //获取学生获奖金额stu_price
         String studentPrice = applicationService.get_price(awardTypeId).get("STUDENT_PRICE").toString();
@@ -85,7 +86,7 @@ public class ApplicationController {
 //            }
         //添加
         InputStream is = null;//得到文件流
-        String appid= StrUtils.timeStamp();
+        String appid = StrUtils.timeStamp();
         try {
 //                is = new FileInputStream(targetFile);
 //                byte[] bytes = FileCopyUtils.copyToByteArray(is);//得到byte
@@ -109,9 +110,9 @@ public class ApplicationController {
             //插入application
             applicationService.add(app);
             //插入相关学生
-            applicationService.addMultMember(tms,appid,1);
+            applicationService.addMultMember(tms, appid, 1);
             //插入相关老师
-            applicationService.addMultMember(ts,appid,2);
+            applicationService.addMultMember(ts, appid, 2);
         } catch (Exception e) {
             System.out.println("失败");
             e.printStackTrace();
@@ -150,46 +151,62 @@ public class ApplicationController {
     public String getawardtype(String u_comName, String u_level_type, String u_prize_type) {
         return applicationService.getawardtype(u_comName, u_level_type, u_prize_type);
     }
-    /**
-     * 管理员审核获奖信息，判断是否有资格获取奖金
-     * @param check_id
-     * @return
-     *//*
-    @ResponseBody
-    @GetMapping(value = "/check_work")
-    public ModelAndView check(@RequestParam("check_id") String check_id){
-        ModelAndView mv = new ModelAndView("redirect:/admin/audit");
-        String[] sArray=check_id.split(",",2);
-        int result = successService.check_work(sArray[0],sArray[1]);
-        if(result == 1){
-            return mv;
-        }
-        return mv;
-    }*/
 
     @ResponseBody
     @RequestMapping("/list")
-    public json get_list(@RequestParam(value = "sno",required = false,defaultValue = "111")String sno,
-                         @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum,
-                         @RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize){
-        //TODO 从session里面获取SNO
-        return applicationService.get_list_json(sno,pageNum,pageSize);
+    public json get_list(@RequestParam(value = "sno", required = false, defaultValue = "111") String sno,
+                         @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
+                         @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+        //TODO 从session里面获取SNO 或者管理员账号 需进行判断
+        return applicationService.get_list_json(sno, pageNum, pageSize);
     }
+
     @ResponseBody
     @RequestMapping("/list_test")
-    public Message get_list_test(@RequestParam(value = "sno",required = false,defaultValue = "111")String sno,
-                            @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum,
-                            @RequestParam(value = "pageSize",required = false,defaultValue = "10")int pageSize){
-        //TODO 从session里面获取SNO
-        return new Message(0,"成功",applicationService.get_list_with_page(sno,pageNum,pageSize));
+    public Message get_list_test(@RequestParam(value = "type", required = false, defaultValue = "0") int type,
+                                 @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
+                                 @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+        //TODO 暂时用做测试用
+        return new Message(0, "成功", applicationService.get_list_with_page_m(type, pageNum, pageSize));
     }
+
+    /**
+     * 获取app详情
+     * add By hwg
+     *
+     * @param sno
+     * @param appid
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/detail")
-    public Message get_detail(@RequestParam(value = "sno",required = false,defaultValue = "111")String sno,
-                            @RequestParam(value = "appid",required = true,defaultValue = "1")String appid
-                                ){
+    public Message get_detail(@RequestParam(value = "sno", required = false, defaultValue = "111") String sno,
+                              @RequestParam(value = "appid", required = true, defaultValue = "1") String appid
+    ) {
         //TODO 从session里面获取SNO
         System.out.println(appid);
-        return new Message(0,"成功",applicationService.get_detail(appid));
+        return new Message(0, "成功", applicationService.get_detail(appid));
+    }
+
+    @ResponseBody
+    @PostMapping("/change")
+    public Message change(@RequestParam(value = "appid", required = true) String appid,
+                          @RequestParam(value = "operation", required = false, defaultValue = "refuse") String op,
+                          @RequestParam(value = "note", required = false, defaultValue = "") String note) {
+        boolean re = false;
+        if ("refuse".equals(op)) {
+            //TODO 审核不通过需要检查权限
+            re = applicationService.update_state(appid, 1, note);
+        } else if ("pass".equals(op)) {
+            //TODO 审核不通过需要检查权限
+            re = applicationService.update_state(appid, 2, note);
+        } else if ("assure".equals(op)) {
+            re = applicationService.update_state(appid, 3, note);
+        }
+
+
+        if (re)
+            return new Message(0, "成功", null);
+        return new Message(-1, "error", null);
     }
 }

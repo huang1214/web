@@ -38,4 +38,7 @@ public interface ApplicationMapper {
 
     public AppComDetailVO get_application_detail(Map map);
 
+    public List<AppComAppLeaderVO> get_application_list_m(Map map);
+
+    public int update_state(Map map);
 }
