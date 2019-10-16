@@ -16,10 +16,7 @@ import java.util.List;
 @Api
 @RequestMapping(value = "/bill")
 public class BillController {
-
     private final BillService billService;
-
-
     @Autowired
     public BillController(BillService billService){
         this.billService=billService;
@@ -42,17 +39,50 @@ public class BillController {
         }
         return addAwardMessage;
     }
-    //获取所有的报销记录
-    @GetMapping(value = "query")
+    //获取该登录学生的所有报销记录
+    @GetMapping(value = "query/{sno}")
     @ResponseBody
-    public Message getAllBill(){
+    public Message getAllBillByID(@PathVariable("sno") String sno){
         Message billListMessage=new Message();
-        List<BillVO> billList=billService.queryAllBill();
+        System.out.println(sno);
+        List<BillVO> billList=billService.queryAllBill(sno);
         billListMessage.setCode(200);
         billListMessage.setMessage("查询成功");
         billListMessage.setData(billList);
         return billListMessage;
     }
+    //获取所有报销记录
+    @GetMapping(value = "query")
+    @ResponseBody
+    public Message getAllBill(){
+        Message billListAdminMessage=new Message();
+        List<BillVO> allListMessage=billService.queryAllBill();
+        billListAdminMessage.setCode(200);
+        billListAdminMessage.setMessage("查询成功");
+        billListAdminMessage.setData(allListMessage);
+        return billListAdminMessage;
+    }
+    //通过报销审核
+    @PostMapping(value = "accept")
+    @ResponseBody
+    public Message acceptBill(@RequestBody Bill bill){
+        Message acceptBillMessage=new Message();
+        billService.updateBill(bill);
+        acceptBillMessage.setCode(200);
+        acceptBillMessage.setMessage("同意申请");
+        return acceptBillMessage;
+    }
+    //拒绝报销审核
+    @PostMapping(value = "refuse")
+    @ResponseBody
+    public Message refuseBill(@RequestBody Bill bill){
+        Message refuseBillMessage=new Message();
+        billService.updateBill(bill);
+        refuseBillMessage.setCode(200);
+        refuseBillMessage.setMessage("拒绝申请");
+        return refuseBillMessage;
+    }
+
 
 
 

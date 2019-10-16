@@ -44,11 +44,16 @@ public class BillService {
     public Bill queryBillByCtidCyearGroupleader(String ctid,String cyear,String groupLeader){
         return billMapper.selectBillByCtidCyearGroupleader(ctid,cyear,groupLeader);
     }
+    //返回该生报销记录
+    public List<BillVO> queryAllBill(String sno){
+        Map map=new HashMap();
+        map.put("SNO",sno);
+        List<BillVO> listBill=billMapper.get_bill_list(map);
+        return listBill;
+    }
     //返回所有的报销记录
     public List<BillVO> queryAllBill(){
-        Map map=new HashMap();
-        map.put("SNO","8002117247");
-        List<BillVO> listBill=billMapper.get_bill_list(map);
+        List<BillVO> listBill=billMapper.get_all_bill_list();
         return listBill;
     }
     /**
@@ -69,5 +74,15 @@ public class BillService {
             moreResult = moreResult+result;
         }
         return moreResult;
+    }
+    //更新报销表
+    public int updateBill(Bill bill){
+        Map<String,String> map=new HashMap<>();
+        map.put("BID",bill.getBid());
+        map.put("STATE",bill.getState());
+        map.put("NOTE",bill.getNote());
+        int res=billMapper.change_bill_state(map);
+        return res;
+
     }
 }
