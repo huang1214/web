@@ -54,4 +54,8 @@ public interface BillMapper {
 
     //管理员获取全部的报销列表
     public List<BillVO> get_all_bill_list();
+
+    //修改状态
+    public int change_bill_state(Map map);
+
 }

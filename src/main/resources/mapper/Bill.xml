@@ -103,7 +103,7 @@
     </select>
 
     <!--管理员获取全部的竞赛信息-->
-    <select id="get_all_bill_list" parameterMap="get_bill_list_params" resultMap="BVO">
+    <select id="get_all_bill_list" resultMap="BVO">
         select
             B.BID, B.CTID, B.CYEAR, B.CLEVEL,B.CDESC, B.GROUPLEADER, B.GROUPNAME, B.RESULT_TYPE, B.WORK_NAME, B.PREDITFEEDESC, B.PREDICTFEE,B.STATE,B.ATTACHFILE,B.NOTE
              ,C.CTID,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE,C.REFERENCE_PAPER
@@ -117,4 +117,8 @@
                  left join (select * from STUDENT) ST on BM.BILL_TM_ID = ST.SNO and BM.BILL_TYPE = '1'
                  left join (select * from TEACHER) TE on BM.BILL_TM_ID = TE.DNO and BM.BILL_TYPE = '2'
     </select>
+
+    <update id="change_bill_state" parameterType="java.util.Map">
+        update bill set STATE = #{STATE},NOTE = #{NOTE} where BID = #{BID}
+    </update>
 </mapper>
