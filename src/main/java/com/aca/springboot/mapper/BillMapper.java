@@ -51,4 +51,7 @@ public interface BillMapper {
 
     //获取报销列表
     public List<BillVO> get_bill_list(Map map);
+
+    //管理员获取全部的报销列表
+    public List<BillVO> get_all_bill_list();
 }
