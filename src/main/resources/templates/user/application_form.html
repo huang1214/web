@@ -56,19 +56,33 @@
 
 </style>
 <script>
-    var temp;
+    var temp;   //用于获取othis的内容
+    var studentTemp;    // 储存学生框信息
     function chooseTeacherBox(othis){
-        // alert(othis);
-        // alert(othis.value)
         temp=othis;
-        // var type = othis.data('type')  //给后面弹出层id用的
         layer.open({
             type: 1  //1为页面层
-            ,title: '指导老师2编号'  //弹出层标题
+            ,title: '指导老师编号'  //弹出层标题
             ,area: ['800px', '400px']   //设置弹出层大小[宽，高]
             , offset: 'auto'   //设置弹出层位置 //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
             , id: 'layerDemo_teacher2Id' //防止重复弹出，点击这个input只能有一个弹出层
             ,content:$("#layer_teacher2Id")   //弹出层内容为layer_ctname块，不能直接是表格id
+            , btnAlign: 'c' //按钮居中
+            , shade: 0 //不显示遮罩
+            , yes: function () {  //确定按钮回调方法， 需要手动关闭弹出层
+                layer.closeAll();
+            }
+        });
+    }
+    function chooseStudentBox(othis) {
+        studentTemp = othis;
+        layer.open({
+            type: 1  //1为页面层
+            ,title: '学生信息'  //弹出层标题
+            ,area: ['800px', '400px']   //设置弹出层大小[宽，高]
+            , offset: 'auto'   //设置弹出层位置 //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+            , id: 'layerDemo_studentId' //防止重复弹出，点击这个input只能有一个弹出层
+            ,content:$("#layer_studentId")   //弹出层内容为layer_ctname块，不能直接是表格id
             , btnAlign: 'c' //按钮居中
             , shade: 0 //不显示遮罩
             , yes: function () {  //确定按钮回调方法， 需要手动关闭弹出层
@@ -91,46 +105,8 @@
     <table class="layui-hide" id="layer_com_table" lay-filter="layer_com_table"></table>
 </div>
 
-<!--弹出层：指导老师1编号-->
-<div id="layer_teacher1Id">
-    <form class="layui-form" action="" style="margin-top: 20px">
-        <div class="layui-row">
-        <label class="layui-form-label">教师编号：</label>
-        <div class="layui-inline" style="margin-right: 50px">
-            <input class="layui-input" name="search_tno" id="search_tno" autocomplete="off" placeholder="" >
-        </div>
 
-        教师姓名：
-        <div class="layui-inline">
-            <input class="layui-input" name="search_tname" id="search_tname" autocomplete="off" placeholder="">
-        </div>
-        <br>
-
-        <label class="layui-form-label">所属学院：</label>
-        <div class="layui-inline" style="margin-right: 50px">
-            <input class="layui-input" name="search_dcollege" id="search_dcollege" autocomplete="off" placeholder="" >
-        </div>
-
-        所属部门：
-        <div class="layui-inline">
-            <input class="layui-input" name="search_dname" id="search_dname" autocomplete="off" placeholder="">
-        </div>
-        <br>
-
-        <label class="layui-form-label">教师职称：</label>
-        <div class="layui-inline" style="margin-right: 150px">
-            <input class="layui-input" name="search_ttitle" id="search_ttitle" autocomplete="off" placeholder="" >
-        </div>
-        <div class="layui-inline">
-            <button type="button" class="layui-btn" data-type="reload" id="btn_search_teacher1Id">搜索</button>
-            <button type="reset" class="layui-btn" style="margin-left: 30px">重置</button>
-        </div>
-        </div>
-    </form>
-    <table class="layui-hide" id="layer_teacher1Id_table" lay-filter="layer_teacher1Id_table"></table>
-</div>
-
-<!--弹出层：指导老师2编号-->
+<!--弹出层：指导老师编号-->
 <div id="layer_teacher2Id">
     <form class="layui-form" action="" style="margin-top: 20px">
         <div class="layui-row">
@@ -168,34 +144,31 @@
     </form>
     <table class="layui-hide" id="layer_teacher2Id_table" lay-filter="layer_teacher2Id_table"></table>
 </div>
-
+<!--弹出层：学生选框-->
 <div id="layer_studentId">
+
     <form class="layui-form" action="" style="margin-top: 20px">
         <div class="layui-row">
             <label class="layui-form-label">学生编号：</label>
             <div class="layui-inline" style="margin-right: 50px">
-                <input class="layui-input" name="search_tno2" id="search_sno" autocomplete="off" placeholder="" >
+                <input class="layui-input" name="search_sno" id="search_sno" autocomplete="off" placeholder="" >
             </div>
 
-            学生姓名姓名：
+            <label class="layui-form-label">学生姓名：</label>
             <div class="layui-inline">
-                <input class="layui-input" name="search_tname2" id="search_nname" autocomplete="off" placeholder="">
+                <input class="layui-input" name="search_sname" id="search_sname" autocomplete="off" placeholder="">
             </div>
             <br>
-
-<!--            <label class="layui-form-label">所属学院：</label>-->
-<!--            <div class="layui-inline" style="margin-right: 50px">-->
-<!--                <input class="layui-input" name="search_dcollege2" id="search_dcollege2" autocomplete="off" placeholder="" >-->
-<!--            </div>-->
-            <div style="color: red;">暂时不可使用</div>
-            <div class="layui-inline">
-                <button type="button" class="layui-btn" data-type="reload" id="btn_search_studentId">搜索</button>
-                <button type="reset" class="layui-btn" style="margin-left: 30px">重置</button>
+            <div class="layui-inline" style="text-align: center;">
+                <button type="button" class="layui-btn" data-type="reload" id="btn_search_student">搜索</button>
+                <button type="reset" class="layui-btn" data-type="reload">重置</button>
             </div>
         </div>
     </form>
     <table class="layui-hide" id="layer_studentId_table" lay-filter="layer_studentId_table"></table>
 </div>
+
+<!--表单部分-->
 
 <div class="formdata">
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
@@ -279,22 +252,6 @@
         <div class="layui-form-item"  id="teacherArea">
 
             <button type="button" class="layui-btn" id="addteacher">添加老师</button>
-<!--            <div class="layui-inline" id="teacher1">-->
-
-<!--            </div>-->
-<!--            <div class="layui-inline" id="teacher2">-->
-
-<!--            </div>-->
-            <!--<div class="layui-inline" style="margin-left: 0px; display: none" id="teacher1">-->
-                <!--<div class="layui-input-inline">-->
-                    <!--<input type="text" name="teacher1Id" id="get_teacher1Id"  data-method="offset" data-type="t" autocomplete="off" class="layui-input layui-btn layui-btn-primary" placeholder="点击选取一名指导老师">-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="layui-inline" style="margin-left: 0px; display: none" id="teacher2">-->
-                <!--<div class="layui-input-inline">-->
-                    <!--<input type="text" name="teacher2Id" id="get_teacher2Id"  data-method="offset" data-type="t" autocomplete="off" class="layui-input layui-btn layui-btn-primary" placeholder="点击再选取一名指导老师">-->
-                <!--</div>-->
-            <!--</div>-->
         </div>
 
 
@@ -309,24 +266,26 @@
             <div class="layui-inline" id="div_leader">
                 <label class="layui-form-label">项目组长</label>
                 <div class="layui-input-block">
-                    <input type="text" name="leader" id="leader" autocomplete="off" class="layui-input">
+                    <input type="text" name="lead" id="lead" autocomplete="off" class="layui-input layui-btn layui-btn-primary"  onclick="chooseStudentBox(this)">
+                    <input type="text" name="leader" id="leader" autocomplete="off" class="layui-input layui-btn layui-btn-primary" style="display: none">
+
                 </div>
             </div>
         </div>
 
         <div class="layui-form-item layui-form-text" id="div_textarea">
-<!--            <label class="layui-form-label">团队成员</label>-->
-<!--            <div class="layui-input-block">-->
-<!--                <textarea name="tms" placeholder="待改变" class="layui-textarea"></textarea>-->
-<!--            </div>-->
-<!--            <div class="layui-form-item">-->
-<!--                <div class="layui-inline" id="div_tms">-->
-<!--                    <label class="layui-form-label">项目组长</label>-->
-<!--                    <div class="layui-input-block">-->
-<!--                        <input type="text" name="leader" id="tms" autocomplete="off" class="layui-input">-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
+            <label class="layui-form-label">团队成员</label>
+            <div class="layui-input-block">
+                <button class="layui-btn" onclick="chooseStudentBox(this)">点击添加团队成员</button>
+                <input type="text" name="tms" id="tms" autocomplete="off" class="layui-input layui-btn layui-btn-primary">
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline" id="div_tms">
+                    <div class="layui-input-block" id="tmsArea">
+
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="layui-form-item layui-form-text" id="div_workBriefIntro">
@@ -382,9 +341,10 @@
     </div>
 </script>
 <!--获得学生-获取选中行数据-->
-<script type="text/html" id="nstude">
+<script type="text/html" id="toolbar_studentId">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="getCheckData_studentId">获取选中行数据</button>
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData_studentId">选为项目组长</button>
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData_teamId">选为团队成员</button>
     </div>
 </script>
 <script>
@@ -393,9 +353,9 @@
         var layer = layui.layer; //独立版的layer无需执行这一句
         var $ = layui.jquery;
 
-        var teacherInputCount = 0;
-        // TODO 后面会加入学生的按钮计算
+        var teacherInputCount = 0;  //限制指导老师人数
 
+        var teamCount = 0;  // 限制团队成员人数
 
         var active = {
             offset: function(othis) {
@@ -407,26 +367,6 @@
                     ,offset: 'auto'   //设置弹出层位置 //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
                     ,id: 'layerDemo_ctname' + type //防止重复弹出，点击这个input只能有一个弹出层
                     ,content:$("#layer_ctname")   //弹出层内容为layer_ctname块，不能直接是表格id
-                    , btnAlign: 'c' //按钮居中
-                    , shade: 0 //不显示遮罩
-                    , yes: function () {  //确定按钮回调方法， 需要手动关闭弹出层
-                        layer.closeAll();
-                    }
-                });
-            }
-        }
-
-        var active_layer_teacher1Id = {
-            offset: function(othis) {
-                var type = othis.data('type')  //给后面弹出层id用的
-
-                layer.open({
-                    type: 1  //1为页面层
-                    ,title: '指导老师1编号'  //弹出层标题
-                    ,area: ['800px', '400px']   //设置弹出层大小[宽，高]
-                    , offset: 'auto'   //设置弹出层位置 //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
-                    , id: 'layerDemo_teacher1Id' + type //防止重复弹出，点击这个input只能有一个弹出层
-                    ,content:$("#layer_teacher1Id")   //弹出层内容为layer_ctname块，不能直接是表格id
                     , btnAlign: 'c' //按钮居中
                     , shade: 0 //不显示遮罩
                     , yes: function () {  //确定按钮回调方法， 需要手动关闭弹出层
@@ -454,28 +394,7 @@
                     }
                 });
             }
-        }
-
-        var active_layer_studentId = {
-            offset: function(othis) {
-                var type = othis.data('type')  //给后面弹出层id用的
-
-                layer.open({
-                    type: 1  //1为页面层
-                    ,title: '项目组长'  //弹出层标题
-                    ,area: ['800px', '400px']   //设置弹出层大小[宽，高]
-                    ,offset: 'auto'   //设置弹出层位置 //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
-                    ,id: 'layerDemo_studentId' + type //防止重复弹出，点击这个input只能有一个弹出层
-                    ,content:$("#layer_studentId")   //弹出层内容为数据块，不能直接是表格id
-                    , btnAlign: 'c' //按钮居中
-                    , shade: 0 //不显示遮罩
-                    , yes: function () {  //确定按钮回调方法， 需要手动关闭弹出层
-                        layer.closeAll();
-                    }
-                });
-            }
-        }
-
+        };
 
         //点击input，执行active_layer_ctname（展示比赛名称的弹出层）
         $('#get_tname').on('click', function(){
@@ -491,29 +410,23 @@
 
         //点击input，执行active_layer_teacher1Id（展示指导老师的弹出层）
         $(".teacherInputBox").on('click', function(){
-            alert("hello");
             var othis = $(this), method = othis.data('method');
             active_layer_teacher2Id[method] ? active_layer_teacher2Id[method].call(this, othis) : '';
-        });
-        // TODO 学生弹出层
-        $('#leader').on('click', function(){
-            var othis = $(this), method = othis.data('method');
-            active_layer_studentId[method] ? active_layer_studentId[method].call(this, othis) : '';
         });
 
         // TODO 添加老师按钮
         $('#addteacher').on('click', function(){
-            // if (teacherInputCount == 0){
-            //     $("#teacher1").show();
-            // }
-            // if (teacherInputCount == 1){
-            //     $("#teacher2").show();
-            // }
-            // teacherInputCount++;
-            $("#teacherArea").append("<div class='layui-inline' ><div class='layui-input-inline'>" +
-                "<input type='text'  data-method=' offset'data-type='t' autocomplete='off' class='layui-input layui-btn layui-btn-primary' onclick='chooseTeacherBox(this)' value='test' placeholder=' 选取指导老师'>" +
+            // TODO 需要修改一下样式，使得出现的更加合理
+            if (teacherInputCount < 3){     // 限制指导老师框的数量
+                $("#teacherArea").append("<div class='layui-inline' ><div class='layui-input-inline'>" +
+                    "<input type='text'  data-method=' offset'data-type='t' autocomplete='off' class='layui-input layui-btn layui-btn-primary' onclick='chooseTeacherBox(this)' value='' placeholder=' 选取指导老师'>" +
                     "<input type='hidden' value='2' class='teacherIDBox'>"+
-                "</div></div>");
+                    "</div></div>");
+                teacherInputCount++;
+            }else{
+                layer.msg("无法添加更多指导老师");
+            }
+
 
         });
 
@@ -534,27 +447,8 @@
                 ]
             ]
         });
-        // 指导老师1弹出层>>表格
-        table.render({
-            elem: '#layer_teacher1Id_table'
-            ,height: 312
-            ,url: '/getAllTeacher' //数据接口
-            ,method:"get"
-            ,page: true //开启分页
-            ,toolbar:'#toolbar_teacher1Id'
-            ,cols: [
-                [ //表头
-                    {type:'radio'}
-                    ,{field: 'tno', title: '教师编号', width:103, sort: true}
-                    ,{field: 'tname', title: '教师名称', width:120}
-                    ,{field: 'tsex', title: '教师性别', width:120}
-                    ,{field: 'dcollege', title: '所属学院', width:120}
-                    ,{field: 'dname', title: '所属部门', width:120}
-                    ,{field: 'ttitle', title: '教师职称', width:120}
-                ]
-            ]
-        });
-        // 指导老师2弹出层>>表格
+
+        // 指导老师弹出层>>表格
         table.render({
             elem: '#layer_teacher2Id_table'
             ,height: 312
@@ -578,23 +472,21 @@
         table.render({
             elem: '#layer_studentId_table'
             ,height: 312
-            ,url: '' //TODO 待修改API
-            ,method:"get"
+            ,method:"get"   // TODO 应该默认就存在表单
             ,page: true //开启分页
             ,toolbar:'#toolbar_studentId'
             ,cols: [
                 [ //表头
                     //TODO 也不是所有信息都要显示出来，这里到时候改改
                     {type:'radio'}
-                    ,{field: 'sno', title: '学号', minWidth:120, sort: true}
-                    ,{field: 'sname', title: '姓名', minWidth:120}
-                    ,{field: 'ssex', title: '性别', minWidth:60}
-                    ,{field: 'sbirthday', title: '出生年月', minWidth:120}
-                    ,{field: 'sdomitory', title: '寝室', minWidth:100}
-                    ,{field: 'cno', title: '班级ID', minWidth:120}
-                    ,{field: 'stel', title: '电话', minWidth:160}
-                    ,{field: 'state', title: '在校状态', minWidth:60}
-                    ,{field: 'card_num', title: '银行卡号', minWidth:180}
+                    ,{field: 'sno', title: '学号', sort: true}
+                    ,{field: 'sname', title: '姓名'}
+                    ,{field: 'ssex', title: '性别'}
+                    ,{field: 'sbirthday', title: '出生年月',}  // 待转换数据
+                    ,{field: 'sdomitory', title: '寝室'}
+                    ,{field: 'cno', title: '班级ID'}
+                    ,{field: 'stel', title: '电话'}
+                    ,{field: 'state', title: '在校状态'}
                 ]
             ]
         });
@@ -647,8 +539,6 @@
             switch(obj.event){
                 case 'getCheckData_teacher2Id':
                     var data = checkStatus.data;  //获取选中行数据
-                    // document.getElementById("get_teacher2Id").value = data[0].tno;  //将获取的数据中的dno值给input
-                    // document.getElementById("get_teacher2Id").value = "(工号："+data[0].tno+")" + data[0].tname;
                     $(temp).attr("value","(工号："+data[0].tno+")" + data[0].tname);
                     $(temp).next().attr("value",data[0].tno);
                     if (document.getElementById("ts").value != ""){
@@ -667,11 +557,29 @@
             switch(obj.event){
                 case 'getCheckData_studentId':
                     var data = checkStatus.data;  //获取选中行数据
-                    // document.getElementById("get_teacher2Id").value = data[0].tno;  //将获取的数据中的dno值给input
-                    // document.getElementById("get_studentId").value = "(工号："+data[0].tno+")" + data[0].tname;
-                    // document.getElementById("ts").value = data[0].tno;
+                    // TODO 这里是团队负责人对的内容，所以不管，但是在团队人数哪，下面应该是要加入元素的
+                    document.getElementById('lead').value = data[0].sno+":"+data[0].sname;
+                    document.getElementById('leader').value = data[0].sno;
                     layer.closeAll(); //疯狂模式，关闭所有层
                     break;
+                case 'getCheckData_teamId':
+                    // TODO 暂时是这个逻辑，先留着
+                    var data = checkStatus.data;  //获取选中行数据
+                    var tms = $('#tms');
+                    let value = data[0].sno+":"+data[0].sname;
+                    if (teamCount < 6){
+                        let teamClass = 'teammate'+teamCount;
+                        $("#tmsArea").append("<input type='text' id=teamClass autocomplete='off' class='layui-input layui-btn layui-btn-primary' onclick='chooseStudentBox(this)'>");
+                        document.getElementById(teamClass).value = data[0].sno+":"+data[0].sname
+                        if (document.getElementById("tms").value != ""){
+                            document.getElementById("tms").value = document.getElementById("tms").value+","+ data[0].tno;
+                        }else{
+                            document.getElementById("tms").value = data[0].tno;
+                        }
+                        teamCount++;
+                    }else{
+                        layer.msg("团队成员不能超过六名");
+                    }
             };
         });
 
@@ -682,21 +590,47 @@
             act1[type] ? act1[type].call(this) : '';   //不太懂，反正就开始重载 了
         });
 
-        $('#btn_search_teacher1Id').on('click', function () {
-            var type = $(this).data('type');
-            act2[type] ? act2[type].call(this) : '';
-        });
 
         $('#btn_search_teacher2Id').on('click', function () {
             var type = $(this).data('type');
             act3[type] ? act3[type].call(this) : '';
         });
 
-        $('#btn_search_studentId').on('click', function () {
-            alert("btn_search_studentId已经按下");
-            var type = $(this).data('type');
-            act3[type] ? act3[type].call(this) : '';
+        $('#btn_search_student').on('click', function () {
+            var search_sno = $('#search_sno').val();
+            var search_sname = $('#search_sname').val();
+            console.log(search_sno);
+            console.log(search_sname);
+            if (search_sno != ""){  // 如果学号不为空，则按学号搜索
+                //执行重载
+                table.reload('layer_studentId_table', {
+                    method:'POST'
+                    ,page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    , where: {
+                        sno: search_sno//注意用，隔开
+                    }
+                    ,url: '/queryBySno'
+                }, 'data');
+            }
+            if (search_sno == "" && search_sname != ""){    // 如果学号为空，名字不为空，则按名字搜索
+                //执行重载
+                table.reload('layer_studentId_table', {
+                    method:'POST'
+                    ,page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    , where: {
+                        sname: search_sname,//注意用，隔开
+                        pageNum : 1,
+                        pageSize : 1
+                    }
+                    ,url: '/queryBySname'    //访问UserController中的方法
+                }, 'data');
+            }
         });
+
 
         //比赛名称条件模糊查询
         var $ = layui.$, act1 = {
@@ -716,34 +650,9 @@
                 }, 'data');
             }
         };
-        //指导老师1条件模糊查询
-        var $ = layui.$, act2 = {
-            reload: function () {
-                var search_tno = $('#search_tno').val();
-                var search_tname = $('#search_tname').val();
-                var search_dcollege = $('#search_dcollege').val();
-                var search_dname = $('#search_dname').val();
-                var search_ttitle = $('#search_ttitle').val();
-                //执行重载
-                console.log(search_dcollege);
-                table.reload('layer_teacher1Id_table', {   //layer_teacher1Id_table为表格的id名
-                    method:'POST'
-                    ,page: {
-                        curr: 1 //重新从第 1 页开始
-                    }
-                    , where: {
-                        tno: search_tno,//注意用，隔开
-                        tname: search_tname,
-                        dcollege: search_dcollege,
-                        dname:search_dname,
-                        ttitle: search_ttitle
-                    }
-                    ,url: '/teacher1/keyword_search'    //访问UserController中的方法
-                }, 'data');
-            }
-        };
-        //指导老师1条件模糊查询
-        var $ = layui.$, act3 = {
+
+        //指导老师条件模糊查询
+        var act3 = {
             reload: function () {
                 var search_tno = $('#search_tno2').val();
                 var search_tname = $('#search_tname2').val();
