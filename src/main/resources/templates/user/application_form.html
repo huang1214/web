@@ -53,13 +53,13 @@
     .layui-input:focus, .layui-textarea:focus{
         border-color:#5FB878!important
     }
+    .comLeaderBox{
+        background-color:red;
+    }
 
 </style>
 <script>
-    var temp;   //用于获取othis的内容
-    var studentTemp;    // 储存学生框信息
-    function chooseTeacherBox(othis){
-        temp=othis;
+    function chooseTeacherBox(){
         layer.open({
             type: 1  //1为页面层
             ,title: '指导老师编号'  //弹出层标题
@@ -146,7 +146,6 @@
 </div>
 <!--弹出层：学生选框-->
 <div id="layer_studentId">
-
     <form class="layui-form" action="" style="margin-top: 20px">
         <div class="layui-row">
             <label class="layui-form-label">学生编号：</label>
@@ -250,43 +249,48 @@
         </div>
 
         <div class="layui-form-item"  id="teacherArea">
-
-            <button type="button" class="layui-btn" id="addteacher">添加老师</button>
+            <button type="button" class="layui-btn" id="addteacher" onclick="chooseTeacherBox()">添加老师</button>
         </div>
 
 
-        <div class="layui-form-item" style="display: block">
+        <div class="layui-form-item" style="display: none">
             <div class="layui-inline ">
                 <label class="layui-form-label">真实指导老师</label>
                 <input type="text" name="ts" id="ts" lay-filter="ts" data-method="offset" value="" data-type="t" autocomplete="off" class="layui-input layui-btn layui-btn-primary">
             </div>
         </div>
 
-        <div class="layui-form-item">
-            <div class="layui-inline" id="div_leader">
-                <label class="layui-form-label">项目组长</label>
-                <div class="layui-input-block">
-                    <input type="text" name="lead" id="lead" autocomplete="off" class="layui-input layui-btn layui-btn-primary"  onclick="chooseStudentBox(this)">
-                    <input type="text" name="leader" id="leader" autocomplete="off" class="layui-input layui-btn layui-btn-primary" style="display: none">
+        <div class="layui-form-item" id="studentArea">
+            <!--<div class="layui-inline" id="div_leader">-->
+                <!--<label class="layui-form-label">项目组长</label>-->
+                <!--<div class="layui-input-block">-->
+                    <!--&lt;!&ndash;<input type="text" name="lead" id="lead" autocomplete="off" class="layui-input layui-btn layui-btn-primary"  onclick="chooseStudentBox(this)">&ndash;&gt;-->
+                    <!--<input type="text" name="leader" id="leader" autocomplete="off" class="layui-input layui-btn layui-btn-primary" style="display: none">-->
+                <!--</div>-->
+            <!--</div>-->
+            <button type="button" class="layui-btn" id="addStudent" onclick="chooseStudentBox(this)">添加成员</button>
+            <input type="hidden" name="leader" id="leader" value="">
+            <input type="hidden" name="tms" id="tms" value="">
+            <div id="studentBoxArea">
 
-                </div>
+
             </div>
         </div>
 
-        <div class="layui-form-item layui-form-text" id="div_textarea">
-            <label class="layui-form-label">团队成员</label>
-            <div class="layui-input-block">
-                <button class="layui-btn" onclick="chooseStudentBox(this)">点击添加团队成员</button>
-                <input type="text" name="tms" id="tms" autocomplete="off" class="layui-input layui-btn layui-btn-primary">
-            </div>
-            <div class="layui-form-item">
-                <div class="layui-inline" id="div_tms">
-                    <div class="layui-input-block" id="tmsArea">
+        <!--<div class="layui-form-item layui-form-text" id="div_textarea">-->
+            <!--<label class="layui-form-label">团队成员</label>-->
+            <!--<div class="layui-input-block">-->
+                <!--<button class="layui-btn" onclick="chooseStudentBox()">点击添加团队成员</button>-->
+                <!--<input type="text" name="tms" id="tms" autocomplete="off" class="layui-input layui-btn layui-btn-primary">-->
+            <!--</div>-->
+            <!--<div class="layui-form-item">-->
+                <!--<div class="layui-inline" id="div_tms">-->
+                    <!--<div class="layui-input-block" id="tmsArea">-->
 
-                    </div>
-                </div>
-            </div>
-        </div>
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
 
         <div class="layui-form-item layui-form-text" id="div_workBriefIntro">
             <label class="layui-form-label">作品简介<span style="color: red">*</span></label>
@@ -417,17 +421,15 @@
         // TODO 添加老师按钮
         $('#addteacher').on('click', function(){
             // TODO 需要修改一下样式，使得出现的更加合理
-            if (teacherInputCount < 3){     // 限制指导老师框的数量
-                $("#teacherArea").append("<div class='layui-inline' ><div class='layui-input-inline'>" +
-                    "<input type='text'  data-method=' offset'data-type='t' autocomplete='off' class='layui-input layui-btn layui-btn-primary' onclick='chooseTeacherBox(this)' value='' placeholder=' 选取指导老师'>" +
-                    "<input type='hidden' value='2' class='teacherIDBox'>"+
-                    "</div></div>");
-                teacherInputCount++;
-            }else{
-                layer.msg("无法添加更多指导老师");
-            }
-
-
+            // if (teacherInputCount < 3){     // 限制指导老师框的数量
+            //     $("#teacherArea").append("<div class='layui-inline' ><div class='layui-input-inline'>" +
+            //         "<input type='text'  data-method=' offset'data-type='t' autocomplete='off' class='layui-input layui-btn layui-btn-primary' onclick='chooseTeacherBox(this)' value='' placeholder=' 选取指导老师'>" +
+            //         "<input type='hidden' value='2' class='teacherIDBox'>"+
+            //         "</div></div>");
+            //     teacherInputCount++;
+            // }else{
+            //     layer.msg("无法添加更多指导老师");
+            // }
         });
 
         // 比赛名称弹出层>>表格
@@ -539,48 +541,79 @@
             switch(obj.event){
                 case 'getCheckData_teacher2Id':
                     var data = checkStatus.data;  //获取选中行数据
-                    $(temp).attr("value","(工号："+data[0].tno+")" + data[0].tname);
-                    $(temp).next().attr("value",data[0].tno);
-                    if (document.getElementById("ts").value != ""){
-                        document.getElementById("ts").value = document.getElementById("ts").value+","+ data[0].tno;
-                    }else{
-                        document.getElementById("ts").value = data[0].tno;
-                    }
+                    var inpT="<div class='layui-inline' ><div class='layui-input-inline'>" +
+                        "<input type='text' class='layui-input layui-btn layui-btn-primary tsBox' value='"+
+                        data[0].tno+":"+data[0].tname+
+                        "'></div></div>";
+                    $("#teacherArea").append(inpT);
+                    // if (document.getElementById("ts").value != ""){
+                    //     document.getElementById("ts").value = document.getElementById("ts").value+","+ data[0].tno;
+                    // }else{
+                    //     document.getElementById("ts").value = data[0].tno;
+                    // }
                     layer.closeAll(); //疯狂模式，关闭所有层
                     break;
             };
+            document.getElementById('ts').value = "";
+            $(".tmsBox").each(function (index,item) {
+                var val1=item.value;
+                var aa=val1.split(":")[0];
+                document.getElementById('ts').value += ","+aa;
+            });
         });
         // 弹出层学生信息的获取
         // TODO 学生获取数据按钮
         table.on('toolbar(layer_studentId_table)', function(obj){//注：tool 是工具条事件名，layer_com_table 是 table 原始容器的属性 lay-filter="对应的值"
             var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+            // alert("0");
             switch(obj.event){
                 case 'getCheckData_studentId':
+                    // alert("1");
                     var data = checkStatus.data;  //获取选中行数据
-                    // TODO 这里是团队负责人对的内容，所以不管，但是在团队人数哪，下面应该是要加入元素的
-                    document.getElementById('lead').value = data[0].sno+":"+data[0].sname;
+                    var inpS="<div class='layui-inline' ><div class='layui-input-inline'>" +
+                        "<input type='text' class='layui-input layui-btn layui-btn-primary comLeaderBox tmsBox' value='"+
+                        data[0].sno+":"+data[0].sname+
+                        "'></div></div>";
+                    //把原来的队长去掉
+                    $(".comLeaderBox").removeClass("comLeaderBox");
+                    $("#studentBoxArea").prepend(inpS);
                     document.getElementById('leader').value = data[0].sno;
                     layer.closeAll(); //疯狂模式，关闭所有层
                     break;
                 case 'getCheckData_teamId':
-                    // TODO 暂时是这个逻辑，先留着
                     var data = checkStatus.data;  //获取选中行数据
-                    var tms = $('#tms');
-                    let value = data[0].sno+":"+data[0].sname;
+                    var inpS=
+                        "<div class='layui-inline' ><div class='layui-input-inline'>" +
+                        "<input type='text' class='layui-input layui-btn layui-btn-primary tmsBox' value='"+
+                        data[0].sno+":"+data[0].sname+
+                        "'></div></div>";
                     if (teamCount < 6){
-                        let teamClass = 'teammate'+teamCount;
-                        $("#tmsArea").append("<input type='text' id=teamClass autocomplete='off' class='layui-input layui-btn layui-btn-primary' onclick='chooseStudentBox(this)'>");
-                        document.getElementById(teamClass).value = data[0].sno+":"+data[0].sname
-                        if (document.getElementById("tms").value != ""){
-                            document.getElementById("tms").value = document.getElementById("tms").value+","+ data[0].tno;
-                        }else{
-                            document.getElementById("tms").value = data[0].tno;
-                        }
+                        // let teamClass = 'teammate'+teamCount;
+                        // $("#tmsArea").append("<input type='text' id=teamClass autocomplete='off' class='layui-input layui-btn layui-btn-primary' onclick='chooseStudentBox(this)'>");
+                        // document.getElementById(teamClass).value = data[0].sno+":"+data[0].sname
+                        // if (document.getElementById("tms").value != ""){
+                        //     document.getElementById("tms").value = document.getElementById("tms").value+","+ data[0].tno;
+                        // }else{
+                        //     document.getElementById("tms").value = data[0].tno;
+                        // }
+                        // alert(inpS)
+                        $("#studentBoxArea").append(inpS);
                         teamCount++;
                     }else{
                         layer.msg("团队成员不能超过六名");
                     }
+                    layer.closeAll(); //疯狂模式，关闭所有层
+                    break;
             };
+            document.getElementById('tms').value = "";
+            // $('#tms').value = "";
+            $(".tmsBox").each(function (index,item) {
+                // alert(item.value);
+                var val1=item.value;
+                var aa=val1.split(":")[0];
+                // alert(aa)
+                document.getElementById('tms').value += ","+aa;
+            });
         });
 
 

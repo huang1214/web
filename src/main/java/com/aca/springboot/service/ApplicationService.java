@@ -6,15 +6,11 @@ import com.aca.springboot.entities.json;
 import com.aca.springboot.mapper.ApplicationMapper;
 import com.aca.springboot.vo.AppComAppLeaderVO;
 import com.aca.springboot.vo.AppComDetailVO;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.standard.expression.Each;
-
 import java.util.*;
 
 @Service
@@ -212,7 +208,6 @@ public class ApplicationService {
         if(i==1){
             return true;
         }
-
         return false;
 
     }
