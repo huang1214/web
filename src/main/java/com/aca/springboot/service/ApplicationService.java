@@ -199,7 +199,6 @@ public class ApplicationService {
         Map map = new HashMap<String,String>();
         map.put("APPID",appid);
         AppComDetailVO application_detail = applicationMapper.get_application_detail(map);
-
         return application_detail;
     }
 
