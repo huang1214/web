@@ -192,13 +192,25 @@
                     }
                 );
             }else if(layEvent === 'ensure'){ //确定该条申请结果
-                /*                layer.confirm('真的确定了吗', function(index) {
-                                });*/
-                layer.alert('真的确定了吗', {
-                    skin: 'layui-layer-molv'
-                    ,closeBtn: 1
-                    ,anim: 4 //动画类型
-                });
+                $.ajax(
+                    {
+                        url: '/app/change?appid=' + data.appid+'&operation=assure',     // 请求地址,访问controller中的ccc方法, 就是你的控制器, 如 test.com/home/index/index
+                        type: 'POST',   // 请求方式
+                        success: function (result) {
+                            console.log('success...'); // 请求成功后的回调函数, result 为响应内容
+                            if(result.code == 0){
+                                layer.alert('确认成功！');
+                            }else {
+                                layer.alert('确认失败！');
+                            }
+
+                        },
+                        error: function () {
+                            console.log('Send Request Fail..'); // 请求失败时的回调函数
+                        }
+                    }
+                );
+
             } else if(layEvent === 'LAYTABLE_TIPS'){
                 layer.alert('Hi，头部工具栏扩展的右侧图标。');
             }
@@ -324,8 +336,6 @@
             lStu_sno.innerHTML=data.leaderStu.sno;
             lStu_sname.innerHTML=data.leaderStu.sname;
             lStu_cno.innerHTML=data.leaderStu.cno;*/
-
-
         }
     });
 </script>
