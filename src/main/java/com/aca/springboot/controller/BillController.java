@@ -5,6 +5,7 @@ import com.aca.springboot.entities.Message;
 import com.aca.springboot.service.BillService;
 import com.aca.springboot.utils.TimeUtil;
 import com.aca.springboot.vo.BillVO;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,7 +40,7 @@ public class BillController {
         }
         return addAwardMessage;
     }
-    //获取该登录学生的所有报销记录
+    //获取该登录学生的所有报销记录,ok
     @GetMapping(value = "query/{sno}")
     @ResponseBody
     public Message getAllBillByID(@PathVariable("sno") String sno){
@@ -50,6 +51,22 @@ public class BillController {
         billListMessage.setMessage("查询成功");
         billListMessage.setData(billList);
         return billListMessage;
+    }
+    //获取该登录学生的所有报销记录,分页
+    @GetMapping(value = "query/{sno}/{currPage}")
+    @ResponseBody
+    public Message getAllBillByIDWithPage(@PathVariable("sno") String sno,@PathVariable("currPage") Integer currPage){
+        Message billListWithPageMessage=new Message();
+        PageInfo<BillVO> pageInfo=billService.queryAllBillWithPage(sno,currPage);
+        if(pageInfo!=null){
+            billListWithPageMessage.setCode(200);
+            billListWithPageMessage.setMessage("分页查询成功");
+            billListWithPageMessage.setData(pageInfo);
+        }else {
+            billListWithPageMessage.setCode(202);
+            billListWithPageMessage.setMessage("分页查询失败");
+        }
+        return billListWithPageMessage;
     }
     //获取所有报销记录
     @GetMapping(value = "query")
