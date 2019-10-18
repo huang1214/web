@@ -12,9 +12,10 @@ import com.aca.springboot.entities.Student;
  */
 
 public class AppComAppLeaderVO extends Application {
-    public Competition competion;
-    public Student appplicantStu;
-    public Student leaderStu;
+    private Competition competion;
+    private Student appplicantStu;
+    private Student leaderStu;
+    private int res;
 
     public AppComAppLeaderVO() {
     }
@@ -25,6 +26,14 @@ public class AppComAppLeaderVO extends Application {
 
     public void setCompetion(Competition competion) {
         this.competion = competion;
+    }
+
+    public int getRes() {
+        return res;
+    }
+
+    public void setRes(int res) {
+        this.res = res;
     }
 
     public Student getAppplicantStu() {

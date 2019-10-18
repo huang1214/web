@@ -13,6 +13,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.standard.expression.Each;
 
 import java.util.*;
 
@@ -176,6 +177,12 @@ public class ApplicationService {
         map.put("SNO",sno);
         json result=new json();
         PageInfo re=new PageInfo(applicationMapper.get_application_list(map));
+        List<AppComAppLeaderVO> list = re.getList();
+        for (int i=0;i<list.size();i++){
+            if(sno.equals(list.get(i).getLeader()))
+                list.get(i).setRes(1);
+        }
+        re.setList(list);
         result.setCode(0);
         result.setMsg("成功");
         result.setCount(re.getSize());
