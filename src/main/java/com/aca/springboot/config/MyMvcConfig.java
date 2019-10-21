@@ -64,6 +64,7 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
                  * 竞赛信息的查询
                  */
                 registry.addViewController("admin/com_search").setViewName("/admin/com_search");
+                registry.addViewController("admin/audit").setViewName("/admin/audit");
             }
 
             //注册拦截器

@@ -152,6 +152,7 @@ public class ApplicationController {
         return applicationService.getawardtype(u_comName, u_level_type, u_prize_type);
     }
 
+
     @ResponseBody
     @RequestMapping("/list")
     public json get_list(@RequestParam(value = "sno", required = false, defaultValue = "111") String sno,
@@ -161,6 +162,8 @@ public class ApplicationController {
         return applicationService.get_list_json(sno, pageNum, pageSize);
     }
 
+
+    /*学长的代码（他不让我动 →_→ ）：
     @ResponseBody
     @RequestMapping("/list_test")
     public Message get_list_test(@RequestParam(value = "type", required = false, defaultValue = "0") int type,
@@ -168,7 +171,18 @@ public class ApplicationController {
                                  @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
         //TODO 暂时用做测试用
         return new Message(0, "成功", applicationService.get_list_with_page_m(type, pageNum, pageSize));
+    }*/
+    /*这以下是机智的我写的*/
+    @ResponseBody
+    @RequestMapping("/list_test")
+    public json get_list_test(@RequestParam(value = "type", required = false, defaultValue = "0") int type,
+                                 @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
+                                 @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+        //TODO
+        //return new Message(0, "成功", applicationService.get_list_with_page_m(type, pageNum, pageSize));
+        return applicationService.get_list_with_page_m(type, pageNum, pageSize);
     }
+    /*这以上是机智的我写的*/
 
     /**
      * 获取app详情

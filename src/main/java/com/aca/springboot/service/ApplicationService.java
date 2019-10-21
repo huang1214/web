@@ -155,14 +155,31 @@ public class ApplicationService {
      * 获取申请列表
      * @return
      */
-    public PageInfo<AppComAppLeaderVO> get_list_with_page_m(int status, int pageNum, int pageSize){
+    /*学长的代码（他不让我动 →_→ ）：
+     public PageInfo<AppComAppLeaderVO> get_list_with_page_m(int status, int pageNum, int pageSize){
         PageHelper.startPage(pageNum,pageSize);
         Map map = new HashMap<String,String>();
         map.put("status",status);
         PageInfo re=new PageInfo(applicationMapper.get_application_list_m(map));
         return re;
+    }*/
+    /*这以下是机智的我写的*/
+    public json get_list_with_page_m(int status, int pageNum, int pageSize){
+        PageHelper.startPage(pageNum,pageSize);
+        Map map = new HashMap<String,String>();
+        map.put("status",status);
+        json result=new json();
+        PageInfo re=new PageInfo(applicationMapper.get_application_list_m(map));
+        List<AppComAppLeaderVO> list = re.getList();
+        re.setList(list);
+        result.setCode(0);
+        result.setMsg("成功");
+        result.setCount(re.getSize());
+        JSONArray jsonArray=new JSONArray(re.getList());
+        result.setData(jsonArray);
+        return result;
     }
-
+/*这以上是机智的我写的*/
     /**
      * 获取申请列表
      * @return

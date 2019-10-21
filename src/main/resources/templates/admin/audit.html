@@ -7,97 +7,386 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>登录后管理员主页</title>
-    <!-- Bootstrap core CSS -->
-    <link href="asserts/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.0.0/css/bootstrap.css}" rel="stylesheet">
-    <script type="text/javascript" src="asserts/js/jquery-3.2.1.slim.min.js" th:src="@{/webjars/jquery/3.3.1/jquery.js}"></script>
-    <script type="text/javascript" src="asserts/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/4.0.0/js/bootstrap.js}"></script>
-    <!-- Custom styles for this template -->
-    <link href="asserts/css/dashboard.css" th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
-    <!--<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">-->
-    <script>
-        $(document).ready(function(){
-            $("#flip").click(function(){
-                $("#panel").slideToggle("slow");
-            });
-            $("#bun1").click(function(){
-                alert("审核成功！");
-            });
-        });
-    </script>
-    <style type="text/css">
-        #panel
-        {
-            display:none;
+    <title>管理员审核</title>
+    <link rel="stylesheet" href="https://www.layuicdn.com/layui/css/layui.css">
+    <script src="https://www.layuicdn.com/layui/layui.js"></script>
+
+    <style>
+        .layui-input:focus, .layui-textarea:focus{
+            border-color:#5FB878!important
         }
-        .btn btn-sm btn-secondary
-        {
-            margin-left: 5px;
+        #layer_application_detail{
+            display: none;
         }
-        .
     </style>
-
 </head>
-
 <body>
-<!--引入topbar-->
-<div th:replace="commons/admin_bar::topbar"></div>
-<div class="container-fluid">
-    <div class="row">
-        <!--引入sidebar-->
-        <div th:replace="commons/admin_bar::#sidebar(activeUri='/admin/audit')"></div>
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-            <h4>审核申请</h4>
-            <form id="check_work" th:action="@{/check_work}">
-                <div id="app" class="table-responsive" style="margin-left:10px;margin-top:10px">
-                    <table id="CheckList" class="table table-striped table-sm"  align="center">
-                        <tr>
-                            <th>申请表编号</th>
-                            <th>竞赛名称</th>
-                            <th>参赛获奖名称</th>
-                            <th>项目负责人编号</th>
-                            <th>指导老师</th>
-                            <th>学生获得奖金</th>
-                            <th>老师获得奖金</th>
-                            <th>获奖年份</th>
-                            <th>编辑</th>
-                        </tr>
-                    </table>
-                </div>
-            </form>
-        </main>
-    </div>
+<div class="form-data">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
+        <legend>管理员需审核申请状态表</legend>
+    </fieldset>
+    <table class="layui-hide" id="application_audit" lay-filter="application_operate"></table>
+    <table class="layui-hide" id="application_state_detail" lay-filter="application_state_detail"></table>
 </div>
-</body>
-</html>
-<script>
-    var info_url = "http://localhost:8083/success/list";
-    $.get(info_url,function(result){
-        //result是本次请求收到的响应数据
-        console.log(result);   //在后天显示数据，页面中不会显示
-        for(var i in result){
-            if( result[i].is_check == "0"){
-                var tr;
-                tr = "<td>"+result[i].app_id+"</td>";
-                tr +="<td>"+result[i].competition_name+"</td>";
-                tr +="<td>"+result[i].work_name+"</td>";
-                tr += "<td>"+result[i].leader_id+"</td>";
-                if( result[i].teacher_id == null || result[i].teacher_id == ""){
-                    tr += "<td></td>";
-                }else{
-                    tr += "<td>"+result[i].teacher_id+"</td>";
-                }
-                tr += "<td>"+result[i].student_price+"</td>";
-                tr += "<td>"+result[i].teacher_price+"</td>";
-                tr += "<td>"+result[i].date_year+"</td>";
-                tr += "<td><div class='btn-group' role='group' aria-label='Basic example'><button class='btn btn-sm btn-secondary' id='btn1' name='check_id' value='1,"+result[i].app_id+"'>通过</button>" +
-                    "<button class='btn btn-sm btn-secondary' id='btn2' name='check_id' value='2,"+result[i].app_id+"'>不通过</button></div></td>";
-                $("#CheckList").append("<tr>"+tr+"</tr>");
-            }
-        }
-        $("button").click(function(){
-            alert("审核成功！");
-        });
-    });
+<div id="layer_application_detail">
+    <!-- <table class="layui-hide" ></table>-->
+    <table class="layui-table" id="application_detail_table" lay-filter="application_detail" lay-size="lg">
+        <colgroup>
+            <col width="150">
+            <col width="200">
+            <col>
+        </colgroup>
+        <thead>
+        <tr>
+            <td>申请编号</td>
+            <td id="appid"></td>
+        </tr>
+        </thead>
+        <tbody>
+        <!--比赛信息-->
+        <tr>
+            <td>比赛名称</td>
+            <td id="ctname"></td>
+        </tr>
+        <tr>
+            <td>获奖时间</td>
+            <td id="awardDate"></td>
+        </tr>
+        <tr>
+            <td>第一单位</td>
+            <td id="unit"></td>
+        </tr>
+        <tr>
+            <td>学科和科技竞赛分类</td>
+            <td id="com_type"></td>
+        </tr>
+        <tr>
+            <td>成果类型</td>
+            <td id="result_type"></td>
+        </tr>
+        <tr>
+            <td>获奖级别</td>
+            <td id="level_type"></td>
+        </tr>
+        <tr>
+            <td>所获奖项</td>
+            <td id="prize_type"></td>
+        </tr>
+        <tr>
+            <td>作品名称</td>
+            <td id="workName"></td>
+        </tr>
+        <tr>
+            <td>作品简介</td>
+            <td id="workBriefIntro"></td>
+        </tr>
+
+        <!--申请人信息appplicantStu-->
+        <!--        <tr>
+                    <td>申请人学号</td>
+                    <td id="aStu_sno"></td>
+                </tr>
+                <tr>
+                    <td>申请人姓名</td>
+                    <td id="aStu_sname"></td>
+                </tr>
+                <tr>
+                    <td>申请人班级编号</td>
+                    <td id="aStu_cno"></td>
+                </tr>
+                &lt;!&ndash;组长信息leaderStu&ndash;&gt;
+                <tr>
+                    <td>项目组长学号</td>
+                    <td id="lStu_sno"></td>
+                </tr>
+                <tr>
+                    <td>项目组长姓名</td>
+                    <td id="lStu_sname"></td>
+                </tr>
+                <tr>
+                    <td>项目组长班级编号</td>
+                    <td id="lStu_cno"></td>
+                </tr>-->
+        <!--指导老师信息-->
+
+        </tbody>
+    </table>
+</div>
+
+<script src="../asserts/js/jquery-1.12.4.js"></script>
+<script src="../asserts/js/layui/layui.all.js"></script>
+
+<script type="text/html" id="bar">
+    <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="detail" id="btn_detail" name="btn_detail">查看详情</button>
+
+    <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="audit" id="btn_audit" name="btn_audit">审核</button>
 
 </script>
+
+
+<script>
+    layui.use(['table','layer'], function(){
+        var table = layui.table;
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        var oper;
+
+        //显示表单状态基本信息
+        var table_audit=table.render({
+            elem: '#application_audit'
+            ,height: 312
+            ,url: '/app/list_test'//数据接口
+            ,page: true //开启分页
+            ,cols: [
+                [ //表头
+                    //详情中含有 指导老师，团队具体人员，第一单位，
+                    //layui中显示一个对象中另一个对象的属性值
+                    // { field: 'dname', title : '部门', width:80,templet: '<div>{{d.dept.dname}}</div>'}
+                    {field: 'appid', title: '申请编号',Width:109, sort: true,fixed: 'left'}
+                    ,{field: 'ctname', title: '比赛名称',Width:100,templet: '<div>{{d.competion.ctname}}</div>'}
+                    ,{field: 'applicantId', title: '申请人',Width:75,templet: '<div>{{d.appplicantStu.sname}}</div>'}
+                    ,{field: 'leader', title: '项目组长',Width:75,templet: '<div>{{d.leaderStu.sname}}</div>'}
+                    ,{field: 'studentPrice', title: '学生奖励金额',width: 50,templet: function(d){
+                        return d.studentPrice/100;}}
+                    ,{field: 'teacherPrice', title: '老师奖励金额',width: 50,templet: function(d){
+                        return d.teacherPrice/100;}}
+                    ,{field: 'awardDate', title: '申请时间',Width: 75, sort: true}
+                    ,{field: 'status', title: '申请状态',Width: 135,templet: function(d){
+                        if (d.status==0) {  // 自定义内容
+                            return "未审核";
+                        } else if (d.status==1) {
+                            return "审核未通过";
+                        }
+                        else if (d.status==2) {
+                            return "审核通过";
+                        }
+                        else if (d.status==3) {
+                            return "项目组长已确认";
+                        }
+                      }}
+                    ,{fixed: 'right', title:'操作', toolbar: '#bar',Width:250}
+                ]
+            ]
+        });
+
+
+        //表格：“表单状态基本信息” 实例的监听工具条
+        table.on('tool(application_operate)', function(obj){ //注：tool 是工具条事件名，application_state 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+
+            if(layEvent === 'detail'){ //查看详情
+                //do something
+                console.log(data.appid);
+                $.ajax(
+                    {
+                        url: '/app/detail?appid=' + data.appid,     // 请求地址,访问controller中的ccc方法, 就是你的控制器, 如 test.com/home/index/index
+                        type: 'GET',   // 请求方式
+                        success: function (result) {
+                            console.log('success...'); // 请求成功后的回调函数, result 为响应内容
+                            console.log(result);
+                            layer.open({
+                                type: 1
+                                ,title: '查看详细信息'  //弹出层标题
+                                ,area: ['800px', '400px']   //设置弹出层大小[宽，高]
+                                ,offset: 'auto'   //设置弹出层位置 //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+                                ,content:$("#layer_application_detail")
+                                ,shade: 0 //不显示遮罩
+                                ,yes: function () {  //确定按钮回调方法， 需要手动关闭弹出层
+                                    layer.closeAll();
+                                }
+                                ,end:function(){
+                                    location.reload();
+                                }
+                            });
+                            setTableValue(result);//动态向表格赋值
+                        },
+                        error: function () {
+                            console.log('Send Request Fail..'); // 请求失败时的回调函数
+                        }
+                    }
+                );
+            }else if(layEvent === 'audit'){ //确定该条申请结果
+                //询问框
+                layer.confirm('请选择该条申请信息的审核结果：', {
+                    btn: ['通过','不通过'] //按钮
+                }, function(){
+                    layer.msg('pass', {icon: 1});
+                    oper="pass";
+                    console.log(data.appid);
+                    $.ajax(
+                        {
+                            url: '/app/change?appid=' + data.appid+'&operation='+oper,     // 请求地址,访问controller中的ccc方法, 就是你的控制器, 如 test.com/home/index/index
+                            type: 'POST',   // 请求方式
+                            success: function (result) {
+                                console.log(result); // 请求成功后的回调函数, result 为响应内容
+                                if(result.code == 0){
+                                    //layer.alert('审核成功！');
+                                }else {
+                                   // layer.alert('审核失败！');
+                                }
+                                table_audit.reload();   //表格重载
+                            },
+                            error: function () {
+                                console.log('Send Request Fail..'); // 请求失败时的回调函数
+                            }
+                        }
+                    );
+                }, function(){
+                    layer.msg('refuse',function(){
+                        layer.prompt({title: '请简述审核不通过的原因', formType: 2}, function(text, index){
+                            layer.close(index);
+                            layer.msg('审核完毕！未通过原因：' +'<br>您最后写下了：'+text);
+                            oper="refuse";
+                            console.log(oper+text);
+                            $.ajax(
+                                {
+                                    url: '/app/change?appid=' + data.appid+'&operation='+oper+'&note='+text,     // 请求地址,访问controller中的ccc方法, 就是你的控制器, 如 test.com/home/index/index
+                                    type: 'POST',   // 请求方式
+                                    success: function (result) {
+                                        console.log(result); // 请求成功后的回调函数, result 为响应内容
+                                        if(result.code == 0){
+                                           // layer.alert('审核成功！');
+                                        }else {
+                                          //  layer.alert('审核失败！');
+                                        }
+                                        table_audit.reload();   //表格重载
+                                    },
+                                    error: function () {
+                                        console.log('Send Request Fail..'); // 请求失败时的回调函数
+                                    }
+                                }
+                            );
+                        });
+                    } );
+                });
+            } else if(layEvent === 'LAYTABLE_TIPS'){
+                layer.alert('Hi，头部工具栏扩展的右侧图标。');
+            }
+        });
+
+        function setTableValue(result){
+            // console.log(data.appid+"这里执行了应该显示的申请号");
+            /*比赛信息*/
+            var appid=document.getElementById('appid');
+            var ctname=document.getElementById('ctname');
+            var workName=document.getElementById('workName');
+            var awardDate=document.getElementById('awardDate');
+            var workBriefIntro=document.getElementById('workBriefIntro');
+            var unit=document.getElementById('unit');
+
+            var com_type=document.getElementById('com_type');
+            var result_type=document.getElementById('result_type');
+            var level_type=document.getElementById('level_type');
+            var prize_type=document.getElementById('prize_type');
+
+            /*申请人信息*/
+            var aStu_sno=document.getElementById('aStu_sno');
+            var aStu_sname=document.getElementById('aStu_sname');
+            var aStu_cno=document.getElementById('aStu_cno');
+
+            /*项目组长信息*/
+            var lStu_sno=document.getElementById('lStu_sno');
+            var lStu_sname=document.getElementById('lStu_sname');
+            var lStu_cno=document.getElementById('lStu_cno');
+
+            appid.innerHTML=result.data.appid;               // 使用 DOM
+            ctname.innerHTML=result.data.com.ctname;
+            workName.innerHTML=result.data.workName;
+            awardDate.innerHTML=result.data.awardDate;
+            workBriefIntro.innerHTML=result.data.workBriefIntro;
+            unit.innerHTML=result.data.unit;
+
+            if(result.data.awar.com_type==0)
+            {
+                com_type.innerHTML="一般竞赛项目";
+            }
+            if(result.data.awar.com_type==1)
+            {
+                com_type.innerHTML="重点竞赛项目";
+            }
+
+            if(result.data.awar.result_type==0)
+            {
+                result_type.innerHTML="考试";
+            }
+            if(result.data.awar.result_type==1)
+            {
+                result_type.innerHTML="作品";
+            }
+
+            if(result.data.awar.level_type==0)
+            {
+                level_type.innerHTML="省级";
+            }
+            if(result.data.awar.level_type==1)
+            {
+                level_type.innerHTML="国家级";
+            }
+            if(result.data.awar.level_type==2)
+            {
+                level_type.innerHTML="校级";
+            }
+            if(result.data.awar.level_type==3)
+            {
+                level_type.innerHTML="院级";
+            }
+
+            if(result.data.awar.prize_type==1)
+            {
+                prize_type.innerHTML="特等奖";
+            }
+            if(result.data.awar.prize_type==2)
+            {
+                prize_type.innerHTML="一等奖";
+            }
+            if(result.data.awar.prize_type==3)
+            {
+                prize_type.innerHTML="二等奖";
+            }
+            if(result.data.awar.prize_type==4)
+            {
+                prize_type.innerHTML="三等奖";
+            }
+            if(result.data.awar.prize_type==5)
+            {
+                prize_type.innerHTML="优秀奖";
+            }
+            for(i=0;i<result.data.stus.length;i++)
+            {
+                $("<tr></tr>").append("<td>"+"项目成员"+(i+1)+"编号</td>")
+                    .append("<td>"+result.data.stus[i].sno+"</td>")
+                    .appendTo("#application_detail_table");
+                $("<tr></tr>").append("<td>"+"项目成员"+(i+1)+"姓名</td>")
+                    .append("<td>"+result.data.stus[i].sname+"</td>")
+                    .appendTo("#application_detail_table");
+                $("<tr></tr>").append("<td>"+"项目成员"+(i+1)+"班级编号</td>")
+                    .append("<td>"+result.data.stus[i].cno+"</td>")
+                    .appendTo("#application_detail_table");
+            }
+            for(i=0;i<result.data.teas.length;i++)
+            {
+                $("<tr></tr>").append("<td>"+"指导老师"+(i+1)+"编号</td>")
+                    .append("<td>"+result.data.teas[i].tno+"</td>")
+                    .appendTo("#application_detail_table");
+                $("<tr></tr>").append("<td>"+"指导老师"+(i+1)+"姓名</td>")
+                    .append("<td>"+result.data.teas[i].tname+"</td>")
+                    .appendTo("#application_detail_table");
+                $("<tr></tr>").append("<td>"+"指导老师"+(i+1)+"部门名称</td>")
+                    .append("<td>"+result.data.teas[i].dname+"</td>")
+                    .appendTo("#application_detail_table");
+            }
+
+            /* 这里没找到数据*/
+            /*            aStu_sno.innerHTML=result.appplicantStu.sno;
+                        aStu_sname.innerHTML=result.appplicantStu.sname;
+                        aStu_cno.innerHTML=result.appplicantStu.cno;
+
+                        lStu_sno.innerHTML=data.leaderStu.sno;
+                        lStu_sname.innerHTML=data.leaderStu.sname;
+                        lStu_cno.innerHTML=data.leaderStu.cno;*/
+        }
+    });
+</script>
+</body>
+</html>

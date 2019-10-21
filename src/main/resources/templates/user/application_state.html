@@ -137,15 +137,28 @@
                     //layui中显示一个对象中另一个对象的属性值
                     // { field: 'dname', title : '部门', width:80,templet: '<div>{{d.dept.dname}}</div>'}
                     {field: 'appid', title: '申请编号', minWidth:109, sort: true,fixed: 'left'}
-                    ,{field: 'ctname', title: '比赛名称', minWidth:200,templet: '<div>{{d.competion.ctname}}</div>'}
-                    ,{field: 'applicantId', title: '申请人', minWidth:105,templet: '<div>{{d.appplicantStu.sname}}</div>'}
-                    ,{field: 'leader', title: '项目组长', minWidth:105,templet: '<div>{{d.leaderStu.sname}}</div>'}
+                   // ,{field: 'ctname', title: '比赛名称', minWidth:200,templet: '<div>{{d.competion.ctname}}</div>'}
+                   // ,{field: 'applicantId', title: '申请人', minWidth:105,templet: '<div>{{d.appplicantStu.sname}}</div>'}
+                   // ,{field: 'leader', title: '项目组长', minWidth:105,templet: '<div>{{d.leaderStu.sname}}</div>'}
                     ,{field: 'studentPrice', title: '学生奖励金额', minWidth: 50,templet: function(d){
-                      return d.studentPrice/100;}}
+                        return d.studentPrice/100;}}
                     ,{field: 'teacherPrice', title: '老师奖励金额', minWidth: 50,templet: function(d){
                         return d.teacherPrice/100;}}
-                    ,{field: 'awardDate', title: '申请时间', minWidth: 135, sort: true}
-                    ,{fixed: 'right', title:'操作', toolbar: '#bar',minWidth:180}
+                    ,{field: 'awardDate', title: '申请时间', minWidth: 150, sort: true}
+                    ,{field: 'status', title: '申请状态', minWidth: 135,templet: function(d){
+                        if (d.status==0) {  // 自定义内容
+                            return "未审核";
+                        } else if (d.status==1) {
+                            return "审核未通过";
+                        }
+                        else if (d.status==2) {
+                            return "审核通过";
+                        }
+                        else if (d.status==3) {
+                            return "项目组长已确认";
+                        }
+                    }}
+                    ,{fixed: 'right', title:'操作', toolbar: '#bar',Width:100}
                 ]
             ]
         });
