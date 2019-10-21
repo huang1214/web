@@ -42,6 +42,8 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
 
                 /* 4.普通用户*/
                 registry.addViewController("user/dashboard").setViewName("/user/dashboard"); //仪表盘
+                registry.addViewController("user/user_info").setViewName("/user/user_info"); //仪表盘
+
                 /* 4.1预算备案*/
                 registry.addViewController("user/bill_notice").setViewName("/user/bill_notice"); //备案须知
                 registry.addViewController("user/bill_form").setViewName("/user/bill_form"); //备案申报
