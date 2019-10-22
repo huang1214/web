@@ -134,4 +134,8 @@
             </if>
         </where>
     </select>
+
+    <select id="selectTeacherBytno" resultMap="teacher_class">
+        select distinct * from TEACHER T join DEPT D on T.DNO = D.DNO where tno = #{tno}
+    </select>
 </mapper>

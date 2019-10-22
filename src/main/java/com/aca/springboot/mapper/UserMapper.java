@@ -1,5 +1,6 @@
 package com.aca.springboot.mapper;
 
+import com.aca.springboot.entities.Teacher;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -61,4 +62,5 @@ public interface UserMapper {
     public List teacher_search(@Param("tname") String tname,@Param("tsex") String tsex,@Param("dname") String dname,
                                @Param("dcollege") String dcollege,@Param("ttitle") String ttitle);
 
+    public Teacher selectTeacherBytno(@Param("tno") String tno);
 }

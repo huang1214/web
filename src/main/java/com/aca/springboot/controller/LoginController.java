@@ -1,6 +1,7 @@
 package com.aca.springboot.controller;
 
 import com.aca.springboot.entities.Student;
+import com.aca.springboot.entities.Teacher;
 import com.aca.springboot.entities.test;
 import com.aca.springboot.service.StudentService;
 import com.aca.springboot.service.testService;
@@ -56,10 +57,12 @@ public class LoginController {
         if(tname == 2 |tname == 3 ){
             //登陆成功，防止表单重复提交，可以重定向到主页
             if(usertype == 1){
-                Student user = studentService.selectBySnoReturnObject(username);
-                session.setAttribute("loginUser",user);
+                Student student = studentService.selectBySnoReturnObject(username);
+                session.setAttribute("loginUser",student);
                 session.setAttribute("type",1);   //1为学生
             }else{
+                Teacher teacher = UserService.selectByTno(username);
+                session.setAttribute("loginUser",teacher);
                 session.setAttribute("type",2);   //2为老师
             }
             return "redirect:/user_index.html";
