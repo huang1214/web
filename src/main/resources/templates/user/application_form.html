@@ -225,11 +225,11 @@
             <div class="layui-input-inline">
                 <select name="prize_type" lay-verify="verify_prize_type">
                     <option value="">--</option>
-                    <option value="0">特等奖</option>
-                    <option value="1">一等奖</option>
-                    <option value="2">二等奖</option>
-                    <option value="3">三等奖</option>
-                    <option value="4">优秀奖</option>
+                    <option value="1">特等奖</option>
+                    <option value="2">一等奖</option>
+                    <option value="3">二等奖</option>
+                    <option value="4">三等奖</option>
+                    <option value="5">优秀奖</option>
                 </select>
             </div>
         </div>
@@ -555,7 +555,7 @@
                     break;
             };
             document.getElementById('ts').value = "";
-            $(".tmsBox").each(function (index,item) {
+            $(".tsBox").each(function (index,item) {
                 var val1=item.value;
                 var aa=val1.split(":")[0];
                 document.getElementById('ts').value += ","+aa;
