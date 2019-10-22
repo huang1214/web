@@ -1,6 +1,7 @@
 package com.aca.springboot.controller;
 
 import com.aca.springboot.entities.Bill;
+import com.aca.springboot.entities.BillMember;
 import com.aca.springboot.entities.Message;
 import com.aca.springboot.service.BillService;
 import com.aca.springboot.utils.TimeUtil;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -23,11 +25,80 @@ public class BillController {
         this.billService=billService;
     }
     //添加一条报销记录,通过测试
-    @PostMapping(value = "add")
+   /* @PostMapping(value = "add")
     @ResponseBody
     public Message addAward(@RequestBody Bill bill){
         Message addAwardMessage=new Message();
         bill.setBid(TimeUtil.getBillNumber());  //获取报销编号
+        Bill bill1=billService.addBill(bill);
+        if(bill1==null){
+            addAwardMessage.setCode(200);
+            addAwardMessage.setMessage("提交申请成功！");
+            addAwardMessage.setData(bill);  //返回新增记录
+        }else {
+            addAwardMessage.setCode(201);
+            addAwardMessage.setMessage("已经申请过了，不能重复申请！");
+            addAwardMessage.setData(bill1);   //返回之前申请记录
+        }
+        return addAwardMessage;
+    }*/
+    @PostMapping(value = "add")
+    @ResponseBody
+    public Message addAward(@RequestParam(value = "ctid", required = false) String ctid,
+                            @RequestParam(value = "cyear", required = false) String cyear,
+                            @RequestParam(value = "clevel", required = false) String clevel,
+                            @RequestParam(value = "cdesc", required = false) String cdesc,
+                            @RequestParam(value = "groupleader", required = false) String groupleader,
+                            @RequestParam(value = "groupname", required = false) String groupname,
+                            @RequestParam(value = "resultType", required = false) String resultType,
+                            @RequestParam(value = "workName", required = false) String workName,
+                            @RequestParam(value = "preditfeedesc", required = false) String preditfeedesc,
+                            @RequestParam(value = "predictfee", required = false) String predictfee,
+                            @RequestParam(value = "attachfile", required = false) String attachfile,
+                            @RequestParam(value = "note", required = false) String note,
+                            @RequestParam(value = "ts",required = false) String teachers,
+                            @RequestParam(value = "tms",required = false) String students
+                            ){
+        System.out.println(teachers);
+        System.out.println(students);
+        System.out.println(ctid);
+        System.out.println(cyear);
+        Message addAwardMessage=new Message();
+        Bill bill=new Bill();
+        bill.setBid(TimeUtil.getBillNumber());  //获取报销编号
+        bill.setCtid(ctid);
+        bill.setCyear(cyear);
+        bill.setClevel(clevel);
+        bill.setCdesc(cdesc);
+        bill.setGroupleader(groupleader);
+        bill.setGroupname(groupname);
+        bill.setResultType(resultType);
+        bill.setWorkName(workName);
+        bill.setPreditfeedesc(preditfeedesc);
+        bill.setState("0");
+        bill.setPredictfee(predictfee);
+        bill.setAttachfile(attachfile);
+        bill.setNote(note);
+        String[] teacherList=teachers.split(",");
+        String[] studentList=students.split(",");
+        List<BillMember> billMembers=new ArrayList<>();
+        for(int i=0;i<teacherList.length;i++){
+            System.out.println(teacherList[i]);
+            BillMember billMember=new BillMember();
+            billMember.setBillOrder(i);
+            billMember.setBillType(2);
+            billMember.setBillTmId(teacherList[i]);
+            billMembers.add(billMember);
+        }
+        for(int i=0;i<studentList.length;i++){
+            System.out.println(studentList[i]);
+            BillMember billMember=new BillMember();
+            billMember.setBillOrder(i);
+            billMember.setBillType(1);
+            billMember.setBillTmId(studentList[i]);
+            billMembers.add(billMember);
+        }
+        bill.setBillMembers(billMembers);
         Bill bill1=billService.addBill(bill);
         if(bill1==null){
             addAwardMessage.setCode(200);
