@@ -77,8 +77,12 @@ public class BillController {
         bill.setPreditfeedesc(preditfeedesc);
         bill.setState("0");
         bill.setPredictfee(predictfee);
-        bill.setAttachfile(attachfile);
+        bill.setAttachfile("D:/local/picture");
         bill.setNote(note);
+        teachers=teachers.substring(1);
+        students=students.substring(1);
+        System.out.println(teachers);
+        System.out.println(students);
         String[] teacherList=teachers.split(",");
         String[] studentList=students.split(",");
         List<BillMember> billMembers=new ArrayList<>();
