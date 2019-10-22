@@ -343,6 +343,13 @@
                     .appendTo("#application_detail_table");
             }
 
+            if(result.data.note!= null)
+            {
+                $("<tr></tr>").append("<td>"+"审核不通过原因"+"</td>")
+                    .append("<td>"+result.data.note+"</td>")
+                    .appendTo("#application_detail_table");
+            }
+
            /* 这里没找到数据*/
 /*            aStu_sno.innerHTML=result.appplicantStu.sno;
             aStu_sname.innerHTML=result.appplicantStu.sname;
