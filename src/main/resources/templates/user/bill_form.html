@@ -47,6 +47,39 @@
         }
     </style>
 </head>
+<script>
+    function chooseTeacherBox(){
+        layer.open({
+            type: 1  //1为页面层
+            ,title: '指导老师编号'  //弹出层标题
+            ,area: ['800px', '400px']   //设置弹出层大小[宽，高]
+            , offset: 'auto'   //设置弹出层位置 //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+            , id: 'layerDemo_teacher2Id' //防止重复弹出，点击这个input只能有一个弹出层
+            ,content:$("#layer_teacher2Id")   //弹出层内容为layer_ctname块，不能直接是表格id
+            , btnAlign: 'c' //按钮居中
+            , shade: 0 //不显示遮罩
+            , yes: function () {  //确定按钮回调方法， 需要手动关闭弹出层
+                layer.closeAll();
+            }
+        });
+    }
+    function chooseStudentBox(othis) {
+        studentTemp = othis;
+        layer.open({
+            type: 1  //1为页面层
+            ,title: '学生信息'  //弹出层标题
+            ,area: ['800px', '400px']   //设置弹出层大小[宽，高]
+            , offset: 'auto'   //设置弹出层位置 //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+            , id: 'layerDemo_studentId' //防止重复弹出，点击这个input只能有一个弹出层
+            ,content:$("#layer_studentId")   //弹出层内容为layer_ctname块，不能直接是表格id
+            , btnAlign: 'c' //按钮居中
+            , shade: 0 //不显示遮罩
+            , yes: function () {  //确定按钮回调方法， 需要手动关闭弹出层
+                layer.closeAll();
+            }
+        });
+    }
+</script>
 <body>
 弹出层：比赛名称
 <div id="layer_ctname">
@@ -185,18 +218,19 @@
             </div>
         </div>
         <!-- 指导老师1 外键，可以为空-->
-        <div class="layui-form-item">
-            <div class="layui-inline ">
-                <label class="layui-form-label">指导老师1</label>
-                <div class="layui-input-block" id="layerDemo_teacher1Id">
-                    <input type="text" name="teacher1Id" id="get_teacher1Id"  data-method="offset" data-type="t" autocomplete="off" class="layui-input layui-btn layui-btn-primary">
-                </div>
-            </div>
-            <div class="layui-inline" style="float: right;">
-                <label class="layui-form-label">指导老师2</label>
-                <div class="layui-input-block">
-                    <input type="text" name="teacher2Id" id="get_teacher2Id"  data-method="offset" data-type="t" autocomplete="off" class="layui-input layui-btn layui-btn-primary">
-                </div>
+
+        <div class="layui-form-item"  id="teacherArea">
+            <button type="button" class="layui-btn" id="addteacher" onclick="chooseTeacherBox()">
+                添加老师</button>
+        </div>
+
+        <div class="layui-form-item" id="studentArea">
+            <button type="button" class="layui-btn" id="addStudent" onclick="chooseStudentBox(this)">
+                添加成员</button>
+            <input type="hidden" name="leader" id="leader" value="">
+            <input type="hidden" name="tms" id="tms" value="">
+            <div id="studentBoxArea">
+
             </div>
         </div>
         <!-- 成果类型，如果她们给了，那么这里就默认选定，并且锁定，否则就用户选 -->
@@ -265,35 +299,6 @@
     });
 </script>
 
-<!--<script>-->
-<!--    layui.use(['laydate','form','upload'], function(){-->
-<!--        var $ = layui.jquery-->
-<!--        var laydate = layui.laydate;-->
-<!--        var upload = layui.upload;-->
-<!--        var form = layui.form;-->
-<!--        //执行一个laydate实例-->
-<!--        laydate.render({-->
-<!--            elem: '#cyear' //指定元素-->
-<!--        });-->
-<!--        upload.render({-->
-<!--            elem: '#test2'-->
-<!--            ,url: '/upload/'-->
-<!--            ,multiple: true-->
-<!--            ,before: function(obj){-->
-<!--                //预读本地文件示例，不支持ie8-->
-<!--                obj.preview(function(index, file, result){-->
-<!--                    $('#demo2').append('<img src="'+ result +'" alt="'+ file.name +'" class="layui-upload-img">')-->
-<!--                });-->
-<!--            }-->
-<!--            ,done: function(res){-->
-<!--                //上传完毕-->
-<!--            }-->
-<!--        });-->
-<!--        form.on('select()',function(date){-->
-
-<!--        });-->
-<!--    });-->
-<!--</script>-->
 <!--获得比赛名称-获取选中行数据-->
 <script type="text/html" id="toolbar_ctname">
     <div class="layui-btn-container">
@@ -319,5 +324,64 @@
         base:'../../asserts/js/'
     }).use('application/form')
 </script>
+<div id="layer_teacher2Id">
+    <form class="layui-form" action="" style="margin-top: 20px">
+        <div class="layui-row">
+            <label class="layui-form-label">教师编号：</label>
+            <div class="layui-inline" style="margin-right: 50px">
+                <input class="layui-input" name="search_tno2" id="search_tno2" autocomplete="off" placeholder="" >
+            </div>
+
+            教师姓名：
+            <div class="layui-inline">
+                <input class="layui-input" name="search_tname2" id="search_tname2" autocomplete="off" placeholder="">
+            </div>
+            <br>
+
+            <label class="layui-form-label">所属学院：</label>
+            <div class="layui-inline" style="margin-right: 50px">
+                <input class="layui-input" name="search_dcollege2" id="search_dcollege2" autocomplete="off" placeholder="" >
+            </div>
+
+            所属部门：
+            <div class="layui-inline">
+                <input class="layui-input" name="search_dname2" id="search_dname2" autocomplete="off" placeholder="">
+            </div>
+            <br>
+
+            <label class="layui-form-label">教师职称：</label>
+            <div class="layui-inline" style="margin-right: 150px">
+                <input class="layui-input" name="search_ttitle2" id="search_ttitle2" autocomplete="off" placeholder="" >
+            </div>
+            <div class="layui-inline">
+                <button type="button" class="layui-btn" data-type="reload" id="btn_search_teacher2Id">搜索</button>
+                <button type="reset" class="layui-btn" style="margin-left: 30px">重置</button>
+            </div>
+        </div>
+    </form>
+    <table class="layui-hide" id="layer_teacher2Id_table" lay-filter="layer_teacher2Id_table"></table>
+</div>
+<div id="layer_studentId">
+    <form class="layui-form" action="" style="margin-top: 20px">
+        <div class="layui-row">
+            <label class="layui-form-label">学生编号：</label>
+            <div class="layui-inline" style="margin-right: 50px">
+                <input class="layui-input" name="search_sno" id="search_sno" autocomplete="off" placeholder="" >
+            </div>
+
+            <label class="layui-form-label">学生姓名：</label>
+            <div class="layui-inline">
+                <input class="layui-input" name="search_sname" id="search_sname" autocomplete="off" placeholder="">
+            </div>
+            <br>
+            <div class="layui-inline" style="text-align: center;">
+                <button type="button" class="layui-btn" data-type="reload" id="btn_search_student">搜索</button>
+                <button type="reset" class="layui-btn" data-type="reload">重置</button>
+            </div>
+        </div>
+    </form>
+    <table class="layui-hide" id="layer_studentId_table" lay-filter="layer_studentId_table"></table>
+</div>
 </body>
+
 </html>

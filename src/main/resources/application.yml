@@ -15,13 +15,11 @@ spring:
   resources:
     static-locations: "classpath:/META-INF/resources/,classpath:/resources/,\
     classpath:/static/,classpath:/public/,file:${web.upload-path}"
-
   datasource:
     url: jdbc:oracle:thin:@222.204.6.175:8085/orcl
     username: academic
     password: xkjs409
     driver-class-name: oracle.jdbc.OracleDriver
-
   thymeleaf:
     mode: LEGACYHTML5
     encoding: UTF-8
