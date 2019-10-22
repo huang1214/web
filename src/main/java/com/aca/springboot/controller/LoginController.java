@@ -1,6 +1,8 @@
 package com.aca.springboot.controller;
 
+import com.aca.springboot.entities.Student;
 import com.aca.springboot.entities.test;
+import com.aca.springboot.service.StudentService;
 import com.aca.springboot.service.testService;
 import com.alibaba.fastjson.JSONObject;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
@@ -29,6 +31,9 @@ public class LoginController {
     @Autowired
     private testService testService;
 
+    @Autowired
+    private StudentService studentService;
+
     //用户登录
     /**
      * 修改过，if语句中将其改成存储过程中的2，1，0
@@ -37,7 +42,6 @@ public class LoginController {
      * 0 - 登陆成功
      * @param username
      * @param password
-     * @param map
      * @param session
      * @return
      */
@@ -45,11 +49,19 @@ public class LoginController {
     @PostMapping(value = "/user/login")
     public String login(@RequestParam("username") String username,
                         @RequestParam("password") String password,
-                        Map<String,Object> map, HttpSession session){
-        int tname= UserService.login(username,password);
+                        HttpSession session){
+        Map map= UserService.login(username,password);
+        int tname= Integer.parseInt(String.valueOf(map.get("logintype")));
+        int usertype = Integer.parseInt(String.valueOf(map.get("usertype")));
         if(tname == 2 |tname == 3 ){
             //登陆成功，防止表单重复提交，可以重定向到主页
-            session.setAttribute("loginUser",username);
+            if(usertype == 1){
+                Student user = studentService.selectBySnoReturnObject(username);
+                session.setAttribute("loginUser",user);
+                session.setAttribute("type",1);   //1为学生
+            }else{
+                session.setAttribute("type",2);   //2为老师
+            }
             return "redirect:/user_index.html";
         }else if(tname == 1){
             //登陆失败

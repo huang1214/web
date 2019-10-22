@@ -10,9 +10,11 @@
         <parameter property="username" jdbcType="CHAR" mode="IN"/>
         <parameter property="password" jdbcType="VARCHAR" mode="IN"/>
         <parameter property="logintype" jdbcType="INTEGER" mode="OUT"/>
+        <parameter property="usertype" jdbcType="INTEGER" mode="OUT"/>
     </parameterMap>
     <select id="login" parameterMap="loginresult" statementType="CALLABLE">
-        {call pro_login(?,?,?)}    <!-- 三个“？”对应上面<parameter> ， CALLABLE存储过程 -->
+        {call pro_login(?,?,?,?)}
+--         {call pro_login(?,?,?)}    <!-- 三个“？”对应上面<parameter> ， CALLABLE存储过程 -->
     </select>
 
     <!-- 管理员登陆调用存储过程 -->

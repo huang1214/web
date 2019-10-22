@@ -50,6 +50,9 @@ public class StudentService {
         return j;
     }
 
+    public Student selectBySnoReturnObject(String sno){
+        return studentMapper.selectStudent(sno);
+    }
     /**
      * add by hwg
      * @param name
