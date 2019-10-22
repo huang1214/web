@@ -164,5 +164,8 @@ public class UserService {
         return jsonObj;   //返回json对象（json数据）
     }
 
+    public Teacher selectByTno(String tno){
+        return UserMapper.selectTeacherBytno(tno);
+    }
 
 }
