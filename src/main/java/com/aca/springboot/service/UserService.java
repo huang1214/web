@@ -1,7 +1,7 @@
 package com.aca.springboot.service;
 
 
-import com.aca.springboot.entities.json;
+import com.aca.springboot.entities.JsonMessage;
 import com.aca.springboot.entities.Teacher;
 import com.aca.springboot.entities.test;
 import com.aca.springboot.entities.Administrator;
@@ -85,7 +85,7 @@ public class UserService {
         String jsonString = JSON.toJSONString(list);     //将集合转变为json格式的字符串
         JSONArray objects = JSON.parseArray(jsonString);  //将字符串转变为json数组，这里是将集合转变json数组
 
-        json js = new json();     //创建一个json对象
+        JsonMessage js = new JsonMessage();     //创建一个json对象
         js.setCount(lists.size());
         js.setCode(0);
         js.setMsg("");
@@ -112,7 +112,7 @@ public class UserService {
         }
         String jsonString = JSON.toJSONString(list);
         JSONArray objects = JSON.parseArray(jsonString);
-        json js = new json();
+        JsonMessage js = new JsonMessage();
         js.setCount(lists.size());
         js.setCode(0);
         js.setMsg("");
@@ -154,7 +154,7 @@ public class UserService {
         String jsonString = JSON.toJSONString(list);     //将集合转变为json格式的字符串
         JSONArray objects = JSON.parseArray(jsonString);  //将字符串转变为json数组，这里是将集合转变json数组
 
-        json js = new json();     //创建一个json对象
+        JsonMessage js = new JsonMessage();     //创建一个json对象
         js.setCount(lists.size());
         js.setCode(0);
         js.setMsg("");

@@ -5,7 +5,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 
 import java.util.List;
 
-public class json {
+public class JsonMessage {
 
     @JSONField(ordinal = 1)
     private int code;
@@ -53,7 +53,7 @@ public class json {
 
     @Override
     public String toString() {
-        return "json{" +
+        return "JsonMessage{" +
                 "code=" + code +
                 ", msg='" + msg + '\'' +
                 ", count=" + count +

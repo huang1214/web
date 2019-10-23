@@ -2,7 +2,7 @@ package com.aca.springboot.service;
 
 import com.aca.springboot.entities.Application;
 import com.aca.springboot.entities.ApplicationMember;
-import com.aca.springboot.entities.json;
+import com.aca.springboot.entities.JsonMessage;
 import com.aca.springboot.mapper.ApplicationMapper;
 import com.aca.springboot.vo.AppComAppLeaderVO;
 import com.aca.springboot.vo.AppComDetailVO;
@@ -164,11 +164,11 @@ public class ApplicationService {
         return re;
     }*/
     /*这以下是机智的我写的*/
-    public json get_list_with_page_m(int status, int pageNum, int pageSize){
+    public JsonMessage get_list_with_page_m(int status, int pageNum, int pageSize){
         PageHelper.startPage(pageNum,pageSize);
         Map map = new HashMap<String,String>();
         map.put("status",status);
-        json result=new json();
+        JsonMessage result=new JsonMessage();
         PageInfo re=new PageInfo(applicationMapper.get_application_list_m(map));
         List<AppComAppLeaderVO> list = re.getList();
         re.setList(list);
@@ -184,11 +184,11 @@ public class ApplicationService {
      * 获取申请列表
      * @return
      */
-    public json get_list_json(String sno, int pageNum, int pageSize){
+    public JsonMessage get_list_json(String sno, int pageNum, int pageSize){
         PageHelper.startPage(pageNum,pageSize);
         Map map = new HashMap<String,String>();
         map.put("SNO",sno);
-        json result=new json();
+        JsonMessage result=new JsonMessage();
         PageInfo re=new PageInfo(applicationMapper.get_application_list(map));
         List<AppComAppLeaderVO> list = re.getList();
         for (int i=0;i<list.size();i++){
@@ -226,6 +226,5 @@ public class ApplicationService {
             return true;
         }
         return false;
-
     }
 }

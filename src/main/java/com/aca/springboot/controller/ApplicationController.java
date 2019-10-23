@@ -2,19 +2,15 @@ package com.aca.springboot.controller;
 
 import com.aca.springboot.entities.Application;
 import com.aca.springboot.entities.Message;
-import com.aca.springboot.entities.json;
+import com.aca.springboot.entities.JsonMessage;
 import com.aca.springboot.service.ApplicationService;
 import com.aca.springboot.utils.StrUtils;
-import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.util.*;
 
@@ -155,9 +151,9 @@ public class ApplicationController {
 
     @ResponseBody
     @RequestMapping("/list")
-    public json get_list(@RequestParam(value = "sno", required = false, defaultValue = "111") String sno,
-                         @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
-                         @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+    public JsonMessage get_list(@RequestParam(value = "sno", required = false, defaultValue = "111") String sno,
+                                @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
+                                @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
         //TODO 从session里面获取SNO 或者管理员账号 需进行判断
         return applicationService.get_list_json(sno, pageNum, pageSize);
     }
@@ -175,9 +171,9 @@ public class ApplicationController {
     /*这以下是机智的我写的*/
     @ResponseBody
     @RequestMapping("/list_test")
-    public json get_list_test(@RequestParam(value = "type", required = false, defaultValue = "0") int type,
-                                 @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
-                                 @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+    public JsonMessage get_list_test(@RequestParam(value = "type", required = false, defaultValue = "0") int type,
+                                     @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
+                                     @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
         //TODO
         //return new Message(0, "成功", applicationService.get_list_with_page_m(type, pageNum, pageSize));
         return applicationService.get_list_with_page_m(type, pageNum, pageSize);

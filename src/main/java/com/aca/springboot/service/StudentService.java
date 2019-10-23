@@ -1,7 +1,7 @@
 package com.aca.springboot.service;
 
+import com.aca.springboot.entities.JsonMessage;
 import com.aca.springboot.entities.Student;
-import com.aca.springboot.entities.json;
 import com.aca.springboot.mapper.StudentMapper;
 import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageHelper;
@@ -29,8 +29,8 @@ public class StudentService {
      * @param sno
      * @return
      */
-    public json selectBySno(String sno){
-        json j=new json();
+    public JsonMessage selectBySno(String sno){
+        JsonMessage j=new JsonMessage();
         List l=new ArrayList();
         Student student = studentMapper.selectStudent(sno);
         if (student==null){
@@ -58,14 +58,14 @@ public class StudentService {
      * @param name
      * @return
      */
-    public json selectByName(String name,int pageNum,int pageSize){
+    public JsonMessage selectByName(String name, int pageNum, int pageSize){
         Map params=new HashMap();
         params.put("sname","%"+name+"%");
         PageHelper.startPage(pageNum,pageSize);
         List students = studentMapper.selectByName(params);
         PageInfo re=new PageInfo(students);
         JSONArray ja=new JSONArray(students);
-        json j=new json();
+        JsonMessage j=new JsonMessage();
         j.setData(ja);
         j.setCode(0);
         j.setCount(re.getSize());
