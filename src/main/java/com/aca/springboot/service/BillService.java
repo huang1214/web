@@ -2,9 +2,11 @@ package com.aca.springboot.service;
 
 import com.aca.springboot.entities.Bill;
 import com.aca.springboot.entities.BillMember;
+import com.aca.springboot.entities.JsonMessage;
 import com.aca.springboot.mapper.BillMapper;
 import com.aca.springboot.utils.Define;
 import com.aca.springboot.vo.BillVO;
+import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,24 +51,26 @@ public class BillService {
     }
     //返回该生报销记录
     public List<BillVO> queryAllBill(String sno){
+        JsonMessage j = new JsonMessage();
         Map map=new HashMap();
         map.put("SNO",sno);
         List<BillVO> listBill=billMapper.get_bill_list(map);
         return listBill;
     }
     //返回该生报销记录,分页
-    public PageInfo<BillVO> queryAllBillWithPage(String sno, Integer currPage){
-        if(currPage==null){
-            currPage=1;
-        }
+    public JsonMessage queryAllBillWithPage(String sno,int pageNum,int pageSize){
+        //设置从第几页查询N条
+        PageHelper.startPage(pageNum,pageSize);
         Map map=new HashMap();
         map.put("SNO",sno);
-        //设置从第几页查询N条
-        PageHelper.startPage(currPage, Define.PAGE_SIZE);
         List<BillVO> listBill=billMapper.get_bill_list(map);
         PageInfo<BillVO> pageInfo=new PageInfo(listBill);
-
-        return pageInfo;
+        List list = pageInfo.getList();
+        JsonMessage jsonMessage=new JsonMessage();
+        jsonMessage.setCode(0);
+        jsonMessage.setCount(pageInfo.getSize());
+        jsonMessage.setData(new JSONArray(list));
+        return jsonMessage;
     }
     //返回所有的报销记录
     public List<BillVO> queryAllBill(){

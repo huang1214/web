@@ -1,8 +1,6 @@
 package com.aca.springboot.controller;
 
-import com.aca.springboot.entities.Bill;
-import com.aca.springboot.entities.BillMember;
-import com.aca.springboot.entities.Message;
+import com.aca.springboot.entities.*;
 import com.aca.springboot.service.BillService;
 import com.aca.springboot.utils.TimeUtil;
 import com.aca.springboot.vo.BillVO;
@@ -13,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,33 +107,33 @@ public class BillController {
         return mv;
     }
     //获取该登录学生的所有报销记录,ok
-    @GetMapping(value = "query/{sno}")
+    @GetMapping(value = "queryAll")
     @ResponseBody
-    public Message getAllBillByID(@PathVariable("sno") String sno){
-        Message billListMessage=new Message();
+    public JsonMessage getAllBillByID(@RequestParam(value = "limit",required = false,defaultValue = "1")int pageNum,
+                                      @RequestParam(value = "page",required = false,defaultValue = "1")int pageSize,
+                                      HttpSession session){
+//        Message billListMessage=new Message();
+        Student student =(Student) session.getAttribute("loginUser");
+        String sno=student.getSno();
         System.out.println(sno);
-        List<BillVO> billList=billService.queryAllBill(sno);
-        billListMessage.setCode(200);
-        billListMessage.setMessage("查询成功");
-        billListMessage.setData(billList);
-        return billListMessage;
+        return billService.queryAllBillWithPage(sno,pageNum,pageSize);
     }
     //获取该登录学生的所有报销记录,分页
-    @GetMapping(value = "query/{sno}/{currPage}")
-    @ResponseBody
-    public Message getAllBillByIDWithPage(@PathVariable("sno") String sno,@PathVariable("currPage") Integer currPage){
-        Message billListWithPageMessage=new Message();
-        PageInfo<BillVO> pageInfo=billService.queryAllBillWithPage(sno,currPage);
-        if(pageInfo!=null){
-            billListWithPageMessage.setCode(200);
-            billListWithPageMessage.setMessage("分页查询成功");
-            billListWithPageMessage.setData(pageInfo);
-        }else {
-            billListWithPageMessage.setCode(202);
-            billListWithPageMessage.setMessage("分页查询失败");
-        }
-        return billListWithPageMessage;
-    }
+//    @GetMapping(value = "query/{sno}/{currPage}")
+//    @ResponseBody
+//    public Message getAllBillByIDWithPage(@PathVariable("sno") String sno,@PathVariable("currPage") Integer currPage){
+//        Message billListWithPageMessage=new Message();
+//        PageInfo<BillVO> pageInfo=billService.queryAllBillWithPage(sno,currPage);
+//        if(pageInfo!=null){
+//            billListWithPageMessage.setCode(200);
+//            billListWithPageMessage.setMessage("分页查询成功");
+//            billListWithPageMessage.setData(pageInfo);
+//        }else {
+//            billListWithPageMessage.setCode(202);
+//            billListWithPageMessage.setMessage("分页查询失败");
+//        }
+//        return billListWithPageMessage;
+//    }
     //获取所有报销记录
     @GetMapping(value = "query")
     @ResponseBody
