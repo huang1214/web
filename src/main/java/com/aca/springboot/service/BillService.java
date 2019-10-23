@@ -68,14 +68,23 @@ public class BillService {
         List list = pageInfo.getList();
         JsonMessage jsonMessage=new JsonMessage();
         jsonMessage.setCode(0);
+        jsonMessage.setMsg("查询成功");
         jsonMessage.setCount(pageInfo.getSize());
         jsonMessage.setData(new JSONArray(list));
         return jsonMessage;
     }
-    //返回所有的报销记录
-    public List<BillVO> queryAllBill(){
+    //返回所有的报销记录,分页
+    public JsonMessage queryAllBill(int pageNum,int pageSize){
+        PageHelper.startPage(pageNum,pageSize);
         List<BillVO> listBill=billMapper.get_all_bill_list();
-        return listBill;
+        PageInfo<BillVO> pageInfo=new PageInfo(listBill);
+        List list=pageInfo.getList();
+        JsonMessage jsonMessage=new JsonMessage();
+        jsonMessage.setCode(0);
+        jsonMessage.setMsg("查询成功");
+        jsonMessage.setCount(pageInfo.getSize());
+        jsonMessage.setData(new JSONArray(list));
+        return jsonMessage;
     }
     /**
      * 插入一条备案对应表数据

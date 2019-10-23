@@ -4,6 +4,7 @@ import com.aca.springboot.entities.*;
 import com.aca.springboot.service.BillService;
 import com.aca.springboot.utils.TimeUtil;
 import com.aca.springboot.vo.BillVO;
+import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,12 +138,9 @@ public class BillController {
     //获取所有报销记录
     @GetMapping(value = "query")
     @ResponseBody
-    public Message getAllBill(){
-        Message billListAdminMessage=new Message();
-        List<BillVO> allListMessage=billService.queryAllBill();
-        billListAdminMessage.setCode(200);
-        billListAdminMessage.setMessage("查询成功");
-        billListAdminMessage.setData(allListMessage);
+    public JsonMessage getAllBill(@RequestParam(value = "limit",required = false,defaultValue = "1")int pageNum,
+                              @RequestParam(value = "page",required = false,defaultValue = "1")int pageSize){
+        JsonMessage billListAdminMessage=billService.queryAllBill(pageNum,pageSize);
         return billListAdminMessage;
     }
     //通过报销审核
