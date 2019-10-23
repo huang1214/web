@@ -62,6 +62,6 @@ public interface BillMapper {
     public int deleteBill(Map map);
 
     //删除报销对应表
-    public int daleteBillMember(Map map);
+    public int deleteBillMember(Map map);
 
 }

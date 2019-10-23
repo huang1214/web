@@ -124,11 +124,11 @@
 
     <!--删除bill表中信息-->
     <delete id="deleteBill" parameterType="java.util.Map">
-        delete BILL where BID = #{BTD}
+        delete BILL where BID = #{BID}
     </delete>
 
     <!--删除billMember表中信息-->
-    <delete id="daleteBillMember" parameterType="java.util.Map">
+    <delete id="deleteBillMember" parameterType="java.util.Map">
         delete BILL_MEMBER where BILL_ID = #{BID}
     </delete>
 </mapper>

@@ -115,4 +115,11 @@ public class BillService {
         return res;
 
     }
+    public int deleteBill(String bid){
+        Map<String,String> map=new HashMap<>();
+        map.put("BID",bid);
+        int res=billMapper.deleteBill(map);
+        res+=billMapper.deleteBillMember(map);
+        return res;
+    }
 }

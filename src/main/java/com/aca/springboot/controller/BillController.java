@@ -3,9 +3,6 @@ package com.aca.springboot.controller;
 import com.aca.springboot.entities.*;
 import com.aca.springboot.service.BillService;
 import com.aca.springboot.utils.TimeUtil;
-import com.aca.springboot.vo.BillVO;
-import com.alibaba.fastjson.JSONArray;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -162,6 +159,17 @@ public class BillController {
         refuseBillMessage.setCode(200);
         refuseBillMessage.setMessage("拒绝申请");
         return refuseBillMessage;
+    }
+    //删除通过bid
+    @PostMapping(value = "delete")
+    @ResponseBody
+    public JsonMessage deleteBill(@RequestParam(value = "bid", required = false) String bid){
+        JsonMessage deleteMessage=new JsonMessage();
+        int res=billService.deleteBill(bid);
+        deleteMessage.setMsg("删除成功");
+        deleteMessage.setCode(0);
+        deleteMessage.setCount(res);
+        return deleteMessage;
     }
 
 
