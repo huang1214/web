@@ -65,8 +65,8 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
                  */
                 registry.addViewController("admin/com_search").setViewName("/admin/com_search");
                 registry.addViewController("admin/audit").setViewName("/admin/audit");
+                registry.addViewController("admin/bill_audit").setViewName("/admin/bill_audit");
             }
-
             //注册拦截器
             @Override
             public void addInterceptors(InterceptorRegistry registry) {

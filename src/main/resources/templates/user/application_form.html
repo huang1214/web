@@ -237,7 +237,7 @@
         <div class="layui-form-item" >
             <label class="layui-form-label">申请人<span style="color: red">*</span></label>
             <div class="layui-input-block">
-                <input type="text" name="applicantId" id="applicantId" th:value="${session.loginUser}" autocomplete="off" class="layui-input" lay-verify="verify_applicantId" readonly>
+                <input type="text" name="applicantId" id="applicantId" th:value="@{(${session.type}eq '1'?${session.loginUser.sno}:${session.loginUser.tno})}" autocomplete="off" class="layui-input" lay-verify="verify_applicantId" readonly>
             </div>
         </div>
 
