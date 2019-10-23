@@ -1,5 +1,6 @@
 package com.aca.springboot.controller;
 
+import com.aca.springboot.entities.Administrator;
 import com.aca.springboot.entities.Student;
 import com.aca.springboot.entities.Teacher;
 import com.aca.springboot.entities.test;
@@ -77,11 +78,44 @@ public class LoginController {
         return "login";
     }
     //管理员登录
-/*    @PostMapping(value = "/user/a_login")*/
+    @PostMapping(value = "/user/adm_login")
+    public String adm_login(@RequestParam("username") String username,
+                        @RequestParam("password") String password,
+                        HttpSession session){
+        System.out.println(username+password);
+        Map map= UserService.a_login(username,password);
+        System.out.println(map);
+        int returnvalue= Integer.parseInt(String.valueOf(map.get("logintype")));
+        System.out.println(returnvalue);
+        int usertype = Integer.parseInt(String.valueOf(map.get("usertype")));
+        System.out.println(usertype);
+        if(returnvalue==4){
+            //管理员登陆成功，防止表单重复提交，可以重定向到主页
+            if(usertype == 3){
+                System.out.println("selectBy_ADM_ID_ReturnObject之前这里执行了");
+                Administrator administrator=UserService.selectBy_ADM_ID_ReturnObject(username);
+                session.setAttribute("loginUser",administrator);
+                System.out.println("selectBy_ADM_ID_ReturnObject之后这里执行了");
+                session.setAttribute("type",3);   //3为管理员
+            }
+            //return "redirect:/user_index.html";
+                return  "redirect:/admin_index.html" ;
+
+        }else if(returnvalue == 1){
+            //登陆失败
+            map.put("msg","用户名密码错误");
+            return  "登陆失败";
+        }else if(returnvalue == 0){
+            map.put("msg","用户不存在");
+            return  "用户不存在";
+        }
+        return "login";
+    }
+/*    //管理员登录
     @PostMapping(value = "/user/a_login")
     public String admin_login(@RequestParam("username") String username,
                               @RequestParam("password") String password,
-                              Map<String,Object> map, HttpSession session){
+                              HttpSession session){
         int tname = UserService.a_login(username,password);
         if(tname == 2){
             //登陆成功，防止表单重复提交，可以重定向到主页
@@ -96,7 +130,7 @@ public class LoginController {
             return  "login";
         }
         return "login";
-    }
+    }*/
 
     /**
      * 修改密码

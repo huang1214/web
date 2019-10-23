@@ -320,27 +320,42 @@
             }
             for(i=0;i<result.data.stus.length;i++)
             {
-                $("<tr></tr>").append("<td>"+"项目成员"+(i+1)+"编号</td>")
-                    .append("<td>"+result.data.stus[i].sno+"</td>")
-                    .appendTo("#application_detail_table");
-                $("<tr></tr>").append("<td>"+"项目成员"+(i+1)+"姓名</td>")
-                    .append("<td>"+result.data.stus[i].sname+"</td>")
-                    .appendTo("#application_detail_table");
-                $("<tr></tr>").append("<td>"+"项目成员"+(i+1)+"班级编号</td>")
-                    .append("<td>"+result.data.stus[i].cno+"</td>")
-                    .appendTo("#application_detail_table");
+                if(result.data.stus[i].sno!=null){
+                    $("<tr></tr>").append("<td>"+"项目成员"+(i+1)+"编号</td>")
+                        .append("<td>"+result.data.stus[i].sno+"</td>")
+                        .appendTo("#application_detail_table");
+                }
+                console.log(result.data.stus[i].sno)
+                if(result.data.stus[i].sname!=null){
+                    $("<tr></tr>").append("<td>"+"项目成员"+(i+1)+"姓名</td>")
+                        .append("<td>"+result.data.stus[i].sname+"</td>")
+                        .appendTo("#application_detail_table");
+                }
+                if(result.data.stus[i].cno!=null){
+                    $("<tr></tr>").append("<td>"+"项目成员"+(i+1)+"班级编号</td>")
+                        .append("<td>"+result.data.stus[i].cno+"</td>")
+                        .appendTo("#application_detail_table");
+                }
+
             }
             for(i=0;i<result.data.teas.length;i++)
             {
-                $("<tr></tr>").append("<td>"+"指导老师"+(i+1)+"编号</td>")
-                    .append("<td>"+result.data.teas[i].tno+"</td>")
-                    .appendTo("#application_detail_table");
-                $("<tr></tr>").append("<td>"+"指导老师"+(i+1)+"姓名</td>")
-                    .append("<td>"+result.data.teas[i].tname+"</td>")
-                    .appendTo("#application_detail_table");
-                $("<tr></tr>").append("<td>"+"指导老师"+(i+1)+"部门名称</td>")
-                    .append("<td>"+result.data.teas[i].dname+"</td>")
-                    .appendTo("#application_detail_table");
+/*                if(result.data.teas[i].tno!=null) {
+                    $("<tr></tr>").append("<td>" + "指导老师" + (i + 1) + "编号</td>")
+                        .append("<td>" + result.data.teas[i].tno + "</td>")
+                        .appendTo("#application_detail_table");
+                }*/
+                if(result.data.teas[i].tname!=null){
+                    $("<tr></tr>").append("<td>"+"指导老师"+(i+1)+"姓名</td>")
+                        .append("<td>"+result.data.teas[i].tname+"</td>")
+                        .appendTo("#application_detail_table");
+                }
+/*                if(result.data.teas[i].dname!=null){
+                    $("<tr></tr>").append("<td>"+"指导老师"+(i+1)+"部门名称</td>")
+                        .append("<td>"+result.data.teas[i].dname+"</td>")
+                        .appendTo("#application_detail_table");
+                }*/
+
             }
 
             if(result.data.note!= null)

@@ -22,9 +22,10 @@
         <parameter property="username" jdbcType="CHAR" mode="IN"/>
         <parameter property="password" jdbcType="VARCHAR" mode="IN"/>
         <parameter property="logintype" jdbcType="INTEGER" mode="OUT"/>
+        <parameter property="usertype" jdbcType="INTEGER" mode="OUT"/>
     </parameterMap>
     <select id="a_login" parameterMap="a_loginresult" statementType="CALLABLE">
-        {call pro_admin_login(?,?,?)}    <!-- 三个“？”对应上面<parameter> ， CALLABLE存储过程 -->
+        {call pro_admin_login(?,?,?,?)}    <!-- 四个“？”对应上面<parameter> ， CALLABLE存储过程 -->
     </select>
 
 
@@ -137,5 +138,16 @@
 
     <select id="selectTeacherBytno" resultMap="teacher_class">
         select distinct * from TEACHER T join DEPT D on T.DNO = D.DNO where tno = #{tno}
+    </select>
+
+
+    <resultMap id="resultAdministrator" type="com.aca.springboot.entities.Administrator">
+        <id property="adm_id" column="adm_id"/>
+        <result property="adm_pwd" column="adm_pwd"/>
+        <result property="adm_name" column="adm_name"/>
+    </resultMap>
+    <!--通过学号精确查询-->
+    <select id="selectAdministrator" resultMap="resultAdministrator">
+        select adm_id,adm_pwd,adm_name  from ADMINISTRATOR where ADM_ID = #{username}
     </select>
 </mapper>

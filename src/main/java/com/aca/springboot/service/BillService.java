@@ -65,6 +65,7 @@ public class BillService {
         PageHelper.startPage(currPage, Define.PAGE_SIZE);
         List<BillVO> listBill=billMapper.get_bill_list(map);
         PageInfo<BillVO> pageInfo=new PageInfo(listBill);
+
         return pageInfo;
     }
     //返回所有的报销记录

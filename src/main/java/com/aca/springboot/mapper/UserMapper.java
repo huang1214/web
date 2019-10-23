@@ -1,5 +1,6 @@
 package com.aca.springboot.mapper;
 
+import com.aca.springboot.entities.Administrator;
 import com.aca.springboot.entities.Teacher;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -63,4 +64,6 @@ public interface UserMapper {
                                @Param("dcollege") String dcollege,@Param("ttitle") String ttitle);
 
     public Teacher selectTeacherBytno(@Param("tno") String tno);
+
+    public Administrator selectAdministrator(@Param("username") String username);
 }
