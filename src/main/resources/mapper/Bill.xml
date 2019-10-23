@@ -121,4 +121,14 @@
     <update id="change_bill_state" parameterType="java.util.Map">
         update bill set STATE = #{STATE},NOTE = #{NOTE} where BID = #{BID}
     </update>
+
+    <!--删除bill表中信息-->
+    <delete id="deleteBill" parameterType="java.util.Map">
+        delete BILL where BID = #{BTD}
+    </delete>
+
+    <!--删除billMember表中信息-->
+    <delete id="daleteBillMember" parameterType="java.util.Map">
+        delete BILL_MEMBER where BILL_ID = #{BID}
+    </delete>
 </mapper>
