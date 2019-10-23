@@ -219,4 +219,21 @@ public class ApplicationController {
             return new Message(0, "成功", null);
         return new Message(-1, "error", null);
     }
+
+    @ResponseBody
+    @PostMapping("/delete")
+    public Message de(@RequestParam(value = "appid",required = true)String appid){
+        //TODO 权限控制
+        Message m=new Message();
+        try{
+            m.setData(applicationService.delete(appid));
+            m.setCode(0);
+            m.setMessage("成功");
+        }catch (Exception e){
+            m.setCode(-1);
+            m.setMessage("失败");
+            e.printStackTrace();
+        }
+        return m;
+    }
 }

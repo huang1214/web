@@ -231,4 +231,10 @@
     <!--select *  from application where applicantId= #{applicantId}-->
     <!--</select>-->
 
+    <delete id="deleteApp" parameterType="java.lang.String">
+        delete from APPLICATION where APPID = #{appid}
+    </delete>
+    <delete id="deleteAppRes" parameterType="java.lang.String">
+        delete from APPLICATION_MEMBER where APP_ID =#{appid}
+    </delete>
 </mapper>

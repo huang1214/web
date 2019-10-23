@@ -227,4 +227,8 @@ public class ApplicationService {
         }
         return false;
     }
+
+    public int delete(String appid){
+        return applicationMapper.deleteApp(appid)+applicationMapper.deleteAppRes(appid);
+    }
 }
