@@ -11,6 +11,7 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +43,10 @@ public class BillController {
         }
         return addAwardMessage;
     }*/
+    //添加一条报销记录,通过测试
     @PostMapping(value = "add")
     @ResponseBody
-    public Message addAward(@RequestParam(value = "ctid", required = false) String ctid,
+    public ModelAndView addAward(@RequestParam(value = "ctid", required = false) String ctid,
                             @RequestParam(value = "cyear", required = false) String cyear,
                             @RequestParam(value = "clevel", required = false) String clevel,
                             @RequestParam(value = "cdesc", required = false) String cdesc,
@@ -57,10 +59,7 @@ public class BillController {
                             @RequestParam(value = "ts",required = false) String teachers,
                             @RequestParam(value = "tms",required = false) String students
                             ){
-        System.out.println(teachers);
-        System.out.println(students);
-        System.out.println(ctid);
-        System.out.println(cyear);
+        ModelAndView mv = new ModelAndView("redirect:/user/bill_form");
         Message addAwardMessage=new Message();
         Bill bill=new Bill();
         bill.setBid(TimeUtil.getBillNumber());  //获取报销编号
@@ -77,13 +76,10 @@ public class BillController {
         bill.setAttachfile("D:/local/picture");
         teachers=teachers.substring(1);
         students=students.substring(1);
-        System.out.println(teachers);
-        System.out.println(students);
         String[] teacherList=teachers.split(",");
         String[] studentList=students.split(",");
         List<BillMember> billMembers=new ArrayList<>();
         for(int i=0;i<teacherList.length;i++){
-            System.out.println(teacherList[i]);
             BillMember billMember=new BillMember();
             billMember.setBillOrder(i);
             billMember.setBillType(2);
@@ -91,7 +87,6 @@ public class BillController {
             billMembers.add(billMember);
         }
         for(int i=0;i<studentList.length;i++){
-            System.out.println(studentList[i]);
             BillMember billMember=new BillMember();
             billMember.setBillOrder(i);
             billMember.setBillType(1);
@@ -109,7 +104,8 @@ public class BillController {
             addAwardMessage.setMessage("已经申请过了，不能重复申请！");
             addAwardMessage.setData(bill1);   //返回之前申请记录
         }
-        return addAwardMessage;
+        mv.addObject("billData",addAwardMessage);
+        return mv;
     }
     //获取该登录学生的所有报销记录,ok
     @GetMapping(value = "query/{sno}")
