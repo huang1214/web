@@ -71,7 +71,7 @@ public class BillController {
         bill.setGroupname(groupname);
         bill.setWorkName(workName);
         bill.setPreditfeedesc(preditfeedesc);
-        bill.setState("0");
+        bill.setState("0"); //初始状态都是未审核
         bill.setPredictfee(predictfee);
         bill.setAttachfile("D:/local/picture");
         teachers=teachers.substring(1);
