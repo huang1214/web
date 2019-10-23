@@ -50,12 +50,10 @@ public class BillController {
                             @RequestParam(value = "cdesc", required = false) String cdesc,
                             @RequestParam(value = "groupleader", required = false) String groupleader,
                             @RequestParam(value = "groupname", required = false) String groupname,
-                            @RequestParam(value = "resultType", required = false) String resultType,
                             @RequestParam(value = "workName", required = false) String workName,
                             @RequestParam(value = "preditfeedesc", required = false) String preditfeedesc,
                             @RequestParam(value = "predictfee", required = false) String predictfee,
                             @RequestParam(value = "attachfile", required = false) String attachfile,
-                            @RequestParam(value = "note", required = false) String note,
                             @RequestParam(value = "ts",required = false) String teachers,
                             @RequestParam(value = "tms",required = false) String students
                             ){
@@ -72,13 +70,11 @@ public class BillController {
         bill.setCdesc(cdesc);
         bill.setGroupleader(groupleader);
         bill.setGroupname(groupname);
-        bill.setResultType(resultType);
         bill.setWorkName(workName);
         bill.setPreditfeedesc(preditfeedesc);
         bill.setState("0");
         bill.setPredictfee(predictfee);
         bill.setAttachfile("D:/local/picture");
-        bill.setNote(note);
         teachers=teachers.substring(1);
         students=students.substring(1);
         System.out.println(teachers);
