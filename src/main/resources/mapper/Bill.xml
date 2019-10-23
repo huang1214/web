@@ -99,7 +99,7 @@
                  JOIN (select * from com_table ) C ON B.ctid=C.ctid
                  JOIN (select * from STUDENT) S ON S.SNO=B.GROUPLEADER
                  left join (select * from STUDENT) ST on BM.BILL_TM_ID = ST.SNO and BM.BILL_TYPE = '1'
-                 left join (select * from TEACHER) TE on BM.BILL_TM_ID = TE.DNO and BM.BILL_TYPE = '2'
+                 left join (select * from TEACHER) TE on BM.BILL_TM_ID = TE.TNO and BM.BILL_TYPE = '2'
     </select>
 
     <!--管理员获取全部的竞赛信息-->
