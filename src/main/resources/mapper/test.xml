@@ -48,4 +48,6 @@
     <delete id="delete_dept">
         delete dept where dno = #{dept_id}
     </delete>
+
+    <select id="selectUnReadApplication" resultType="java"
 </mapper>

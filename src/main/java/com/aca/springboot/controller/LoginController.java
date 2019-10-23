@@ -1,9 +1,6 @@
 package com.aca.springboot.controller;
 
-import com.aca.springboot.entities.Administrator;
-import com.aca.springboot.entities.Student;
-import com.aca.springboot.entities.Teacher;
-import com.aca.springboot.entities.test;
+import com.aca.springboot.entities.*;
 import com.aca.springboot.service.StudentService;
 import com.aca.springboot.service.testService;
 import com.alibaba.fastjson.JSONObject;
@@ -201,5 +198,25 @@ public class LoginController {
 
         return testService.list_tset_search(page,limit,dname,dadmin);
 
+    }
+
+    @ResponseBody
+    @PostMapping("/getInfo")
+    public JsonMessage getInfo(HttpSession session){
+        JsonMessage j=new JsonMessage();
+        int type= (int) session.getAttribute("type");
+        //学生老师需要获取 未审核+待确认+已完成(已确认+已拒绝)
+        //管理员需要 待审核+已完成(已确认+已拒绝)
+        if(type==1){
+
+        }else if(type==2){
+
+        }else if(type==3){
+
+        }else{
+            j.setCode(-1);
+            j.setMsg("内部错误");
+        }
+        return j;
     }
 }

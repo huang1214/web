@@ -110,7 +110,7 @@ public class BillController {
     @GetMapping(value = "queryAll")
     @ResponseBody
     public JsonMessage getAllBillByID(@RequestParam(value = "limit",required = false,defaultValue = "1")int pageNum,
-                                      @RequestParam(value = "page",required = false,defaultValue = "1")int pageSize,
+                                      @RequestParam(value = "page",required = false,defaultValue = "10")int pageSize,
                                       HttpSession session){
 //        Message billListMessage=new Message();
         Student student =(Student) session.getAttribute("loginUser");
