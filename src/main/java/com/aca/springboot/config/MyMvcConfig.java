@@ -38,7 +38,7 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
                 /* 3.试用页面*/
                 registry.addViewController("/pie_user.html").setViewName("pie_user");  //饼状图
                 registry.addViewController("/user_info.html").setViewName("user_info"); //用户基本信息
-                registry.addViewController("test_json.html").setViewName("/test_json"); //显示部门的表格
+                registry.addViewController("ConsoleDataMapper.html").setViewName("/ConsoleDataMapper"); //显示部门的表格
 
                 /* 4.普通用户*/
                 registry.addViewController("user/dashboard").setViewName("/user/dashboard"); //仪表盘

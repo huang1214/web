@@ -4,9 +4,10 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
-public interface test_json {
+public interface ConsoleDataMapper {
     //查询所有结果
     public List dept_All();
     public List dept_name();
@@ -19,4 +20,6 @@ public interface test_json {
     public int delete_dept(@Param("dept_id") String dept_id);
 
     public String get_dno(@Param("dname") String dname,@Param("dcollege") String dcollege);
+
+    int selectCountFromApplication(Map map);
 }

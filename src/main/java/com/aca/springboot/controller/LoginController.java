@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.swing.text.View;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -202,21 +203,35 @@ public class LoginController {
 
     @ResponseBody
     @PostMapping("/getInfo")
-    public JsonMessage getInfo(HttpSession session){
-        JsonMessage j=new JsonMessage();
+    public Message getInfo(HttpSession session){
+        Message m=new Message();
         int type= (int) session.getAttribute("type");
         //学生老师需要获取 未审核+待确认+已完成(已确认+已拒绝)
         //管理员需要 待审核+已完成(已确认+已拒绝)
+        Map map=new HashMap();
         if(type==1){
-
+            String sno=((Student)session.getAttribute("loginUser")).getSno();
+            map.put("unResolved",testService.getApplicationCount(sno,0));
+            map.put("refused",testService.getApplicationCount(sno,1));
+            map.put("passed",testService.getApplicationCount(sno,2));
+            map.put("finished",testService.getApplicationCount(sno,3));
         }else if(type==2){
-
+            String tno=((Teacher)session.getAttribute("loginUser")).getTno();
+            map.put("unResolved",testService.getApplicationCount(tno,0));
+            map.put("refused",testService.getApplicationCount(tno,1));
+            map.put("passed",testService.getApplicationCount(tno,2));
+            map.put("finished",testService.getApplicationCount(tno,3));
         }else if(type==3){
-
+            String tno="%";
+            map.put("unResolved",testService.getApplicationCount(tno,0));
+            map.put("finished",testService.getApplicationCount(tno,3)+testService.getApplicationCount(tno,1));
         }else{
-            j.setCode(-1);
-            j.setMsg("内部错误");
+            m.setCode(-1);
+            m.setMessage("内部错误");
+            return m;
         }
-        return j;
+        m.setCode(0);
+        m.setData(map);
+        return m;
     }
 }
