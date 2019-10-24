@@ -131,4 +131,12 @@
     <delete id="deleteBillMember" parameterType="java.util.Map">
         delete BILL_MEMBER where BILL_ID = #{BID}
     </delete>
+
+    <select id="getBillCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(*)  FROM BILL b JOIN BILL_MEMBER m ON b.BID=m.BILL_ID
+        WHERE STATE=#{STATE} AND BILL_TM_ID=#{SNO}
+    </select>
+    <select id="getBillCountAdmin" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(*)  FROM BILL WHERE STATE=#{STATE}
+    </select>
 </mapper>

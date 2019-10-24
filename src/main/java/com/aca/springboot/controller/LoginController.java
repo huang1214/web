@@ -1,10 +1,11 @@
 package com.aca.springboot.controller;
 
 import com.aca.springboot.entities.*;
+import com.aca.springboot.service.BillService;
 import com.aca.springboot.service.StudentService;
+import com.aca.springboot.service.UserService;
 import com.aca.springboot.service.testService;
 import com.alibaba.fastjson.JSONObject;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.swing.text.View;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -25,14 +24,18 @@ public class LoginController {
 //    @GetMapping
 
     //@RequestMapping(value = "/user/login",method = RequestMethod.POST)
-    @Autowired
-    private com.aca.springboot.service.UserService UserService;
+    private final UserService UserService;
+    private final testService testService;
+    private final StudentService studentService;
+    private final BillService billService;
 
     @Autowired
-    private testService testService;
-
-    @Autowired
-    private StudentService studentService;
+    public LoginController(UserService userService,testService testService,StudentService studentService,BillService billService){
+        this.UserService=userService;
+        this.studentService=studentService;
+        this.testService=testService;
+        this.billService=billService;
+    }
 
     //用户登录
     /**
@@ -215,6 +218,9 @@ public class LoginController {
             map.put("refused",testService.getApplicationCount(sno,1));
             map.put("passed",testService.getApplicationCount(sno,2));
             map.put("finished",testService.getApplicationCount(sno,3));
+            map.put("noReviewBill",billService.getBillCount(sno,0));
+            map.put("passBill",billService.getBillCount(sno,2));
+            map.put("noPassBill",billService.getBillCount(sno,1));
         }else if(type==2){
             String tno=((Teacher)session.getAttribute("loginUser")).getTno();
             map.put("unResolved",testService.getApplicationCount(tno,0));
@@ -225,6 +231,9 @@ public class LoginController {
             String tno="%";
             map.put("unResolved",testService.getApplicationCount(tno,0));
             map.put("finished",testService.getApplicationCount(tno,3)+testService.getApplicationCount(tno,1));
+            map.put("noReviewBill",billService.getBillCountAdmin(0));
+            map.put("passBill",billService.getBillCountAdmin(2));
+            map.put("noPassBill",billService.getBillCountAdmin(1));
         }else{
             m.setCode(-1);
             m.setMessage("内部错误");

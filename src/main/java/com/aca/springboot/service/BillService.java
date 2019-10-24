@@ -122,4 +122,19 @@ public class BillService {
         res+=billMapper.deleteBillMember(map);
         return res;
     }
+    public int getBillCount(String sno,int state){
+        Map map=new HashMap<>();
+        map.put("STATE",state);
+        map.put("SNO",sno);
+        int res=billMapper.getBillCount(map);
+        return  res;
+    }
+
+    public int getBillCountAdmin(int state){
+        Map map=new HashMap<>();
+        map.put("STATE",state);
+        int res=billMapper.getBillCountAdmin(map);
+        return res;
+    }
+
 }
