@@ -30,7 +30,7 @@ public class ApplicationController {
      */
     @ResponseBody
     @RequestMapping(value = "/add")
-    public ModelAndView add(@RequestParam(value = "ctId", required = false) String ctId,
+    public Message add(@RequestParam(value = "ctId", required = false) String ctId,
                             @RequestParam(value = "workName", required = false) String workName,
                             @RequestParam(value = "awardDate", required = false) String awardDate,
                             @RequestParam(value = "unit", required = false) String unit,
@@ -50,14 +50,15 @@ public class ApplicationController {
         Object user = session.getAttribute("loginUser");
         Object type = session.getAttribute("type");
         String sno="";
+        Message m=new Message();
         if(null == user){
-            return new ModelAndView("redirect:/login.html");
-        }else if((int)type == 1){
-            sno=((Student)user).getSno();
-        }else if((int)type == 2){
-            sno =((Teacher)user).getTno();
-        }else{
-            return new ModelAndView("redirect:/login.html");
+            m.setCode(-1);
+            m.setMessage("未登录");
+            return m;
+        }else if((int)type!=1 || (int)type!=2){
+            m.setCode(3);
+            m.setMessage("当前用户无权限！");
+            return m;
         }
 
         Application app = new Application();
@@ -77,9 +78,9 @@ public class ApplicationController {
         highLight blob,*/
 
         //pic.setImg(bytes);
-        Calendar currTime = Calendar.getInstance();
-        String time = String.valueOf(currTime.get(Calendar.YEAR)) + String.valueOf((currTime.get(Calendar.MONTH) + 1));
-        String path = "d:" + File.separator + "img" + File.separator + time;   //图片保存路径
+//        Calendar currTime = Calendar.getInstance();
+//        String time = String.valueOf(currTime.get(Calendar.YEAR)) + String.valueOf((currTime.get(Calendar.MONTH) + 1));
+//        String path = "d:" + File.separator + "img" + File.separator + time;   //图片保存路径
 //        String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
 //        suffix = suffix.toLowerCase();      //文件格式
 //        if (suffix.equals(".jpg") || suffix.equals(".jpeg") || suffix.equals(".png") || suffix.equals(".gif")) {
@@ -97,7 +98,7 @@ public class ApplicationController {
 //                e.printStackTrace();
 //            }
         //添加
-        InputStream is = null;//得到文件流
+//        InputStream is = null;//得到文件流
         String appid = StrUtils.timeStamp();
         try {
 //                is = new FileInputStream(targetFile);
@@ -119,16 +120,34 @@ public class ApplicationController {
             /*int result = applicationService.add(comName, applicantId, teacher1Id, teacher2Id, unit, leader, teamNum, team, studentPrice, teacherPrice, awardTypeId, awardDate, applicantBankCard, workName, workBriefIntro, bytes);//添加到数据库中*/
             //插入application
             applicationService.add(app);
+
+        } catch (Exception e) {
+            m.setCode(4);
+            m.setMessage("添加时出错，请检查是否漏填！");
+            e.printStackTrace();
+            return m;
+        }
+        try{
             //插入相关学生
             applicationService.addMultMember(tms, appid, 1);
+        }catch (Exception e){
+            m.setCode(5);
+            m.setMessage("插入团队成员时出错");
+            e.printStackTrace();
+            return m;
+        }
+        try{
             //插入相关老师
             applicationService.addMultMember(ts, appid, 2);
-        } catch (Exception e) {
-            System.out.println("失败");
+        }catch (Exception e){
+            m.setCode(6);
+            m.setMessage("插入知道老师时出错");
             e.printStackTrace();
+            return m;
         }
-        System.out.println("成功");
-        return mv;
+        m.setCode(0);
+        m.setMessage("成功");
+        return m;
     }
 
     /**
