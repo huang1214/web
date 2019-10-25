@@ -523,6 +523,11 @@
         }).on('mouseleave', '#addStudent', function(){
             layer.close(tip_index);
         });
+        // TODO待修改定位问题
+        $(document).on('mouseenter', '.deleteTips', function(){
+            // tip_index = layer.tips('点击删除这条记录', '.deleteTips', {time: 0});
+            layer.msg('点击按钮可以删除',{time: 1800});
+        });
 
         // 指导老师1 >> 弹出层 >> 表格实例的单选框的选择的监听工作条
         table.on('toolbar(layer_teacher1Id_table)', function(obj){//注：tool 是工具条事件名，layer_com_table 是 table 原始容器的属性 lay-filter="对应的值"
@@ -549,8 +554,8 @@
             switch(obj.event){
                 case 'getCheckData_teacher2Id':
                     var data = checkStatus.data;  //获取选中行数据
-                    var inpT="<div class='layui-inline' onclick='deleteMySelf(this)' ><div class='layui-input-inline'>" +
-                        "<input type='text' class='layui-input layui-btn layui-btn-primary tsBox' value='"+
+                    var inpT="<div class='layui-inline deleteTips' onclick='deleteMySelf(this)' ><div class='layui-input-inline'>" +
+                        "<input type='text' class='layui-input layui-btn layui-btn-primary tsBox ' value='"+
                         data[0].tno+":"+data[0].tname+
                         "'></div></div>";
                     $("#teacherArea").append(inpT);
@@ -578,7 +583,7 @@
                 case 'getCheckData_studentId':
                     // alert("1");
                     var data = checkStatus.data;  //获取选中行数据
-                    var inpS="<div class='layui-inline' onclick='deleteMySelf(this)' ><div class='layui-input-inline'>" +
+                    var inpS="<div class='layui-inline deleteTips' onclick='deleteMySelf(this)' ><div class='layui-input-inline'>" +
                         "<input type='text' class='layui-input layui-btn layui-btn-primary layui-bg-cyan comLeaderBox tmsBox' value='"+
                         data[0].sno+":"+data[0].sname+
                         "'></div></div>";
