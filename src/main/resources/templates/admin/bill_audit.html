@@ -81,9 +81,9 @@
 <script type="text/html" id="bar">
     <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="detail" id="btn_detail" name="btn_detail">查看详情</button>
     {{#  if(d.state == 0){ }}
-    <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="ensure" id="btn_ensure" name="btn_ensure">确认</button>
+    <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="admin_audit" id="btn_admin_audit" name="btn_admin_audit">审核</button>
     {{#  } }}
-</script>state
+</script>
 
 
 <script>
@@ -93,7 +93,7 @@
         var $ = layui.jquery;
 
         //显示表单状态基本信息
-        var table_app=table.render({
+        var bill_state=table.render({
             elem: '#bill_state'
             ,height: 380
             ,url: ' /bill/query'//数据接口
@@ -103,7 +103,7 @@
                     {field: 'bid', title: '备案编号', width:109, sort: true, fixed: 'left'}
                     ,{field: 'ctname', title: '竞赛名称', width:125,templet: '<div>{{d.competition.ctname}}</div>'}
                     ,{field: 'workName', title: '参赛作品名', width:84}
-                    ,{field: 'applicantId', title: '申请人', width:85,templet: '<div>{{d.appplicantStu.sname}}</div>'}
+                /*    ,{field: 'applicantId', title: '申请人', width:85,templet: '<div>{{d.appplicantStu.sname}}</div>'}*/
                     ,{field: 'groupleader', title: '项目负责人', width:97}
                     ,{field: 'cyear', title: '参赛时间', width: 108, sort: true}
                     ,{field: 'predictfee', title: '预算费用', width: 100, sort: true}
@@ -145,6 +145,62 @@
                     }
                 });
                 setTableValue(data);//动态向表格赋值
+            }else if(layEvent === 'admin_audit'){ //确定该条申请结果
+                //询问框
+                layer.confirm('请选择该条报销申请的审核结果：', {
+                    btn: ['通过','不通过'] //按钮
+                }, function(){
+                    layer.msg('pass', {icon: 1});
+
+                    console.log(data.bid);
+                    $.ajax(
+                        {
+                            url: '/bill/accept?bid=' + data.bid,     // 请求地址,访问controller中的xxx方法, 就是你的控制器, 如 test.com/home/index/index
+                            type: 'POST',   // 请求方式
+                            success: function (result) {
+                                console.log(result); // 请求成功后的回调函数, result 为响应内容
+/*                                if(result.code == 0){
+                                    //layer.alert('审核成功！');
+                                }else {
+                                    // layer.alert('审核失败！');
+                                }*/
+                                bill_state.reload();   //表格重载
+                            },
+                            error: function () {
+                                console.log('Send Request Fail..'); // 请求失败时的回调函数
+                            }
+                        }
+                    );
+                },function(){
+                    layer.prompt({title: '请简述审核不通过的原因', formType: 2}, function(text, index){
+                        layer.close(index);
+                        layer.msg('审核完毕！未通过原因：' +'<br>您最后写下了：'+text);
+                        //oper="refuse";
+                        //console.log(oper+text);
+                        $.ajax(
+                            {
+                                url: '/bill/refuse?bid=' + data.bid+'&note='+text,     // 请求地址,访问controller中的ccc方法, 就是你的控制器, 如 test.com/home/index/index
+                                type: 'POST',   // 请求方式
+                                success: function (result) {
+                                    console.log(result); // 请求成功后的回调函数, result 为响应内容
+                                    if(result.code == 0){
+                                        // layer.alert('审核成功！');
+                                    }else {
+                                        //  layer.alert('审核失败！');
+                                    }
+                                    bill_state.reload();   //表格重载
+                                },
+                                error: function () {
+                                    console.log('Send Request Fail..'); // 请求失败时的回调函数
+                                }
+                            }
+                        );
+                    });
+                });
+                /*function(){
+                    /!*layer.msg('refuse',);*!/
+
+                });*/
             }
         });
 

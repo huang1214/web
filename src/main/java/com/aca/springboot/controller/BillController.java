@@ -135,8 +135,8 @@ public class BillController {
     //获取所有报销记录
     @GetMapping(value = "query")
     @ResponseBody
-    public JsonMessage getAllBill(@RequestParam(value = "limit",required = false,defaultValue = "1")int pageNum,
-                              @RequestParam(value = "page",required = false,defaultValue = "1")int pageSize){
+    public JsonMessage getAllBill(@RequestParam(value = "limit",required = false,defaultValue = "1")int pageSize,
+                              @RequestParam(value = "page",required = false,defaultValue = "1")int pageNum){
         JsonMessage billListAdminMessage=billService.queryAllBill(pageNum,pageSize);
         return billListAdminMessage;
     }
