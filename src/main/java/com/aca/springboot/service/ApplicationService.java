@@ -9,6 +9,7 @@ import com.aca.springboot.vo.AppComDetailVO;
 import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.executor.ReuseExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.*;
@@ -72,6 +73,8 @@ public class ApplicationService {
     }
 
     public int addMultMember(String list,String appid,int type){
+        if(null==list)
+            return 0;
         List<ApplicationMember> list1=new ArrayList<>();
         if(type==1){
             String[] split = list.split(",");
