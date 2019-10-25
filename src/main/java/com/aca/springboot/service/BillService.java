@@ -106,11 +106,11 @@ public class BillService {
         return moreResult;
     }
     //更新报销表
-    public int updateBill(Bill bill){
+    public int updateBill(String bid,String state,String note){
         Map<String,String> map=new HashMap<>();
-        map.put("BID",bill.getBid());
-        map.put("STATE",bill.getState());
-        map.put("NOTE",bill.getNote());
+        map.put("BID",bid);
+        map.put("STATE",state);
+        map.put("NOTE",note);
         int res=billMapper.change_bill_state(map);
         return res;
 

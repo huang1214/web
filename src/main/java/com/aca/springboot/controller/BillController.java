@@ -143,9 +143,11 @@ public class BillController {
     //通过报销审核
     @PostMapping(value = "accept")
     @ResponseBody
-    public Message acceptBill(@RequestBody Bill bill){
+    public Message acceptBill(@RequestParam(value = "bid", required = true) String bid,
+                              @RequestParam(value = "state", required = false,defaultValue = "2") String state,
+                              @RequestParam(value = "note", required = false,defaultValue = "同意报销") String note){
         Message acceptBillMessage=new Message();
-        billService.updateBill(bill);
+        billService.updateBill(bid,state,note);
         acceptBillMessage.setCode(200);
         acceptBillMessage.setMessage("同意申请");
         return acceptBillMessage;
@@ -153,9 +155,11 @@ public class BillController {
     //拒绝报销审核
     @PostMapping(value = "refuse")
     @ResponseBody
-    public Message refuseBill(@RequestBody Bill bill){
+    public Message refuseBill(@RequestParam(value = "bid", required = true) String bid,
+                              @RequestParam(value = "state", required = false,defaultValue = "1") String state,
+                              @RequestParam(value = "note", required = false,defaultValue = "不同意报销")String note){
         Message refuseBillMessage=new Message();
-        billService.updateBill(bill);
+        billService.updateBill(bid,state,note);
         refuseBillMessage.setCode(200);
         refuseBillMessage.setMessage("拒绝申请");
         return refuseBillMessage;
