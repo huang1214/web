@@ -221,7 +221,8 @@
                             success: function (result) {
                                 console.log(result); // 请求成功后的回调函数, result 为响应内容
                                 if(result.code == 0){
-                                    //layer.alert('审核成功！');
+                                   layer.alert('审核成功！');
+                                    layer.alert(result.message);
                                 }else {
                                    // layer.alert('审核失败！');
                                 }

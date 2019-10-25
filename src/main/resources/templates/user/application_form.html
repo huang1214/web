@@ -56,7 +56,10 @@
     .comLeaderBox{
         background-color:#2F4056;
     }
-
+    #btn_search_student{
+        margin-top: 10px;
+        margin-left: 50px;
+    }
 </style>
 <script>
     function chooseTeacherBox(){
@@ -100,7 +103,7 @@
             <input class="layui-input" name="search_ctname" id="search_ctname" autocomplete="off" placeholder="请输入比赛名称的关键词">
         </div>
         <button type="button" class="layui-btn" data-type="reload" id="btn_search_ctname">搜索</button>
-        <button type="reset" class="layui-btn">重置</button>
+        <button type="reset" class="layui-btn" id="btn_reset_ctname">重置</button>
     </form>
     <table class="layui-hide" id="layer_com_table" lay-filter="layer_com_table"></table>
 </div>
@@ -153,7 +156,7 @@
                 <input class="layui-input" name="search_sno" id="search_sno" autocomplete="off" placeholder="" >
             </div>
 
-            <label class="layui-form-label">学生姓名：</label>
+            学生姓名：
             <div class="layui-inline">
                 <input class="layui-input" name="search_sname" id="search_sname" autocomplete="off" placeholder="">
             </div>
@@ -173,7 +176,8 @@
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
         <legend>学科竞赛成果申报表</legend>
     </fieldset>
-    <form class="layui-form layui-form-pane" action="/app/add" method="post" enctype="multipart/form-data">
+<!--    <form class="layui-form layui-form-pane" action="/app/add" method="post" enctype="multipart/form-data">-->
+    =<form class="layui-form layui-form-pane" method="post" enctype="multipart/form-data">
     <div class="layui-row">
         <div class="layui-form-item layui-col-xs6 layui-col-sm6 layui-col-md12">
             <label class="layui-form-label" >比赛名称<span style="color: red">*</span></label>
@@ -234,12 +238,12 @@
             </div>
         </div>
 
-        <div class="layui-form-item" >
+<!--        <div class="layui-form-item" >
             <label class="layui-form-label">申请人<span style="color: red">*</span></label>
             <div class="layui-input-block">
                 <input type="text" name="applicantId" id="applicantId" th:value="@{(${session.type}eq '1'?${session.loginUser.sno}:${session.loginUser.tno})}" autocomplete="off" class="layui-input" lay-verify="verify_applicantId" readonly>
             </div>
-        </div>
+        </div>-->
 
         <div class="layui-form-item" >
             <label class="layui-form-label">银行卡号<span style="color: red">*</span></label>
