@@ -1,8 +1,6 @@
 package com.aca.springboot.controller;
 
-import com.aca.springboot.entities.Application;
-import com.aca.springboot.entities.Message;
-import com.aca.springboot.entities.JsonMessage;
+import com.aca.springboot.entities.*;
 import com.aca.springboot.service.ApplicationService;
 import com.aca.springboot.utils.StrUtils;
 import io.swagger.annotations.Api;
@@ -11,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.util.*;
 
@@ -42,8 +41,25 @@ public class ApplicationController {
                             @RequestParam(value = "leader", required = false) String leader,
                             @RequestParam(value = "workBriefIntro", required = false) String workBriefIntro,
                             @RequestParam(value = "tms", required = false) String tms,
-                            @RequestParam(value = "ts", required = false) String ts) throws Exception {
+                            @RequestParam(value = "ts", required = false) String ts,
+                            HttpSession session) throws Exception {
+
+
         ModelAndView mv = new ModelAndView("redirect:/user/application_form");
+        //首先检查权限
+        Object user = session.getAttribute("loginUser");
+        Object type = session.getAttribute("type");
+        String sno="";
+        if(null == user){
+            return new ModelAndView("redirect:/login.html");
+        }else if((int)type == 1){
+            sno=((Student)user).getSno();
+        }else if((int)type == 2){
+            sno =((Teacher)user).getTno();
+        }else{
+            return new ModelAndView("redirect:/login.html");
+        }
+
         Application app = new Application();
         String awardTypeId = getawardtype(ctId, level_type, prize_type);  //获取获奖类型编号
 
@@ -88,8 +104,7 @@ public class ApplicationController {
 //                byte[] bytes = FileCopyUtils.copyToByteArray(is);//得到byte
             app.setAppid(appid);
             app.setCtid(ctId);
-            //TODO 从session里面读取sno
-            app.setApplicantId(applicantId);
+            app.setApplicantId(sno);
             app.setUnit(unit);
             app.setLeader(leader);
             app.setStudentPrice((Integer.parseInt(studentPrice) * 100) + "");
@@ -100,7 +115,6 @@ public class ApplicationController {
             app.setWorkName(workName);
             app.setWorkBriefIntro(workBriefIntro);
             app.setAwardTypeId(awardTypeId);
-            //TODO 图片没有存储
 //                app.setCertificateimg(bytes);
             /*int result = applicationService.add(comName, applicantId, teacher1Id, teacher2Id, unit, leader, teamNum, team, studentPrice, teacherPrice, awardTypeId, awardDate, applicantBankCard, workName, workBriefIntro, bytes);//添加到数据库中*/
             //插入application
@@ -151,11 +165,28 @@ public class ApplicationController {
 
     @ResponseBody
     @RequestMapping("/list")
-    public JsonMessage get_list(@RequestParam(value = "sno", required = false, defaultValue = "111") String sno,
-                                @RequestParam(value = "page", required = false,defaultValue = "1") int pageNum,
-                                @RequestParam(value = "limit", required = false,defaultValue = "10") int pageSize) {
-        //TODO 从session里面获取SNO 或者管理员账号 需进行判断
-        System.out.println(pageNum+":"+pageSize);
+    public JsonMessage get_list(@RequestParam(value = "page", required = false,defaultValue = "1") int pageNum,
+                                @RequestParam(value = "limit", required = false,defaultValue = "10") int pageSize,
+                                HttpSession session) {
+        //首先检查权限
+        Object user = session.getAttribute("loginUser");
+        Object type = session.getAttribute("type");
+        String sno="";
+        if(null == user){
+            JsonMessage j=new JsonMessage();
+            j.setCode(-1);
+            j.setMsg("未登录");
+            return j;
+        }else if((int)type == 1){
+            sno=((Student)user).getSno();
+        }else if((int)type == 2){
+            sno =((Teacher)user).getTno();
+        }else{
+            JsonMessage j=new JsonMessage();
+            j.setCode(-2);
+            j.setMsg("位置错误，请重新登录");
+            return j;
+        }
         return applicationService.get_list_json(sno, pageNum, pageSize);
     }
 
@@ -166,7 +197,6 @@ public class ApplicationController {
     public Message get_list_test(@RequestParam(value = "type", required = false, defaultValue = "0") int type,
                                  @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
                                  @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
-        //TODO 暂时用做测试用
         return new Message(0, "成功", applicationService.get_list_with_page_m(type, pageNum, pageSize));
     }*/
     /*这以下是机智的我写的*/
@@ -174,9 +204,23 @@ public class ApplicationController {
     @RequestMapping("/list_test")
     public JsonMessage get_list_test(@RequestParam(value = "type", required = false, defaultValue = "0") int type,
                                      @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
-                                     @RequestParam(value = "limit", required = false, defaultValue = "10") int pageSize) {
-        //TODO
-        //return new Message(0, "成功", applicationService.get_list_with_page_m(type, pageNum, pageSize));
+                                     @RequestParam(value = "limit", required = false, defaultValue = "10") int pageSize,
+                                     HttpSession session) {
+        //首先检查权限
+        Object user = session.getAttribute("loginUser");
+        Object type1 = session.getAttribute("type");
+        String sno="";
+        if(null == user){
+            JsonMessage j=new JsonMessage();
+            j.setCode(-1);
+            j.setMsg("未登录");
+            return j;
+        }else if((int)type1 == 1||(int)type1 == 2){
+            JsonMessage j=new JsonMessage();
+            j.setCode(3);
+            j.setMsg("权限不足");
+            return j;
+        }
         return applicationService.get_list_with_page_m(type, pageNum, pageSize);
     }
     /*这以上是机智的我写的*/
@@ -185,17 +229,13 @@ public class ApplicationController {
      * 获取app详情
      * add By hwg
      *
-     * @param sno
      * @param appid
      * @return
      */
     @ResponseBody
     @RequestMapping("/detail")
-    public Message get_detail(@RequestParam(value = "sno", required = false, defaultValue = "111") String sno,
-                              @RequestParam(value = "appid", required = true, defaultValue = "1") String appid
+    public Message get_detail(@RequestParam(value = "appid", required = true, defaultValue = "1") String appid
     ) {
-        //TODO 从session里面获取SNO
-        System.out.println(appid);
         return new Message(0, "成功", applicationService.get_detail(appid));
     }
 
@@ -203,18 +243,38 @@ public class ApplicationController {
     @PostMapping("/change")
     public Message change(@RequestParam(value = "appid", required = true) String appid,
                           @RequestParam(value = "operation", required = false, defaultValue = "refuse") String op,
-                          @RequestParam(value = "note", required = false, defaultValue = "") String note) {
+                          @RequestParam(value = "note", required = false, defaultValue = "") String note,
+                          HttpSession session) {
         boolean re = false;
+        //首先检查权限
+        Object user = session.getAttribute("loginUser");
+        Object type = session.getAttribute("type");
+        String sno="";
+        if(null == user){
+            Message j=new Message();
+            j.setCode(-1);
+            j.setMessage("未登录");
+            return j;
+        }
         if ("refuse".equals(op)) {
-            //TODO 审核不通过需要检查权限
+            if((int)type!=3){
+                Message j=new Message();
+                j.setCode(3);
+                j.setMessage("权限不足");
+                return j;
+            }
             re = applicationService.update_state(appid, 1, note);
         } else if ("pass".equals(op)) {
-            //TODO 审核不通过需要检查权限
+            if((int)type!=3){
+                Message j=new Message();
+                j.setCode(3);
+                j.setMessage("权限不足");
+                return j;
+            }
             re = applicationService.update_state(appid, 2, note);
         } else if ("assure".equals(op)) {
             re = applicationService.update_state(appid, 3, note);
         }
-
 
         if (re)
             return new Message(0, "成功", null);
@@ -223,9 +283,21 @@ public class ApplicationController {
 
     @ResponseBody
     @PostMapping("/delete")
-    public Message de(@RequestParam(value = "appid",required = true)String appid){
-        //TODO 权限控制
+    public Message de(@RequestParam(value = "appid",required = true)String appid,
+                      HttpSession session){
+        //首先检查权限
+        Object user = session.getAttribute("loginUser");
+        Object type = session.getAttribute("type");
         Message m=new Message();
+        if(null == user){
+            m.setCode(-1);
+            m.setMessage("未登录");
+            return m;
+        }else if((int)type!=3){
+            m.setCode(3);
+            m.setMessage("权限不足");
+            return m;
+        }
         try{
             m.setData(applicationService.delete(appid));
             m.setCode(0);
