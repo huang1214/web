@@ -35,11 +35,11 @@ public interface ApplicationMapper {
 //    public List workresult(Map map);
     //获取列表
     public List<AppComAppLeaderVO> get_application_list(Map map);
-
+    int get_application_list_count(Map map);
     public AppComDetailVO get_application_detail(Map map);
 
     public List<AppComAppLeaderVO> get_application_list_m(Map map);
-
+    int get_application_list_m_count(Map map);
     public int update_state(Map map);
 
     int deleteApp(String appid);

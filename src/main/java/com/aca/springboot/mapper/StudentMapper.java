@@ -15,4 +15,6 @@ public interface StudentMapper {
     public Student selectStudent(@Param("sno") String sno);
 
     List<Student> selectByName(Map map);
+
+    int updateStudent(Student student);
 }

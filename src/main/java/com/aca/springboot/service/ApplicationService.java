@@ -165,17 +165,19 @@ public class ApplicationService {
     }*/
     /*这以下是机智的我写的*/
     public JsonMessage get_list_with_page_m(int status, int pageNum, int pageSize){
-        PageHelper.startPage(pageNum,pageSize);
+//        PageHelper.startPage(pageNum,pageSize);
         Map map = new HashMap<String,String>();
         map.put("status",status);
+        map.put("endIndex",pageNum*pageSize);
+        map.put("startIndex",(pageNum-1)*pageSize +1);
         JsonMessage result=new JsonMessage();
-        PageInfo re=new PageInfo(applicationMapper.get_application_list_m(map));
-        List<AppComAppLeaderVO> list = re.getList();
-        re.setList(list);
+//        PageInfo re=new PageInfo(applicationMapper.get_application_list_m(map));
+//        List<AppComAppLeaderVO> list = re.getList();
+        List<AppComAppLeaderVO> application_list_m = applicationMapper.get_application_list_m(map);
         result.setCode(0);
         result.setMsg("成功");
-        result.setCount(re.getSize());
-        JSONArray jsonArray=new JSONArray(re.getList());
+        result.setCount(applicationMapper.get_application_list_m_count(map));
+        JSONArray jsonArray=new JSONArray((List)application_list_m);
         result.setData(jsonArray);
         return result;
     }
@@ -188,18 +190,20 @@ public class ApplicationService {
         PageHelper.startPage(pageNum,pageSize);
         Map map = new HashMap<String,String>();
         map.put("SNO",sno);
+        map.put("endIndex",pageNum*pageSize);
+        map.put("startIndex",(pageNum-1)*pageSize +1);
         JsonMessage result=new JsonMessage();
-        PageInfo re=new PageInfo(applicationMapper.get_application_list(map));
-        List<AppComAppLeaderVO> list = re.getList();
-        for (int i=0;i<list.size();i++){
-            if(sno.equals(list.get(i).getLeader()))
-                list.get(i).setRes(1);
+//        PageInfo re=new PageInfo(applicationMapper.get_application_list(map));
+        List<AppComAppLeaderVO> application_list = applicationMapper.get_application_list(map);
+//        List<AppComAppLeaderVO> list = re.getList();
+        for (int i=0;i<application_list.size();i++){
+            if(sno.equals(application_list.get(i).getLeader()))
+                application_list.get(i).setRes(1);
         }
-        re.setList(list);
         result.setCode(0);
         result.setMsg("成功");
-        result.setCount(re.getSize());
-        JSONArray jsonArray=new JSONArray(re.getList());
+        result.setCount(applicationMapper.get_application_list_count(map));
+        JSONArray jsonArray=new JSONArray((List)application_list);
         result.setData(jsonArray);
         return result;
     }

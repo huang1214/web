@@ -151,23 +151,39 @@
     <parameterMap id="get_app_list_params" type="java.util.Map">
     </parameterMap>
     <select id="get_application_list" parameterMap="get_app_list_params" resultMap="ACALVO">
-      select
-      A.Appid,A.CTID,A.APPLICANTID,
-      A.UNIT,A.LEADER,A.STUDENTPRICE,A.TEACHERPRICE,A.AWARDTYPEID,
-      A.AWARDDATE,A.WORKNAME,A.WORKBRIEFINTRO,A.STATUS,A.NOTE,
-      C.CTID c_ctid,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE,C.REFERENCE_PAPER,
-      S1.SNO S1_SNO,S1.SNAME S1_SNAME,S2.SNO S2_SNO,S2.SNAME S2_SNAME
+        SELECT * FROM
+        (
+        SELECT temp.*, ROWNUM RN
+        FROM (SELECT * FROM (
+        select
+        A.Appid,A.CTID,A.APPLICANTID,
+        A.UNIT,A.LEADER,A.STUDENTPRICE,A.TEACHERPRICE,A.AWARDTYPEID,
+        A.AWARDDATE,A.WORKNAME,A.WORKBRIEFINTRO,A.STATUS,A.NOTE,
+        C.CTID c_ctid,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE,C.REFERENCE_PAPER,
+        S1.SNO S1_SNO,S1.SNAME S1_SNAME,S2.SNO S2_SNO,S2.SNAME S2_SNAME
 
-      from (select * from application where APPID IN (SELECT APP_ID FROM APPLICATION_MEMBER WHERE APP_TM_ID = #{SNO}) order by status desc) A JOIN
-      (select * from com_table ) C ON A.ctid=C.ctid JOIN
-      (select * from STUDENT) S1 ON S1.SNO=A.APPLICANTID JOIN
-      (select * from STUDENT) S2 ON S2.SNO=A.LEADER
+        from (select * from application where APPID IN (SELECT APP_ID FROM APPLICATION_MEMBER WHERE APP_TM_ID =
+        #{SNO}) order by status desc) A JOIN
+        (select * from com_table ) C ON A.ctid=C.ctid JOIN
+        (select * from STUDENT) S1 ON S1.SNO=A.APPLICANTID JOIN
+        (select * from STUDENT) S2 ON S2.SNO=A.LEADER
+        )) temp
+        WHERE ROWNUM &lt;= #{endIndex}
+        )
+        WHERE RN >=#{startIndex}
+    </select>
+    <select id="get_application_list_count" parameterMap="get_app_list_params" resultType="java.lang.Integer">
+        SELECT count(*) FROM APPLICATION_MEMBER WHERE APP_TM_ID = #{SNO}
     </select>
     <!--管理员列表-->
     <parameterMap id="get_app_list_params_m" type="java.util.Map">
     </parameterMap>
     <select id="get_application_list_m" parameterMap="get_app_list_params_m" resultMap="ACALVO">
-      select
+    SELECT * FROM
+    (
+    SELECT temp.*, ROWNUM RN
+    FROM (SELECT * FROM (
+    select
       A.Appid,A.CTID,A.APPLICANTID,
       A.UNIT,A.LEADER,A.STUDENTPRICE,A.TEACHERPRICE,A.AWARDTYPEID,
       A.AWARDDATE,A.WORKNAME,A.WORKBRIEFINTRO,A.STATUS,A.NOTE,
@@ -178,8 +194,14 @@
       (select * from com_table ) C ON A.ctid=C.ctid JOIN
       (select * from STUDENT) S1 ON S1.SNO=A.APPLICANTID JOIN
       (select * from STUDENT) S2 ON S2.SNO=A.LEADER
+    )) temp
+    WHERE ROWNUM &lt;= #{endIndex}
+    )
+    WHERE RN >=#{startIndex}
     </select>
-
+    <select id="get_application_list_m_count" parameterMap="get_app_list_params_m" resultType="java.lang.Integer">
+        select count(*) from application where STATUS=#{status} order by APPID desc
+    </select>
     <!--取得detail-->
     <parameterMap id="get_app_detail_params" type="java.util.Map">
     </parameterMap>

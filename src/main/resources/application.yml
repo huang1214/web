@@ -35,4 +35,7 @@ logging:
   level:
     com.aca.springboot.mapper: debug
 
+pagehelper:
+  helperDialect: oracle
+
 

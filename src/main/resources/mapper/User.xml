@@ -150,4 +150,6 @@
     <select id="selectAdministrator" resultMap="resultAdministrator">
         select adm_id,adm_pwd,adm_name  from ADMINISTRATOR where ADM_ID = #{username}
     </select>
+
+
 </mapper>

@@ -27,4 +27,19 @@
     <select id="selectByName" parameterMap="selectByNameParams" resultMap="resultStudent">
         select SNO,SNAME,SSEX,SBIRTHDAY,SDOMITORY,CNO,STEL,STATE from STUDENT where sname like #{sname}
     </select>
+    <update id="updateStudent" parameterType="com.aca.springboot.entities.Student">
+        update STUDENT
+        <set>
+            <if test="card_num!=null and card_num!=''">
+                CARD_NUM = #{card_num},
+            </if>
+            <if test="spwd!=null and spwd!=''">
+                SPWD = #{spwd},
+            </if>
+            <if test="stel!=null and stel!=''">
+                STEL = #{stel},
+            </if>
+        </set>
+        where SNO=#{sno}
+    </update>
 </mapper>

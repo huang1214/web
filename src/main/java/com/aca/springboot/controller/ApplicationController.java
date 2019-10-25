@@ -149,21 +149,13 @@ public class ApplicationController {
     }
 
 
-/*    @ResponseBody
-    @RequestMapping("/list")
-    public JsonMessage get_list(@RequestParam(value = "sno", required = false, defaultValue = "111") String sno,
-                                @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
-                                @RequestParam(value = "limit", required = false, defaultValue = "10") int pageSize) {
-        //TODO 从session里面获取SNO 或者管理员账号 需进行判断
-        return applicationService.get_list_json(sno, pageNum, pageSize);
-    }*/
     @ResponseBody
     @RequestMapping("/list")
     public JsonMessage get_list(@RequestParam(value = "sno", required = false, defaultValue = "111") String sno,
-                                @RequestParam(value = "page", required = false) int pageNum,
-                                @RequestParam(value = "limit", required = false ) int pageSize) {
-        System.out.println(pageNum+"   "+pageSize);
+                                @RequestParam(value = "page", required = false,defaultValue = "1") int pageNum,
+                                @RequestParam(value = "limit", required = false,defaultValue = "10") int pageSize) {
         //TODO 从session里面获取SNO 或者管理员账号 需进行判断
+        System.out.println(pageNum+":"+pageSize);
         return applicationService.get_list_json(sno, pageNum, pageSize);
     }
 
@@ -181,8 +173,8 @@ public class ApplicationController {
     @ResponseBody
     @RequestMapping("/list_test")
     public JsonMessage get_list_test(@RequestParam(value = "type", required = false, defaultValue = "0") int type,
-                                     @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
-                                     @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+                                     @RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
+                                     @RequestParam(value = "limit", required = false, defaultValue = "10") int pageSize) {
         //TODO
         //return new Message(0, "成功", applicationService.get_list_with_page_m(type, pageNum, pageSize));
         return applicationService.get_list_with_page_m(type, pageNum, pageSize);

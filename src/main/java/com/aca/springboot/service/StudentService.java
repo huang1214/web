@@ -71,4 +71,8 @@ public class StudentService {
         j.setCount(re.getSize());
         return j;
     }
+
+    public int update(Student student){
+        return studentMapper.updateStudent(student);
+    }
 }
