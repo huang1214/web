@@ -88,34 +88,25 @@
     <parameterMap id="get_bill_list_params" type="java.util.Map">
     </parameterMap>
     <select id="get_bill_list" parameterMap="get_bill_list_params" resultMap="BVO">
-        select
-            B.BID, B.CTID, B.CYEAR, B.CLEVEL,B.CDESC, B.GROUPLEADER, B.GROUPNAME, B.RESULT_TYPE, B.WORK_NAME, B.PREDITFEEDESC, B.PREDICTFEE,B.STATE,B.ATTACHFILE,B.NOTE
-            ,C.CTID,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE,C.REFERENCE_PAPER
-            ,S.SNO,S.SNAME,S.SSEX,S.SBIRTHDAY,S.SDOMITORY,S.CNO,S.SPWD,S.STEL,S.STATE,S.CARD_NUM
-            ,ST.SNO ST_SNO,ST.SNAME ST_SNAME,ST.SSEX ST_SSEX,ST.SBIRTHDAY ST_SBIRTHDAY,ST.SDOMITORY ST_SDOMITORY,ST.CNO ST_CNO,ST.SPWD ST_SPWD,ST.STEL ST_STEL,ST.STATE ST_STATE,ST.CARD_NUM ST_CARD_NUM
-            ,TE.TNO TE_TNO,TE.TNAME TE_TNAME,TE.TSEX TE_TSEX,TE.TBIRTHDAY TE_TBIRTHDAY,TE.DNO TE_DNO,TE.TTEL TE_TTEL,TE.TTITLE TE_TTITLE,TE.TPWD TE_TPWD,TE.TSTATE TE_TSTATE,TE.CARD_NUM TE_CARD_NUM
-        from (select * from BILL where BID IN (SELECT BILL_ID FROM BILL_MEMBER WHERE BILL_TM_ID = #{SNO} ) order by bill.STATE desc) B
-                 JOIN (select * from BILL_MEMBER) BM on BM.BILL_ID = B.BID
-                 JOIN (select * from com_table ) C ON B.ctid=C.ctid
-                 JOIN (select * from STUDENT) S ON S.SNO=B.GROUPLEADER
-                 left join (select * from STUDENT) ST on BM.BILL_TM_ID = ST.SNO and BM.BILL_TYPE = '1'
-                 left join (select * from TEACHER) TE on BM.BILL_TM_ID = TE.TNO and BM.BILL_TYPE = '2'
+        SELECT * FROM (SELECT ROWNUM rn, b.* FROM (SELECT * from (select * from BILL
+        where BID IN (SELECT BILL_ID FROM BILL_MEMBER WHERE BILL_TM_ID = #{SNO} ) order by bill.STATE desc) B
+        JOIN  BILL_MEMBER BM on BM.BILL_ID = B.BID
+        JOIN com_table  C ON B.ctid=C.ctid
+        JOIN STUDENT S ON S.SNO=B.GROUPLEADER
+        left join  STUDENT ST on BM.BILL_TM_ID = ST.SNO and BM.BILL_TYPE = '1'
+        left join TEACHER TE on BM.BILL_TM_ID = TE.TNO and BM.BILL_TYPE = '2') b)
+        WHERE rn>=#{LEFT} AND rn &lt;=#{RIGHT}
     </select>
 
     <!--管理员获取全部的竞赛信息-->
     <select id="get_all_bill_list" resultMap="BVO">
-        select
-            B.BID, B.CTID, B.CYEAR, B.CLEVEL,B.CDESC, B.GROUPLEADER, B.GROUPNAME, B.RESULT_TYPE, B.WORK_NAME, B.PREDITFEEDESC, B.PREDICTFEE,B.STATE,B.ATTACHFILE,B.NOTE
-             ,C.CTID,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE,C.REFERENCE_PAPER
-             ,S.SNO,S.SNAME,S.SSEX,S.SBIRTHDAY,S.SDOMITORY,S.CNO,S.SPWD,S.STEL,S.STATE,S.CARD_NUM
-             ,ST.SNO ST_SNO,ST.SNAME ST_SNAME,ST.SSEX ST_SSEX,ST.SBIRTHDAY ST_SBIRTHDAY,ST.SDOMITORY ST_SDOMITORY,ST.CNO ST_CNO,ST.SPWD ST_SPWD,ST.STEL ST_STEL,ST.STATE ST_STATE,ST.CARD_NUM ST_CARD_NUM
-             ,TE.TNO TE_TNO,TE.TNAME TE_TNAME,TE.TSEX TE_TSEX,TE.TBIRTHDAY TE_TBIRTHDAY,TE.DNO TE_DNO,TE.TTEL TE_TTEL,TE.TTITLE TE_TTITLE,TE.TPWD TE_TPWD,TE.TSTATE TE_TSTATE,TE.CARD_NUM TE_CARD_NUM
-        from (select * from BILL) B
-                 JOIN (select * from BILL_MEMBER) BM on BM.BILL_ID = B.BID
-                 JOIN (select * from com_table ) C ON B.ctid=C.ctid
-                 JOIN (select * from STUDENT) S ON S.SNO=B.GROUPLEADER
-                 left join (select * from STUDENT) ST on BM.BILL_TM_ID = ST.SNO and BM.BILL_TYPE = '1'
-                 left join (select * from TEACHER) TE on BM.BILL_TM_ID = TE.DNO and BM.BILL_TYPE = '2'
+        SELECT * FROM (SELECT ROWNUM rn, b.* FROM (select * from (select * from BILL) B
+        JOIN BILL_MEMBER BM on BM.BILL_ID = B.BID
+        JOIN  com_table  C ON B.ctid=C.ctid
+        JOIN  STUDENT S ON S.SNO=B.GROUPLEADER
+        left join  STUDENT ST on BM.BILL_TM_ID = ST.SNO and BM.BILL_TYPE = '1'
+        left join  TEACHER TE on BM.BILL_TM_ID = TE.DNO and BM.BILL_TYPE = '2') b)
+        WHERE rn>=#{LEFT} AND rn &lt;=#{RIGHT}
     </select>
 
     <update id="change_bill_state" parameterType="java.util.Map">
@@ -136,7 +127,14 @@
         SELECT COUNT(*)  FROM BILL b JOIN BILL_MEMBER m ON b.BID=m.BILL_ID
         WHERE STATE=#{STATE} AND BILL_TM_ID=#{SNO}
     </select>
+    <select id="getBillCountNotState" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(*)  FROM BILL b JOIN BILL_MEMBER m ON b.BID=m.BILL_ID
+        WHERE  BILL_TM_ID=#{SNO}
+    </select>
     <select id="getBillCountAdmin" parameterType="java.util.Map" resultType="java.lang.Integer">
         SELECT COUNT(*)  FROM BILL WHERE STATE=#{STATE}
+    </select>
+    <select id="getBillCountAdminNotState" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(*)  FROM BILL
     </select>
 </mapper>

@@ -4,11 +4,8 @@ import com.aca.springboot.entities.Bill;
 import com.aca.springboot.entities.BillMember;
 import com.aca.springboot.entities.JsonMessage;
 import com.aca.springboot.mapper.BillMapper;
-import com.aca.springboot.utils.Define;
 import com.aca.springboot.vo.BillVO;
 import com.alibaba.fastjson.JSONArray;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,30 +57,49 @@ public class BillService {
     //返回该生报销记录,分页
     public JsonMessage queryAllBillWithPage(String sno,int pageNum,int pageSize){
         //设置从第几页查询N条
-        PageHelper.startPage(pageNum,pageSize);
+        //System.out.println(pageNum+"---每页大小："+pageSize);
         Map map=new HashMap();
+        int left=(pageNum-1)*pageSize+1;  //左边查询起始索引
+        int right=pageNum*pageSize;   //查询到哪里截至索引
         map.put("SNO",sno);
-        List<BillVO> listBill=billMapper.get_bill_list(map);
-        PageInfo<BillVO> pageInfo=new PageInfo(listBill);
-        List list = pageInfo.getList();
+        map.put("LEFT",left);
+        map.put("RIGHT",right);
+     //   PageHelper.startPage(pageNum,pageSize);
+        List listBill=billMapper.get_bill_list(map);
+       /* PageInfo<BillVO> pageInfo=new PageInfo(listBill);
+        System.out.println("总数量：" + pageInfo.getTotal());
+        System.out.println("当前页查询记录：" + pageInfo.getList().size());
+        System.out.println("当前页码：" + pageInfo.getPageNum());
+        System.out.println("每页显示数量：" + pageInfo.getPageSize());
+        System.out.println("总页：" + pageInfo.getPages());*/
+       // List list = pageInfo.getList();
+        int count=billMapper.getBillCountNotState(map); //总条数
+        //System.out.println(count);
         JsonMessage jsonMessage=new JsonMessage();
         jsonMessage.setCode(0);
         jsonMessage.setMsg("查询成功");
-        jsonMessage.setCount(pageInfo.getSize());
-        jsonMessage.setData(new JSONArray(list));
+        jsonMessage.setCount(count);
+        jsonMessage.setData(new JSONArray(listBill));
         return jsonMessage;
     }
     //返回所有的报销记录,分页
     public JsonMessage queryAllBill(int pageNum,int pageSize){
-        PageHelper.startPage(pageNum,pageSize);
-        List<BillVO> listBill=billMapper.get_all_bill_list();
-        PageInfo<BillVO> pageInfo=new PageInfo(listBill);
-        List list=pageInfo.getList();
+        Map map=new HashMap();
+        int left=(pageNum-1)*pageSize+1;  //左边查询起始索引
+        int right=pageNum*pageSize;   //查询到哪里截至索引
+        map.put("LEFT",left);
+        map.put("RIGHT",right);
+        //PageHelper.startPage(pageNum,pageSize);
+        List listBill=billMapper.get_all_bill_list(map);
+       // PageInfo<BillVO> pageInfo=new PageInfo(listBill);
+        //List list=pageInfo.getList();
+        int count=billMapper.getBillCountAdminNotState(); //总条数
+        System.out.println(count);
         JsonMessage jsonMessage=new JsonMessage();
         jsonMessage.setCode(0);
         jsonMessage.setMsg("查询成功");
-        jsonMessage.setCount(pageInfo.getSize());
-        jsonMessage.setData(new JSONArray(list));
+        jsonMessage.setCount(count);
+        jsonMessage.setData(new JSONArray(listBill));
         return jsonMessage;
     }
     /**

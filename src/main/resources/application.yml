@@ -26,16 +26,20 @@ spring:
     content-type: text/html
     cache: false
 
+pagehelper:
+  helperDialect: oracle
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.aca.springboot.entities
+
 
 #持久化日志进入调试模式
 logging:
   level:
     com.aca.springboot.mapper: debug
 
-pagehelper:
-  helperDialect: oracle
 
 

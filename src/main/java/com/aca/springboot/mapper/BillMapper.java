@@ -53,7 +53,7 @@ public interface BillMapper {
     public List<BillVO> get_bill_list(Map map);
 
     //管理员获取全部的报销列表
-    public List<BillVO> get_all_bill_list();
+    public List<BillVO> get_all_bill_list(Map map);
 
     //修改状态
     public int change_bill_state(Map map);
@@ -69,5 +69,10 @@ public interface BillMapper {
 
     //获取仪表盘信息,管理员
     public Integer getBillCountAdmin(Map map);
+
+    //获取该生总记录数
+    public Integer getBillCountNotState(Map map);
+    //获取管理员总记录数
+    public  Integer getBillCountAdminNotState();
 
 }
