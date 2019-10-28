@@ -40,28 +40,28 @@
             <result property="card_num" column="card_num"/>
         </association>
         <collection property="students" javaType="java.util.ArrayList" ofType="com.aca.springboot.entities.Student">
-            <id property="sno" column="ST_SNO"/>
-            <result property="sname" column="ST_SNAME"/>
-            <result property="ssex" column="ST_SSEX"/>
-            <result property="sbirthday" column="ST_SBIRTHDAY"/>
-            <result property="sdomitory" column="ST_SDOMITORY"/>
-            <result property="cno" column="ST_CNO"/>
-            <result property="spwd" column="ST_SPWD"/>
-            <result property="stel" column="ST_STEL"/>
-            <result property="state" column="ST_STATE"/>
-            <result property="card_num" column="ST_CARD_NUM"/>
+            <id property="sno" column="SNO"/>
+            <result property="sname" column="SNAME"/>
+            <result property="ssex" column="SSEX"/>
+            <result property="sbirthday" column="SBIRTHDAY"/>
+            <result property="sdomitory" column="SDOMITORY"/>
+            <result property="cno" column="CNO"/>
+            <result property="spwd" column="SPWD"/>
+            <result property="stel" column="STEL"/>
+            <result property="state" column="STATE"/>
+            <result property="card_num" column="CARD_NUM"/>
         </collection>
         <collection property="teachers" ofType="com.aca.springboot.entities.Teacher">
-            <id property="tno" column="TE_TNO"/>
-            <result property="tname" column="TE_TNAME"/>
-            <result property="tsex" column="TE_TSEX"/>
-            <result property="tbirthday" column="TE_TBIRTHDAY"/>
-            <result property="dno" column="TE_DNO"/>
-            <result property="ttel" column="TE_TTEL"/>
-            <result property="ttitle" column="TE_TTITLE"/>
-            <result property="tpwd" column="TE_TPWD"/>
-            <result property="tstate" column="TE_TSTATE"/>
-            <result property="card_num" column="TE_CARD_NUM"/>
+            <id property="tno" column="TNO"/>
+            <result property="tname" column="TNAME"/>
+            <result property="tsex" column="TSEX"/>
+            <result property="tbirthday" column="TBIRTHDAY"/>
+            <result property="dno" column="DNO"/>
+            <result property="ttel" column="TTEL"/>
+            <result property="ttitle" column="TTITLE"/>
+            <result property="tpwd" column="TPWD"/>
+            <result property="tstate" column="TSTATE"/>
+            <result property="card_num" column="CARD_NUM"/>
         </collection>
 
     </resultMap>
@@ -93,7 +93,7 @@
         JOIN  BILL_MEMBER BM on BM.BILL_ID = B.BID
         JOIN com_table  C ON B.ctid=C.ctid
         JOIN STUDENT S ON S.SNO=B.GROUPLEADER
-        left join  STUDENT ST on BM.BILL_TM_ID = ST.SNO and BM.BILL_TYPE = '1'
+        join  STUDENT ST on BM.BILL_TM_ID = ST.SNO and BM.BILL_TYPE = '1'
         left join TEACHER TE on BM.BILL_TM_ID = TE.TNO and BM.BILL_TYPE = '2') b)
         WHERE rn>=#{LEFT} AND rn &lt;=#{RIGHT}
     </select>
@@ -104,7 +104,7 @@
         JOIN BILL_MEMBER BM on BM.BILL_ID = B.BID
         JOIN  com_table  C ON B.ctid=C.ctid
         JOIN  STUDENT S ON S.SNO=B.GROUPLEADER
-        left join  STUDENT ST on BM.BILL_TM_ID = ST.SNO and BM.BILL_TYPE = '1'
+        join  STUDENT ST on BM.BILL_TM_ID = ST.SNO and BM.BILL_TYPE = '1'
         left join  TEACHER TE on BM.BILL_TM_ID = TE.DNO and BM.BILL_TYPE = '2') b)
         WHERE rn>=#{LEFT} AND rn &lt;=#{RIGHT}
     </select>
