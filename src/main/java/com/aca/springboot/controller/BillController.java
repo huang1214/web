@@ -107,13 +107,13 @@ public class BillController {
     //获取该登录学生的所有报销记录,ok
     @GetMapping(value = "queryAll")
     @ResponseBody
-    public JsonMessage getAllBillByID(@RequestParam(value = "limit",required = false,defaultValue = "1")int pageSize,
-                                      @RequestParam(value = "page",required = false,defaultValue = "10")int pageNum,
+    public JsonMessage getAllBillByID(@RequestParam(value = "limit",required = false,defaultValue = "10")int pageSize,
+                                      @RequestParam(value = "page",required = false,defaultValue = "1")int pageNum,
                                       HttpSession session){
 //        Message billListMessage=new Message();
-        Student student =(Student) session.getAttribute("loginUser");
+       Student student =(Student) session.getAttribute("loginUser");
         String sno=student.getSno();
-        System.out.println(sno);
+       System.out.println(sno);
         return billService.queryAllBillWithPage(sno,pageNum,pageSize);
     }
     //获取该登录学生的所有报销记录,分页
