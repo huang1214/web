@@ -50,12 +50,13 @@ public class LoginController {
      */
 
     @PostMapping(value = "/user/login")
-    public String login(@RequestParam("username") String username,
+    public JsonMessage login(@RequestParam("username") String username,
                         @RequestParam("password") String password,
                         HttpSession session){
         Map map= UserService.login(username,password);
         int tname= Integer.parseInt(String.valueOf(map.get("logintype")));
         int usertype = Integer.parseInt(String.valueOf(map.get("usertype")));
+        JsonMessage j=new JsonMessage();
         if(tname == 2 |tname == 3 ){
             //登陆成功，防止表单重复提交，可以重定向到主页
             if(usertype == 1){
@@ -67,16 +68,15 @@ public class LoginController {
                 session.setAttribute("loginUser",teacher);
                 session.setAttribute("type",2);   //2为老师
             }
-            return "redirect:/user_index.html";
         }else if(tname == 1){
             //登陆失败
-            map.put("msg","用户名密码错误");
-            return  "login";
+            j.setCode(2);
+            j.setMsg("用户名密码错误");
         }else if(tname == 0){
-            map.put("msg","用户不存在");
-            return  "login";
+            j.setCode(3);
+            j.setMsg("用户不存在");
         }
-        return "login";
+        return j;
     }
     //管理员登录
     @PostMapping(value = "/user/adm_login")
