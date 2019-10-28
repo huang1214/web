@@ -221,12 +221,14 @@ public class LoginController {
             map.put("noReviewBill",billService.getBillCount(sno,0));
             map.put("passBill",billService.getBillCount(sno,2));
             map.put("noPassBill",billService.getBillCount(sno,1));
+            map.put("role","1");
         }else if(type==2){
             String tno=((Teacher)session.getAttribute("loginUser")).getTno();
             map.put("unResolved",testService.getApplicationCount(tno,0));
             map.put("refused",testService.getApplicationCount(tno,1));
             map.put("passed",testService.getApplicationCount(tno,2));
             map.put("finished",testService.getApplicationCount(tno,3));
+            map.put("role","2");
         }else if(type==3){
             String tno="%";
             map.put("unResolved",testService.getApplicationCount(tno,0));
@@ -234,6 +236,7 @@ public class LoginController {
             map.put("noReviewBill",billService.getBillCountAdmin(0));
             map.put("passBill",billService.getBillCountAdmin(2));
             map.put("noPassBill",billService.getBillCountAdmin(1));
+            map.put("role","3");
         }else{
             m.setCode(-1);
             m.setMessage("内部错误");
