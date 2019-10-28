@@ -68,6 +68,8 @@ public class LoginController {
                 session.setAttribute("loginUser",teacher);
                 session.setAttribute("type",2);   //2为老师
             }
+            j.setCode(0);
+            j.setMsg("成功");
         }else if(tname == 1){
             //登陆失败
             j.setCode(2);
@@ -80,16 +82,17 @@ public class LoginController {
     }
     //管理员登录
     @PostMapping(value = "/user/adm_login")
-    public String adm_login(@RequestParam("username") String username,
+    public JsonMessage adm_login(@RequestParam("username") String username,
                         @RequestParam("password") String password,
                         HttpSession session){
-        System.out.println(username+password);
+//        System.out.println(username+password);
+        JsonMessage j=new JsonMessage();
         Map map= UserService.a_login(username,password);
-        System.out.println(map);
+//        System.out.println(map);
         int returnvalue= Integer.parseInt(String.valueOf(map.get("logintype")));
-        System.out.println(returnvalue);
+//        System.out.println(returnvalue);
         int usertype = Integer.parseInt(String.valueOf(map.get("usertype")));
-        System.out.println(usertype);
+//        System.out.println(usertype);
         if(returnvalue==4){
             //管理员登陆成功，防止表单重复提交，可以重定向到主页
             if(usertype == 3){
@@ -100,17 +103,21 @@ public class LoginController {
                 session.setAttribute("type",3);   //3为管理员
             }
             //return "redirect:/user_index.html";
-                return  "redirect:/admin_index.html" ;
-
+//                return  "redirect:/admin_index.html" ;
+            j.setCode(0);
+            j.setMsg("成功");
         }else if(returnvalue == 1){
             //登陆失败
-            map.put("msg","用户名密码错误");
-            return  "登陆失败";
+//            map.put("msg","用户名密码错误");
+            j.setCode(2);
+            j.setMsg("用户名或密码错误");
+//            return  "登陆失败";
         }else if(returnvalue == 0){
-            map.put("msg","用户不存在");
-            return  "用户不存在";
+            j.setCode(3);
+            j.setMsg("用户不存在");
+//            return  "用户不存在";
         }
-        return "login";
+        return j;
     }
 /*    //管理员登录
     @PostMapping(value = "/user/a_login")
