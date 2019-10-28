@@ -67,7 +67,7 @@ public class LoginController {
                 session.setAttribute("loginUser",teacher);
                 session.setAttribute("type",2);   //2为老师
             }
-            return "redirect:/user_index.html";
+            return "redirect:/index";
         }else if(tname == 1){
             //登陆失败
             map.put("msg","用户名密码错误");
@@ -100,7 +100,7 @@ public class LoginController {
                 session.setAttribute("type",3);   //3为管理员
             }
             //return "redirect:/user_index.html";
-                return  "redirect:/admin_index.html" ;
+                return  "redirect:/index" ;
 
         }else if(returnvalue == 1){
             //登陆失败
