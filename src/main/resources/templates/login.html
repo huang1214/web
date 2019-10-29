@@ -196,8 +196,10 @@
                 if(data.code==0){
                     window.location.href='/index';
 				}else{
-                    //TODO 优化提示信息-弹框太丑了
-                    alert(data.msg)
+                    layui.use(['layer'], function(){
+                        var layer = layui.layer;
+                        layer.msg(data.msg);
+                    });
 				}
             }
         });
@@ -216,8 +218,10 @@
                 if(data.code==0){
                     window.location.href='/index';
                 }else{
-                    //TODO 优化提示信息-弹框太丑了
-                    alert(data.msg)
+                    layui.use(['layer'], function(){
+                        var layer = layui.layer;
+                        layer.msg(data.msg);
+                    });
                 }
             }
         });
