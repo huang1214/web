@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/user")
 public class LoginController {
 
 //    @DeleteMapping
@@ -49,7 +50,8 @@ public class LoginController {
      * @return
      */
 
-    @PostMapping(value = "/user/login")
+    @PostMapping(value = "/login")
+    @ResponseBody
     public JsonMessage login(@RequestParam("username") String username,
                         @RequestParam("password") String password,
                         HttpSession session){
@@ -58,7 +60,6 @@ public class LoginController {
         int usertype = Integer.parseInt(String.valueOf(map.get("usertype")));
         JsonMessage j=new JsonMessage();
         if(tname == 2 |tname == 3 ){
-            //登陆成功，防止表单重复提交，可以重定向到主页
             if(usertype == 1){
                 Student student = studentService.selectBySnoReturnObject(username);
                 session.setAttribute("loginUser",student);
@@ -81,20 +82,16 @@ public class LoginController {
         return j;
     }
     //管理员登录
-    @PostMapping(value = "/user/adm_login")
+    @PostMapping(value = "/adm_login")
+    @ResponseBody
     public JsonMessage adm_login(@RequestParam("username") String username,
                         @RequestParam("password") String password,
                         HttpSession session){
-//        System.out.println(username+password);
         JsonMessage j=new JsonMessage();
         Map map= UserService.a_login(username,password);
-//        System.out.println(map);
         int returnvalue= Integer.parseInt(String.valueOf(map.get("logintype")));
-//        System.out.println(returnvalue);
         int usertype = Integer.parseInt(String.valueOf(map.get("usertype")));
-//        System.out.println(usertype);
         if(returnvalue==4){
-            //管理员登陆成功，防止表单重复提交，可以重定向到主页
             if(usertype == 3){
                 System.out.println("selectBy_ADM_ID_ReturnObject之前这里执行了");
                 Administrator administrator=UserService.selectBy_ADM_ID_ReturnObject(username);
@@ -102,20 +99,14 @@ public class LoginController {
                 System.out.println("selectBy_ADM_ID_ReturnObject之后这里执行了");
                 session.setAttribute("type",3);   //3为管理员
             }
-            //return "redirect:/user_index.html";
-//                return  "redirect:/admin_index.html" ;
             j.setCode(0);
             j.setMsg("成功");
         }else if(returnvalue == 1){
-            //登陆失败
-//            map.put("msg","用户名密码错误");
             j.setCode(2);
             j.setMsg("用户名或密码错误");
-//            return  "登陆失败";
         }else if(returnvalue == 0){
             j.setCode(3);
             j.setMsg("用户不存在");
-//            return  "用户不存在";
         }
         return j;
     }

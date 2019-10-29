@@ -36,7 +36,6 @@ public class ApplicationController {
                             @RequestParam(value = "unit", required = false) String unit,
                             @RequestParam(value = "level_type", required = false) String level_type,
                             @RequestParam(value = "prize_type", required = false) String prize_type,
-                            @RequestParam(value = "applicantId", required = false) String applicantId,
                             @RequestParam(value = "applicantBankCard", required = false) String applicantBankCard,
                             @RequestParam(value = "leader", required = false) String leader,
                             @RequestParam(value = "workBriefIntro", required = false) String workBriefIntro,
@@ -55,7 +54,11 @@ public class ApplicationController {
             m.setCode(-1);
             m.setMessage("未登录");
             return m;
-        }else if((int)type!=1 || (int)type!=2){
+        }else if((int)type==1){
+            sno=((Student)user).getSno();
+        }else if((int)type==2){
+            sno=((Teacher)user).getTno();
+        }else{
             m.setCode(3);
             m.setMessage("当前用户无权限！");
             return m;
@@ -110,7 +113,6 @@ public class ApplicationController {
             app.setLeader(leader);
             app.setStudentPrice((Integer.parseInt(studentPrice) * 100) + "");
             app.setTeacherPrice((Integer.parseInt(teacherPrice) * 100) + "");
-            app.setApplicantId(applicantId);
             app.setAwardDate(awardDate);
             app.setApplicantBankCard(applicantBankCard);
             app.setWorkName(workName);

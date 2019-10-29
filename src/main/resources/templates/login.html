@@ -63,7 +63,7 @@
 								</div>
 								<div class="row">
 									<div class="col-md-6 col-sm-6 col-xs-12">
-										<button class="btn btn-block layui-btn"type="submit">登录</button>
+										<button class="btn btn-block layui-btn" id="userlogin" type="button">登录</button>
 									</div>
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<button class="btn btn-block layui-btn layui-btn-primary"type="reset">重置</button>
@@ -98,7 +98,7 @@
 								</div>
 								<div class="row">
 									<div class="col-md-6 col-sm-6 col-xs-12">
-										<button class="btn btn-block layui-btn" id="login" type="submit">登录</button>
+										<button class="btn btn-block layui-btn" id="login" type="button">登录</button>
 									</div>
 									<div class="col-md-6 col-sm-6 col-xs-12">
 										<button class="btn btn-block layui-btn layui-btn-primary"type="reset">重置</button>
@@ -143,45 +143,85 @@
 	var isIPV6 =  false ;
 	var portal = {"AuthIP":"","AuthIP6":"","ServiceIP":"222.204.3.226","DoubleStackPC":false,"DoubleStackMobile":false,"AuthMode":false,"CloseLogout":false,"MacAuth":false,"RedirectUrl":true,"OtherPCStack":"IPV4","OtherMobileStack":"IPV4","MsgApi":"new","PublicSuccessPages":false};
 	var lang = "zh-CN" || "zh-CN";
-	(function () {
-		var setCookie = function (name, value, day) {
-			if (day === undefined) day = 7;
-			var date = new Date();
-			date.setDate(date.getDate() + day);
-			document.cookie = name + '=' + value + ';expires=' + date;
-		};
-		var getCookie = function (name) {
-			var reg = RegExp(name + '=([^;]+)');
-			var arr = document.cookie.match(reg);
-			return arr ? arr[1] : false;
-		};
-		var delCookie = function (name) {
-			setCookie(name, '', -1);
-		};
-		var cookie = {
-			username: getCookie('username'),
-			password: getCookie('password')
-		};
-		if (cookie.username) {
-			$('#username').val($.base64.decode(cookie.username));
-			$('#password').val($.base64.decode(cookie.password));
-			$('#remember').get(0).checked = true;
-		}
-		$('#login').click(function () {
-			var remember = $('#remember').get(0).checked;
-			var username = $('#username').val();
-			var password = $('#password').val();
-			username = $.base64.encode(username);
-			password = $.base64.encode(password);
-			if (remember){
-				setCookie('username', username);
-				setCookie('password', password);
-			}else{
-				delCookie('username');
-				delCookie('password');
-			}
-		});
-	})();
+	// (function () {
+	// 	var setCookie = function (name, value, day) {
+	// 		if (day === undefined) day = 7;
+	// 		var date = new Date();
+	// 		date.setDate(date.getDate() + day);
+	// 		document.cookie = name + '=' + value + ';expires=' + date;
+	// 	};
+	// 	var getCookie = function (name) {
+	// 		var reg = RegExp(name + '=([^;]+)');
+	// 		var arr = document.cookie.match(reg);
+	// 		return arr ? arr[1] : false;
+	// 	};
+	// 	var delCookie = function (name) {
+	// 		setCookie(name, '', -1);
+	// 	};
+	// 	var cookie = {
+	// 		username: getCookie('username'),
+	// 		password: getCookie('password')
+	// 	};
+	// 	if (cookie.username) {
+	// 		$('#username').val($.base64.decode(cookie.username));
+	// 		$('#password').val($.base64.decode(cookie.password));
+	// 		$('#remember').get(0).checked = true;
+	// 	}
+	// 	$('#login').click(function () {
+	// 		var remember = $('#remember').get(0).checked;
+	// 		var username = $('#username').val();
+	// 		var password = $('#password').val();
+	// 		username = $.base64.encode(username);
+	// 		password = $.base64.encode(password);
+	// 		if (remember){
+	// 			setCookie('username', username);
+	// 			setCookie('password', password);
+	// 		}else{
+	// 			delCookie('username');
+	// 			delCookie('password');
+	// 		}
+	// 	});
+	// })();
+    $("#login").click(function () {
+        var username=$("#name").val();
+        var userpwd=$("#password").val();
+        var params="username="+username+"&password="+userpwd;
+        // alert(params)
+        $.ajax({
+            url: "/user/adm_login",
+            data: params,
+            type: "POST",
+            dataType: "json",
+            success: function(data) {
+                if(data.code==0){
+                    window.location.href='/index';
+				}else{
+                    //TODO 优化提示信息-弹框太丑了
+                    alert(data.msg)
+				}
+            }
+        });
+    });
+	$("#userlogin").click(function () {
+		var username=$("#username").val();
+		var userpwd=$("#userpassword").val();
+		var params="username="+username+"&password="+userpwd;
+		// alert(params)
+        $.ajax({
+            url: "/user/login",
+            data: params,
+            type: "POST",
+            dataType: "json",
+            success: function(data) {
+                if(data.code==0){
+                    window.location.href='/index';
+                }else{
+                    //TODO 优化提示信息-弹框太丑了
+                    alert(data.msg)
+                }
+            }
+        });
+    });
 </script>
 
 
