@@ -134,7 +134,6 @@
 		</div>
 	</div>
 </div>
-<script src="asserts/js/layui/layui.js"></script>
 <script>
 	layui.use(['element'], function(){
 		var element = layui.element;
@@ -183,51 +182,51 @@
 	// 		}
 	// 	});
 	// })();
-    layui.use('layer', function(){
-        var layer = layui.layer;
-        $("#login").click(function () {
-            var username=$("#name").val();
-            var userpwd=$("#password").val();
-            var params="username="+username+"&password="+userpwd;
-            // alert(params)
-            $.ajax({
-                url: "/user/adm_login",
-                data: params,
-                type: "POST",
-                dataType: "json",
-                success: function(data) {
-                    if(data.code==0){
-                        window.location.href='/index';
-                    }else{
-                        //TODO 优化提示信息-弹框太丑了
+    $("#login").click(function () {
+        var username=$("#name").val();
+        var userpwd=$("#password").val();
+        var params="username="+username+"&password="+userpwd;
+        // alert(params)
+        $.ajax({
+            url: "/user/adm_login",
+            data: params,
+            type: "POST",
+            dataType: "json",
+            success: function(data) {
+                if(data.code==0){
+                    window.location.href='/index';
+				}else{
+                    layui.use(['layer'], function(){
+                        var layer = layui.layer;
                         layer.msg(data.msg);
-                       // alert(data.msg);
-                    }
-                }
-            });
+                    });
+				}
+            }
         });
-        $("#userlogin").click(function () {
-            var username=$("#username").val();
-            var userpwd=$("#userpassword").val();
-            var params="username="+username+"&password="+userpwd;
-            // alert(params)
-            $.ajax({
-                url: "/user/login",
-                data: params,
-                type: "POST",
-                dataType: "json",
-                success: function(data) {
-                    if(data.code==0){
-                        window.location.href='/index';
-                    }else{
-                        //TODO 优化提示信息-弹框太丑了
+    });
+	$("#userlogin").click(function () {
+		var username=$("#username").val();
+		var userpwd=$("#userpassword").val();
+		var params="username="+username+"&password="+userpwd;
+		// alert(params)
+        $.ajax({
+            url: "/user/login",
+            data: params,
+            type: "POST",
+            dataType: "json",
+            success: function(data) {
+                if(data.code==0){
+                    window.location.href='/index';
+                }else{
+                    layui.use(['layer'], function(){
+                        var layer = layui.layer;
                         layer.msg(data.msg);
-                       // alert(data.msg);
-                    }
+                    });
                 }
-            });
+            }
         });
     });
 </script>
-</body>
-</html>
+
+
+</body></html>

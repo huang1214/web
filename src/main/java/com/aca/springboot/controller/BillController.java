@@ -43,7 +43,7 @@ public class BillController {
     //添加一条报销记录,通过测试
     @PostMapping(value = "add")
     @ResponseBody
-    public ModelAndView addAward(@RequestParam(value = "ctid", required = false) String ctid,
+    public Message addAward(@RequestParam(value = "ctid", required = false) String ctid,
                             @RequestParam(value = "cyear", required = false) String cyear,
                             @RequestParam(value = "clevel", required = false) String clevel,
                             @RequestParam(value = "cdesc", required = false) String cdesc,
@@ -56,7 +56,7 @@ public class BillController {
                             @RequestParam(value = "ts",required = false) String teachers,
                             @RequestParam(value = "tms",required = false) String students
                             ){
-        ModelAndView mv = new ModelAndView("redirect:/user/bill_form");
+     //   ModelAndView mv = new ModelAndView("redirect:/user/bill_form");
         Message addAwardMessage=new Message();
         Bill bill=new Bill();
         bill.setBid(TimeUtil.getBillNumber());  //获取报销编号
@@ -101,8 +101,8 @@ public class BillController {
             addAwardMessage.setMessage("已经申请过了，不能重复申请！");
             addAwardMessage.setData(bill1);   //返回之前申请记录
         }
-        mv.addObject("billData",addAwardMessage);
-        return mv;
+       // mv.addObject("billData",addAwardMessage);
+        return addAwardMessage;
     }
     //获取该登录学生的所有报销记录,ok
     @GetMapping(value = "queryAll")
