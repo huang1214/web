@@ -57,6 +57,7 @@ public class BillController {
                             @RequestParam(value = "tms",required = false) String students
                             ){
      //   ModelAndView mv = new ModelAndView("redirect:/user/bill_form");
+        System.out.println(ctid+"----"+attachfile);
         Message addAwardMessage=new Message();
         Bill bill=new Bill();
         bill.setBid(TimeUtil.getBillNumber());  //获取报销编号
@@ -70,7 +71,7 @@ public class BillController {
         bill.setPreditfeedesc(preditfeedesc);
         bill.setState("0"); //初始状态都是未审核
         bill.setPredictfee(predictfee);
-        bill.setAttachfile("D:/local/picture");
+        bill.setAttachfile(attachfile);
         teachers=teachers.substring(1);
         students=students.substring(1);
         String[] teacherList=teachers.split(",");
