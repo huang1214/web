@@ -143,12 +143,12 @@ public class ApplicationController {
             applicationService.addMultMember(ts, appid, 2);
         }catch (Exception e){
             m.setCode(6);
-            m.setMessage("插入知道老师时出错");
+            m.setMessage("插入指导老师时出错");
             e.printStackTrace();
             return m;
         }
         m.setCode(0);
-        m.setMessage("成功");
+        m.setMessage("插入成功");
         return m;
     }
 

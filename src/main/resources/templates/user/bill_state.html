@@ -146,8 +146,8 @@
                     {field: 'bid', title: '备案编号', width:109, sort: true, fixed: 'left'}
                     ,{field: 'ctname', title: '竞赛名称', width:189,templet: '<div>{{d.competition.ctname}}</div>'}
                     ,{field: 'workName', title: '参赛作品名', width:114}
-                    ,{field: 'applicantId', title: '申请人', width:105,templet: '<div>{{d.appplicantStu.sname}}</div>'}
-                    ,{field: 'groupleader', title: '项目负责人', width:97}
+                    //,{field: 'applicantId', title: '申请人', width:105,templet: '<div>{{d.appplicantStu.sname}}</div>'}
+                    ,{field: 'groupleader', title: '项目负责人', width:97,templet: '<div>{{d.student.sname}}</div>'}
                     ,{field: 'cyear', title: '参赛时间', width: 108, sort: true}
                     ,{field: 'predictfee', title: '预算费用', width: 133, sort: true}
                     ,{field: 'state', title: '申请状态', minWidth: 135,templet: function(d){
@@ -184,7 +184,7 @@
                         layer.closeAll();
                     }
                     ,end:function(){
-                        location.reload();
+                        /*location.reload();*/
                     }
                 });
                 setTableValue(data);//动态向表格赋值

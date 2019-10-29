@@ -126,7 +126,6 @@
     </form>
     <table class="layui-hide" id="layer_com_table" lay-filter="layer_com_table"></table>
 </div>
-
 <!--弹出层：指导老师编号-->
 <div id="layer_teacher2Id">
     <form class="layui-form" action="" style="margin-top: 20px">
@@ -195,7 +194,7 @@
         <legend>学科竞赛成果申报表</legend>
     </fieldset>
 <!--    <form class="layui-form layui-form-pane" action="/app/add" method="post" enctype="multipart/form-data">-->
-    =<form class="layui-form layui-form-pane" method="post" enctype="multipart/form-data">
+    <form id="form_application" class="layui-form layui-form-pane" method="post" enctype="multipart/form-data">
     <div class="layui-row">
         <div class="layui-form-item layui-col-xs6 layui-col-sm6 layui-col-md12">
             <label class="layui-form-label" >比赛名称<span style="color: red">*</span></label>
@@ -303,15 +302,15 @@
         </fieldset>
 
         <div class="layui-upload">
-            <button type="button" class="layui-btn" id="test2" >多图片上传</button>
+            <button type="button" class="layui-btn" id="test1" >多图片上传</button>
             <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
                 预览图：
-                <div class="layui-upload-list" id="demo2"></div>
+                <img id="img_demo" />
             </blockquote>
         </div>
 
         <div class="layui-form-item">
-            <button class="layui-btn" lay-submit="" lay-filter="" id="application_form_btn">提交申请</button>
+            <button class="layui-btn" lay-submit="" lay-filter="application_form_submit" id="application_form_btn">提交申请</button>
         </div>
     </div>
     </form>
@@ -729,6 +728,7 @@
         var laydate = layui.laydate;
         var form = layui.form;
         var upload =layui.upload;
+        var img_url;
         //执行一个laydate实例
         /*日期与时间选择*/
         laydate.render({
@@ -815,6 +815,76 @@
             ,error: function(){
                 //请求异常回调
             }
+        });
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#test1' //绑定元素
+            ,url: '/common/upload' //上传接口
+            ,done: function(res){
+                //上传完毕回调
+                img_url = "http://localhost:8083/"+res.data;
+
+                alert("上传完毕");
+                console.log(res);
+                alert(img_url);
+                //$("#img_demo").html("<img src=img_url>");
+                document.getElementById("img_demo").src = img_url;
+                //http://localhost:8083/20191029113246708886.jpg
+                //http://localhost:8083/${res.data}}
+            }
+            ,error: function(){
+                //请求异常回调
+                alert("请求异常");
+            }
+        });
+        form.on('submit(application_form_submit)', function(data){
+            console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+            console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+            console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+            console.log($('#form_application').serialize()) //当前容器的全部表单字段，名值对形式：{name: value}
+            alert("提交按钮已经按下");
+            alert(data.field.applicantBankCard);
+            var params = {
+                "ctId":data.field.ctId,
+                "workName":data.field.workName,
+                "awardDate":data.field.awardDate,
+                "unit":data.field.unit,
+                "level_type":data.field.level_type,
+                "prize_type":data.field.prize_type,
+                "applicantId":data.field.applicantId,
+                "applicantBankCard":data.field.applicantBankCard,
+                "leader":data.field.leader,
+                "workBriefIntro":data.field.workBriefIntro,
+                "tms":data.field.tms,
+                "ts":data.field.ts,
+            }
+            alert(params.prize_type);
+            $.ajax({
+                type: "POST",
+                //dataType: "json",//服务器返回的数据类型
+                //contentType: "application/json",//post请求的信息格式
+                url: "/app/add" ,
+                data: params,
+                dataType: 'json',
+                success: function (result) {
+                    console.log(result);//在浏览器中打印服务端返回的数据(调试用)
+/*                    if (result.resultCode == 200) {
+                        alert("SUCCESS");
+                    };*/
+                    if(result.code == 0){
+                        layer.alert(result.message);
+
+                    }else {
+                        // layer.alert('审核失败！');
+                        layer.alert(result.message);
+                    }
+                    table_audit.reload();   //表格重载
+                },
+                error : function() {
+                    alert("异常！");
+                }
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
         form.render();//菜单渲染 把内容加载进去
     });

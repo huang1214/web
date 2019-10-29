@@ -57,8 +57,8 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
 
 
                 /* 教师的管理*/
-                registry.addViewController("teacher").setViewName("/admin/teacher"); //显示部门的表格
-                registry.addViewController("teacher_form").setViewName("/admin/teacher_form"); //显示部门的表格
+                registry.addViewController("admin/teacher").setViewName("/admin/teacher"); //显示部门的表格
+                registry.addViewController("admin/teacher_form").setViewName("/admin/teacher_form"); //显示部门的表格
 
                 /**
                  * 竞赛信息的查询
