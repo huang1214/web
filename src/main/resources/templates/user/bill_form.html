@@ -258,7 +258,7 @@
         </fieldset>
 
         <div class="layui-upload">
-            <button type="button" class="layui-btn" id="uploadbillimg" >多图片上传</button>
+            <button type="button" class="layui-btn" id="uploadbillimg" >图片上传</button>
             <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
                 预览图：
                 <img id="img_demo" />
@@ -406,7 +406,6 @@
             //     layer.msg("无法添加更多指导老师");
             // }
         });
-
         // 比赛名称弹出层>>表格
         table.render({
             elem: '#layer_com_table'
@@ -763,13 +762,16 @@
         var uploadInst = upload.render({
             elem: '#uploadbillimg' //绑定元素
             ,url: '/common/upload' //上传接口
+            ,accept:"images"
+            ,exts: 'jpg|png|jpeg'   //允许上传的文件后缀
+            ,size:"1024"          //设置文件最大可允许上传的大小，单位 KB。不支持ie8/9
             ,done: function(res){
                 //上传完毕回调
                 img_bill_url = "http://localhost:8083/"+res.data;
                 upload_bill=res.data;
-                alert("上传完毕");
+                //alert("上传完毕");
                 console.log(res);
-                alert(img_bill_url);
+                //alert(img_bill_url);
                 document.getElementById("img_demo").src = img_bill_url;
             }
             ,error: function(){
