@@ -48,8 +48,12 @@
             <td id="workName"></td>
         </tr>
         <tr>
-            <td>参赛时间</td>
+            <td>参赛年份</td>
             <td id="cyear"></td>
+        </tr>
+        <tr>
+            <td>竞赛描述</td>
+            <td id="describeCompetition"></td>
         </tr>
         <tr>
             <td>学科和科技竞赛分类</td>
@@ -70,6 +74,30 @@
         <tr>
             <td>申请状态</td>
             <td id="state"></td>
+        </tr>
+        <tr>
+            <td>项目成员</td>
+            <td id="member"></td>
+        </tr>
+        <tr>
+            <td>团队负责人姓名</td>
+            <td id="memberCaptainName"></td>
+        </tr>
+        <tr>
+            <td>团队负责人编号</td>
+            <td id="memberCaptainNum"></td>
+        </tr>
+        <tr>
+            <td>指导老师</td>
+            <td id="teacher"></td>
+        </tr>
+        <tr>
+            <td>上传凭证</td>
+            <td id="evidence"></td>
+        </tr>
+        <tr>
+            <td>备注信息</td>
+            <td id="note"></td>
         </tr>
         </tbody>
     </table>
@@ -100,14 +128,14 @@
             ,page: true //开启分页
             ,cols: [
                 [ //表头
-                    {field: 'bid', title: '备案编号', width:109, sort: true, fixed: 'left'}
-                    ,{field: 'ctname', title: '竞赛名称', width:125,templet: '<div>{{d.competition.ctname}}</div>'}
-                    ,{field: 'workName', title: '参赛作品名', width:84}
+                    {field: 'bid', title: '备案编号', width:170, align: 'center',sort: true, fixed: 'left'}
+                    ,{field: 'ctname', title: '竞赛名称', minWidth:200,align: 'center',templet: '<div>{{d.competition.ctname}}</div>'}
+                    ,{field: 'workName', title: '参赛作品名', align:'center', width:180}
                 /*    ,{field: 'applicantId', title: '申请人', width:85,templet: '<div>{{d.appplicantStu.sname}}</div>'}*/
-                    ,{field: 'groupleader', title: '项目负责人', width:97}
-                    ,{field: 'cyear', title: '参赛时间', width: 108, sort: true}
-                    ,{field: 'predictfee', title: '预算费用', width: 100, sort: true}
-                    ,{field: 'state', title: '申请状态', minWidth: 100,templet: function(d){
+                    ,{field: 'groupleader', title: '项目负责人', align: 'center', width:97}
+                    ,{field: 'cyear', title: '参赛时间', align:'center', width: 108, sort: true}
+                    ,{field: 'predictfee', title: '预算费用',align:'center', width: 133, sort: true}
+                    ,{field: 'state', title: '申请状态', align:'center', width: 120,templet: function(d){
                         if (d.state==0) {  // 自定义内容
                             return "未审核";
                         } else if (d.state==1) {
@@ -117,7 +145,7 @@
                             return "审核通过";
                         }
                     }}
-                    ,{fixed: 'right', title:'操作', toolbar: '#bar',Width:350}
+                    ,{fixed: 'right', title:'操作', align:'center',toolbar: '#bar',width:180}
                 ]
             ]
         });
@@ -206,7 +234,7 @@
         function setTableValue(data){
             // console.log(data.appid+"这里执行了应该显示的申请号");
             /*比赛信息*/
-
+            console.log(data);
             var bid=document.getElementById('bid');
             var ctname=document.getElementById('ctname');
             var workName=document.getElementById('workName');
@@ -216,15 +244,49 @@
             var predictfee=document.getElementById('predictfee');
             var preditfeedesc=document.getElementById('preditfeedesc');
             var state=document.getElementById('state');
+            var member=document.getElementById("member");
+            var teacher=document.getElementById("teacher");
+            var evidence=document.getElementById("evidence");
+            var memberCaptainName=document.getElementById("memberCaptainName");
+            var memberCaptainNum=document.getElementById("memberCaptainNum");
+            var describeCompetition=document.getElementById("describeCompetition");
+            var note=document.getElementById("note");
             var img_url = "http://localhost:8083/"+data.attachfile;
+            if(data.attachfile!=null){
+                /*   $("<tr></tr>").append("<td>"+"上传凭证"+"</td>")
+                       .append("<td><img src='"+img_url+"'/>")
+                       .appendTo("#bill_detail_table");*/
+                evidence.innerHTML="<img src='"+img_url+"'/>";
+            }else {
+                evidence.innerHTML="未上传凭证"
+            }
+            var tempMember="";
+            var tempTeacher="";
+            for(var i=0;i<data.students.length-1;i++)
+            {
+                tempMember+=data.students[i].sname+",";
+            }
+            tempMember+=data.students[data.students.length-1].sname;
+            if(data.teachers!=null){
+                for(var i=0;i<data.teachers.length-1;i++)
+                {
+                    tempTeacher+=data.teachers[i].tname+",";
+                }
+                tempTeacher+=data.teachers[data.teachers.length-1].tname;
+                teacher.innerHTML=tempTeacher;
+            }else {
+                teacher.innerHTML="无";
+            }
             bid.innerHTML=data.bid;               // 使用 DOM
             ctname.innerHTML=data.competition.ctname;
             workName.innerHTML=data.workName;
-            cyear.innerHTML=data.cyear;
+            cyear.innerHTML=data.cyear+"年";
             com_type.innerHTML=data.competition.com_type;
             predictfee.innerHTML=data.predictfee;
             preditfeedesc.innerHTML=data.preditfeedesc;
-
+            member.innerHTML=tempMember;
+            memberCaptainName.innerHTML=data.student.sname;
+            memberCaptainNum.innerHTML=data.student.sno;
             //参赛级别类型
             if(data.clevel==0)
             {
@@ -234,7 +296,6 @@
             {
                 clevel.innerHTML="国家级";
             }
-
             //申请状态
             if(data.state==0)
             {
@@ -248,60 +309,20 @@
             {
                 state.innerHTML="已通过";
             }
-
-            if(data.note!= null)
-            {
-                $("<tr></tr>").append("<td>"+"备注信息"+"</td>")
-                    .append("<td>"+data.note+"</td>")
-                    .appendTo("#bill_detail_table");
-            }
+             if(data.note!= null)
+             {
+                 note.innerHTML=data.note;
+             }else {
+                 note.innerHTML="暂无备注";
+             }
             if(data.cdesc!= null)
             {
-                $("<tr></tr>").append("<td>"+"竞赛描述"+"</td>")
+                /*$("<tr></tr>").append("<td>"+"竞赛描述"+"</td>")
                     .append("<td>"+data.cdesc+"</td>")
-                    .appendTo("#bill_detail_table");
-            }
-            //团队成员信息
-            if(data.student.sno!= null)
-            {
-                $("<tr></tr>").append("<td>"+"团队负责人编号"+"</td>")
-                    .append("<td>"+data.student.sno+"</td>")
-                    .appendTo("#bill_detail_table");
-                $("<tr></tr>").append("<td>"+"团队负责人姓名"+"</td>")
-                    .append("<td>"+data.student.sname+"</td>")
-                    .appendTo("#bill_detail_table");
-            }
-            for(i=0;i<data.students.length;i++)
-            {
-                if(data.students[i].sno!=null) {
-                    $("<tr></tr>").append("<td>" + "项目成员" + (i + 1) + "编号</td>")
-                        .append("<td>" + data.students[i].sno + "</td>")
-                        .appendTo("#bill_detail_table");
-                }
-                if(data.students[i].sname!=null){
-                    $("<tr></tr>").append("<td>"+"项目成员"+(i+1)+"姓名</td>")
-                        .append("<td>"+data.students[i].sname+"</td>")
-                        .appendTo("#bill_detail_table");
-                }
-            }
-            for(i=0;i<data.teachers.length;i++)
-            {
-                if(data.teachers[i].tno!=null) {
-                    $("<tr></tr>").append("<td>" + "指导老师" + (i + 1) + "编号</td>")
-                        .append("<td>" + data.teachers[i].tno + "</td>")
-                        .appendTo("#bill_detail_table");
-                }
-                if(data.teachers[i].tname!=null){
-                    $("<tr></tr>").append("<td>"+"指导老师"+(i+1)+"姓名</td>")
-                        .append("<td>"+data.teachers[i].tname+"</td>")
-                        .appendTo("#bill_detail_table");
-                }
-            }
-
-            if(data.attachfile!=null){
-                $("<tr></tr>").append("<td>"+"上传凭证"+"</td>")
-                    .append("<td><img src='"+img_url+"'/>")
-                    .appendTo("#bill_detail_table");
+                    .appendTo("#bill_detail_table");*/
+                describeCompetition.innerHTML=data.cdesc;
+            }else {
+                describeCompetition.innerHTML="暂无描述";
             }
 
         }

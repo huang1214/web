@@ -48,7 +48,7 @@
                 <td id="workName"></td>
             </tr>
             <tr>
-                <td>参赛时间</td>
+                <td>参赛年份</td>
                 <td id="cyear"></td>
             </tr>
             <tr>
@@ -95,6 +95,10 @@
                 <td>上传凭证</td>
                 <td id="evidence"></td>
             </tr>
+        <tr>
+            <td>备注信息</td>
+            <td id="note"></td>
+        </tr>
         </tbody>
     </table>
 </div>
@@ -198,6 +202,7 @@
             var memberCaptainName=document.getElementById("memberCaptainName");
             var memberCaptainNum=document.getElementById("memberCaptainNum");
             var describeCompetition=document.getElementById("describeCompetition");
+            var note=document.getElementById("note");
             var img_url = "http://localhost:8083/"+data.attachfile;
             if(data.attachfile!=null){
                 /*   $("<tr></tr>").append("<td>"+"上传凭证"+"</td>")
@@ -211,32 +216,12 @@
             var tempTeacher="";
             for(var i=0;i<data.students.length-1;i++)
             {
-                /*if(data.students[i].sno!=null) {
-                    $("<tr></tr>").append("<td>" + "项目成员" + (i + 1) + "编号</td>")
-                        .append("<td>" + data.students[i].sno + "</td>")
-                        .appendTo("#bill_detail_table");
-                }*/
                tempMember+=data.students[i].sname+",";
-                /* if(data.students[i].sname!=null){
-                     $("<tr></tr>").append("<td>"+"项目成员"+(i+1)+"姓名</td>")
-                         .append("<td>"+data.students[i].sname+"</td>")
-                         .appendTo("#bill_detail_table");
-                 }*/
             }
             tempMember+=data.students[data.students.length-1].sname;
             if(data.teachers!=null){
                 for(var i=0;i<data.teachers.length-1;i++)
                 {
-                    /* if(data.teachers[i].tno!=null) {
-                         $("<tr></tr>").append("<td>" + "指导老师" + (i + 1) + "编号</td>")
-                             .append("<td>" + data.teachers[i].tno + "</td>")
-                             .appendTo("#bill_detail_table");
-                     }
-                     if(data.teachers[i].tname!=null){
-                         $("<tr></tr>").append("<td>"+"指导老师"+(i+1)+"姓名</td>")
-                             .append("<td>"+data.teachers[i].tname+"</td>")
-                             .appendTo("#bill_detail_table");
-                     }*/
                     tempTeacher+=data.teachers[i].tname+",";
                 }
                 tempTeacher+=data.teachers[data.teachers.length-1].tname;
@@ -247,7 +232,7 @@
             bid.innerHTML=data.bid;               // 使用 DOM
             ctname.innerHTML=data.competition.ctname;
             workName.innerHTML=data.workName;
-            cyear.innerHTML=data.cyear;
+            cyear.innerHTML=data.cyear+"年";
             com_type.innerHTML=data.competition.com_type;
             predictfee.innerHTML=data.predictfee;
             preditfeedesc.innerHTML=data.preditfeedesc;
@@ -282,6 +267,12 @@
                     .append("<td>"+data.note+"</td>")
                     .appendTo("#bill_detail_table");
             }*/
+            if(data.note!= null)
+            {
+                note.innerHTML=data.note;
+            }else {
+                note.innerHTML="暂无备注";
+            }
             if(data.cdesc!= null)
             {
                 /*$("<tr></tr>").append("<td>"+"竞赛描述"+"</td>")
