@@ -66,6 +66,12 @@ public class BillService {
         map.put("RIGHT",right);
      //   PageHelper.startPage(pageNum,pageSize);
         List listBill=billMapper.get_bill_list(map);
+        List listBill2=billMapper.get_bill_list2(map);
+        for(int i=0;i<listBill.size();i++){
+            BillVO temp1=(BillVO) listBill.get(i);
+            BillVO temp2=(BillVO) listBill2.get(i);
+            temp1.setTeachers(temp2.getTeachers());
+        }
        /* PageInfo<BillVO> pageInfo=new PageInfo(listBill);
         System.out.println("总数量：" + pageInfo.getTotal());
         System.out.println("当前页查询记录：" + pageInfo.getList().size());
@@ -91,6 +97,12 @@ public class BillService {
         map.put("RIGHT",right);
         //PageHelper.startPage(pageNum,pageSize);
         List listBill=billMapper.get_all_bill_list(map);
+        List listBill2=billMapper.get_all_bill_list2(map);
+        for(int i=0;i<listBill.size();i++){
+            BillVO temp1=(BillVO) listBill.get(i);
+            BillVO temp2=(BillVO) listBill2.get(i);
+            temp1.setTeachers(temp2.getTeachers());
+        }
        // PageInfo<BillVO> pageInfo=new PageInfo(listBill);
         //List list=pageInfo.getList();
         int count=billMapper.getBillCountAdminNotState(); //总条数
