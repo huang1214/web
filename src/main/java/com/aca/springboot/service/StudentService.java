@@ -60,7 +60,8 @@ public class StudentService {
      */
     public JsonMessage selectByName(String name, int pageNum, int pageSize){
         Map params=new HashMap();
-        params.put("sname","%"+name+"%");
+        params.put("NAME","%"+name+"%");
+        params.put("SNO",name);
         PageHelper.startPage(pageNum,pageSize);
         List students = studentMapper.selectByName(params);
         PageInfo re=new PageInfo(students);

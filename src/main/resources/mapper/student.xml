@@ -25,7 +25,7 @@
     <parameterMap id="selectByNameParams" type="java.util.Map">
     </parameterMap>
     <select id="selectByName" parameterMap="selectByNameParams" resultMap="resultStudent">
-        select SNO,SNAME,SSEX,SBIRTHDAY,SDOMITORY,CNO,STEL,STATE from STUDENT where sname like #{sname}
+        select SNO,SNAME,SSEX,SBIRTHDAY,SDOMITORY,CNO,STEL,STATE from STUDENT where SNO=#{SNO} OR sname like #{NAME}
     </select>
     <update id="updateStudent" parameterType="com.aca.springboot.entities.Student">
         update STUDENT

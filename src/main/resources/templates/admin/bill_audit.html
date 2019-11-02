@@ -107,7 +107,7 @@
 <script src="../asserts/js/layui/layui.all.js"></script>
 
 <script type="text/html" id="bar">
-    <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="detail" id="btn_detail" name="btn_detail">查看详情</button>
+    <button class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detail" id="btn_detail" name="btn_detail">查看详情</button>
     {{#  if(d.state == 0){ }}
     <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="admin_audit" id="btn_admin_audit" name="btn_admin_audit">审核</button>
     {{#  } }}
@@ -133,16 +133,16 @@
                     ,{field: 'workName', title: '参赛作品名', align:'center', width:180}
                 /*    ,{field: 'applicantId', title: '申请人', width:85,templet: '<div>{{d.appplicantStu.sname}}</div>'}*/
                     ,{field: 'groupleader', title: '项目负责人', align: 'center', width:97}
-                    ,{field: 'cyear', title: '参赛时间', align:'center', width: 108, sort: true}
+                    ,{field: 'cyear', title: '参赛年份', align:'center', width: 108, sort: true}
                     ,{field: 'predictfee', title: '预算费用',align:'center', width: 133, sort: true}
                     ,{field: 'state', title: '申请状态', align:'center', width: 120,templet: function(d){
                         if (d.state==0) {  // 自定义内容
-                            return "未审核";
+                            return '<span style="color: #c2c2c2;">未审核</span>';
                         } else if (d.state==1) {
-                            return "审核未通过";
+                            return '<span style="color: #FF5722;">审核未通过</span>';
                         }
                         else if (d.state==2) {
-                            return "审核通过";
+                            return '<span style="color: #5FB878;">审核通过</span>';
                         }
                     }}
                     ,{fixed: 'right', title:'操作', align:'center',toolbar: '#bar',width:180}

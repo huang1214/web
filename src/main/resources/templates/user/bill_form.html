@@ -129,22 +129,20 @@
 <!--学生弹出层-->
 <div id="layer_studentId">
     <form class="layui-form" action="" style="margin-top: 20px">
-        <div class="layui-row">
-            <label class="layui-form-label">学生编号：</label>
-            <div class="layui-inline" style="margin-right: 50px">
-                <input class="layui-input" name="search_sno" id="search_sno" autocomplete="off" placeholder="" >
-            </div>
-
-            <label class="layui-form-label">学生姓名：</label>
+        <div class="layui-form-item" style="text-align: center">
             <div class="layui-inline">
-                <input class="layui-input" name="search_sname" id="search_sname" autocomplete="off" placeholder="">
+                <input class="layui-input" style="width: 300px" name="search_sno" id="search_sno" autocomplete="off" placeholder="输入学号或姓名" >
             </div>
-            <br>
-            <div class="layui-inline" style="text-align: center;">
-                <button type="button" class="layui-btn" data-type="reload" id="btn_search_student">搜索</button>
-                <button type="reset" class="layui-btn" data-type="reload">重置</button>
+            <div class="layui-inline">
+                <button type="button" class="layui-btn layui-btn-radius" data-type="reload" id="btn_search_student">
+                    <i class="layui-icon">&#xe615;</i>搜索
+                </button>
             </div>
         </div>
+     <!--   <div class="layui-inline" style="text-align: center;">
+
+            <button type="reset" class="layui-btn" data-type="reload">重置</button>
+        </div>-->
     </form>
     <table class="layui-hide" id="layer_studentId_table" lay-filter="layer_studentId_table"></table>
 </div>
@@ -607,10 +605,24 @@
 
         $('#btn_search_student').on('click', function () {
             var search_sno = $('#search_sno').val();
-            var search_sname = $('#search_sname').val();
             console.log(search_sno);
-            console.log(search_sname);
-            if (search_sno != ""){  // 如果学号不为空，则按学号搜索
+            if(search_sno == ""){
+                layer.msg('输入不能为空');
+            }else {
+                table.reload('layer_studentId_table', {
+                    method:'POST'
+                    ,page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    , where: {
+                        sname: search_sno,
+                        pageNum : 1,
+                        pageSize : 1
+                    }
+                    ,url: '/queryBySname'    //访问UserController中的方法
+                }, 'data');
+            }
+           /* if (search_sno != ""){  // 如果学号不为空，则按学号搜索
                 //执行重载
                 table.reload('layer_studentId_table', {
                     method:'POST'
@@ -637,7 +649,7 @@
                     }
                     ,url: '/queryBySname'    //访问UserController中的方法
                 }, 'data');
-            }
+            }*/
         });
 
 
