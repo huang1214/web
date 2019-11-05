@@ -27,9 +27,7 @@
         border-color: #e6e6e6;
         text-align: left;
     }
-    #search{
-        margin-left:30px;
-    }
+
     .layui-form-pane .layui-form-label {
         width: 110px;
         padding: 8px 15px;
@@ -56,10 +54,7 @@
     .comLeaderBox{
         background-color:#2F4056;
     }
-    #btn_search_student{
-        margin-top: 10px;
-        margin-left: 50px;
-    }
+
 </style>
 <script>
     function chooseTeacherBox(){
@@ -167,20 +162,14 @@
 <!--弹出层：学生选框-->
 <div id="layer_studentId">
     <form class="layui-form" action="" style="margin-top: 20px">
-        <div class="layui-row">
-            <label class="layui-form-label">学生编号：</label>
-            <div class="layui-inline" style="margin-right: 50px">
-                <input class="layui-input" name="search_sno" id="search_sno" autocomplete="off" placeholder="" >
-            </div>
-
-            学生姓名：
+        <div class="layui-form-item" style="text-align: center">
             <div class="layui-inline">
-                <input class="layui-input" name="search_sname" id="search_sname" autocomplete="off" placeholder="">
+                <input class="layui-input" style="width: 300px" name="search_sno" id="search_sno" autocomplete="off" placeholder="输入学号或姓名" >
             </div>
-            <br>
-            <div class="layui-inline" style="text-align: center;">
-                <button type="button" class="layui-btn" data-type="reload" id="btn_search_student">搜索</button>
-                <button type="reset" class="layui-btn" data-type="reload">重置</button>
+            <div class="layui-inline">
+                <button type="button" class="layui-btn layui-btn-radius" data-type="reload" id="btn_search_student">
+                    <i class="layui-icon">&#xe615;</i>搜索
+                </button>
             </div>
         </div>
     </form>
@@ -573,7 +562,6 @@
             });
         });
         // 弹出层学生信息的获取
-        // TODO 学生获取数据按钮
         table.on('toolbar(layer_studentId_table)', function(obj){//注：tool 是工具条事件名，layer_com_table 是 table 原始容器的属性 lay-filter="对应的值"
             var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
             // alert("0");
@@ -641,31 +629,17 @@
 
         $('#btn_search_student').on('click', function () {
             var search_sno = $('#search_sno').val();
-            var search_sname = $('#search_sname').val();
             console.log(search_sno);
-            console.log(search_sname);
-            if (search_sno != ""){  // 如果学号不为空，则按学号搜索
-                //执行重载
+            if(search_sno == ""){
+                layer.msg('输入不能为空');
+            }else {
                 table.reload('layer_studentId_table', {
                     method:'POST'
                     ,page: {
                         curr: 1 //重新从第 1 页开始
                     }
                     , where: {
-                        sno: search_sno//注意用，隔开
-                    }
-                    ,url: '/queryBySno'
-                }, 'data');
-            }
-            if (search_sno == "" && search_sname != ""){    // 如果学号为空，名字不为空，则按名字搜索
-                //执行重载
-                table.reload('layer_studentId_table', {
-                    method:'POST'
-                    ,page: {
-                        curr: 1 //重新从第 1 页开始
-                    }
-                    , where: {
-                        sname: search_sname,//注意用，隔开
+                        sname: search_sno,
                         pageNum : 1,
                         pageSize : 1
                     }
