@@ -212,28 +212,28 @@ public class LoginController {
         Map map=new HashMap();
         if(type==1){
             String sno=((Student)session.getAttribute("loginUser")).getSno();
-            map.put("unResolved",testService.getApplicationCount(sno,0));
-            map.put("refused",testService.getApplicationCount(sno,1));
-            map.put("passed",testService.getApplicationCount(sno,2));
-            map.put("finished",testService.getApplicationCount(sno,3));
-            map.put("noReviewBill",billService.getBillCount(sno,0));
-            map.put("passBill",billService.getBillCount(sno,2));
-            map.put("noPassBill",billService.getBillCount(sno,1));
+            map.put("unReadApp",testService.getApplicationCount(sno,0));
+            map.put("refusedApp",testService.getApplicationCount(sno,1));
+            map.put("passedApp",testService.getApplicationCount(sno,2));
+            map.put("finishedApp",testService.getApplicationCount(sno,3));
+            map.put("unReadBill",billService.getBillCount(sno,0));
+            map.put("passedBill",billService.getBillCount(sno,2));
+            map.put("refusedBill",billService.getBillCount(sno,1));
             map.put("role","1");
         }else if(type==2){
             String tno=((Teacher)session.getAttribute("loginUser")).getTno();
-            map.put("unResolved",testService.getApplicationCount(tno,0));
-            map.put("refused",testService.getApplicationCount(tno,1));
-            map.put("passed",testService.getApplicationCount(tno,2));
-            map.put("finished",testService.getApplicationCount(tno,3));
+            map.put("unReadApp",testService.getApplicationCount(tno,0));
+            map.put("refusedApp",testService.getApplicationCount(tno,1));
+            map.put("passedApp",testService.getApplicationCount(tno,2));
+            map.put("finishedApp",testService.getApplicationCount(tno,3));
             map.put("role","2");
         }else if(type==3){
             String tno="%";
-            map.put("unResolved",testService.getApplicationCount(tno,0));
-            map.put("finished",testService.getApplicationCount(tno,3)+testService.getApplicationCount(tno,1));
-            map.put("noReviewBill",billService.getBillCountAdmin(0));
-            map.put("passBill",billService.getBillCountAdmin(2));
-            map.put("noPassBill",billService.getBillCountAdmin(1));
+            map.put("unReadApp",testService.getApplicationCount(tno,0));
+            map.put("finishedApp",testService.getApplicationCount(tno,3)+testService.getApplicationCount(tno,1));
+            map.put("unReadBill",billService.getBillCountAdmin(0));
+            map.put("passedBill",billService.getBillCountAdmin(2));
+            map.put("refusedBill",billService.getBillCountAdmin(1));
             map.put("role","3");
         }else{
             m.setCode(-1);
