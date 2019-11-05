@@ -34,9 +34,8 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">密码</label>
                 <div class="layui-input-inline">
-                    <input type="Password" name="ctPassword" required lay-verify="verify_ctpassword" placeholder="请输入修改后的密码" autocomplete="off" class="layui-input"  th:value="@{(${session.type}eq '1'?${session.loginUser.spwd}:${session.loginUser.tpwd})}">
+                    <input type="Password" name="ctPassword" lay-verify="verify_ctpassword" placeholder="请输入修改后的密码" autocomplete="off" class="layui-input"  value="······">
                 </div>
-                <div class="layui-form-mid layui-word-aux">暂不可见</div>
             </div>
             <div class="layui-form-item" >
                 <label class="layui-form-label">性别</label>
@@ -130,7 +129,7 @@
             <div class="layui-form-item" >
                 <label class="layui-form-label">银行卡号</label>
                 <div class="layui-input-block">
-                    <input type="number" name="ctBankcard" id="ctBankcard" autocomplete="off" class="layui-input" lay-verify="verify_ctbankcard"  th:value="${session.loginUser.card_num}">
+                    <input type="number" name="ctBankcard" id="ctBankcard" autocomplete="off" class="layui-input" lay-verify="verify_ctbankcard"  th:value="@{(${session.type}eq '1'?${session.loginUser.card_num}:${session.loginUser.card_num})}">
                 </div>
             </div>
         <button  id="confirmrevise" class="layui-btn layui-hide" lay-submit lay-filter="updateBtn" >

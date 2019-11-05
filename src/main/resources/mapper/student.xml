@@ -18,14 +18,14 @@
 
     <!--通过学号精确查询-->
     <select id="selectStudent" resultMap="resultStudent">
-        select SNO,SNAME,SSEX,SBIRTHDAY,SDOMITORY,CNO,STEL,STATE from STUDENT where sno = #{sno}
+        select SNO,SNAME,SSEX,SBIRTHDAY,SDOMITORY,CNO,STEL,STATE,CARD_NUM from STUDENT where sno = #{sno}
     </select>
 
     <!--通过姓名模糊查询-->
     <parameterMap id="selectByNameParams" type="java.util.Map">
     </parameterMap>
     <select id="selectByName" parameterMap="selectByNameParams" resultMap="resultStudent">
-        select SNO,SNAME,SSEX,SBIRTHDAY,SDOMITORY,CNO,STEL,STATE from STUDENT where SNO=#{SNO} OR sname like #{NAME}
+        select SNO,SNAME,SSEX,SBIRTHDAY,SDOMITORY,CNO,STEL,STATE,CARD_NUM from STUDENT where SNO=#{SNO} OR sname like #{NAME}
     </select>
     <update id="updateStudent" parameterType="com.aca.springboot.entities.Student">
         update STUDENT
