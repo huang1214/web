@@ -1,20 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>普通用户仪表盘</title>
     <script src="https://cdn.bootcss.com/echarts/4.3.0-rc.2/echarts.js"></script>
     <script src="https://www.layuicdn.com/layui-v2.5.5/layui.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://www.layuicdn.com/layui-v2.5.5/css/layui.css">
     <style>
-        .progress{
-            margin: 5px;
-            padding: 5px;
-        }
-        .progress-item{
-            padding: 10px;
-            border: 1px solid #009688;
-        }
         .messagebox{
             display: flex;
             width: 100%;
@@ -23,13 +16,11 @@
             justify-content: space-around;
         }
         .boxitem{
-            /* width: 30%; */
             width: 30%;
             font-size: 20px;
             background-color: #f2f2f2;
             padding: 15px;
             margin: 5px;
-            /* display: inline-block; */
         }
         .boxitem>i{
             font-size: 30px;
@@ -55,8 +46,60 @@
             vertical-align: middle;
         }
     </style>
+    <script>
+        layui.use(['layer'],function () {
+            var $ = layui.$;
+            var layer = layui.layer;
+            var index;
+
+                $.ajax({
+                    url: "/user/getInfo",
+                    type: "POST",
+                    cache: false,
+                    beforeSend: function () {
+                        index = layer.load(1, {
+                            shade: [0.8,'#DBDBDB'] //0.1透明度的白色背景
+                        });
+                    },
+                    success: function (data) {
+                        // 分别修改message、App、Bill内容的数量
+                        // TODO 判断角色权限决定显示内容
+                        // 未审核、拒绝、通过三个消息数量
+                        // 如果是学生
+                        if (data.data["role"] == 1){
+                            $(".unReadApp").text(data.data["unReadApp"]);
+                            $(".refusedApp").text(data.data["refusedApp"]);
+                            $(".passedApp").text(data.data["passedApp"]);
+                            $(".finishedApp").text(data.data["finishedApp"]);
+                            $(".unReadBill").text(data.data["unReadBill"]);
+                            $(".passedBill").text(data.data["passedBill"]);
+                            $(".refusedBill").text(data.data["refusedBill"]);
+                        }
+                        else if (data.data["role"] == 2){
+                            $(".unReadApp").text(data.data["unReadApp"]);
+                            $(".refusedApp").text(data.data["refusedApp"]);
+                            $(".passedApp").text(data.data["passedApp"]);
+                            $(".finishedApp").text(data.data["finishedApp"]);
+                        }
+                        else if (data.data["role"] == 3){
+                            $(".unReadApp").text(data.data["unReadApp"]);
+                            $(".finishedApp").text(data.data["finishedApp"]);
+                            $(".unReadBill").text(data.data["unReadBill"]);
+                            $(".passedBill").text(data.data["passedBill"]);
+                            $(".refusedBill").text(data.data["refusedBill"]);
+                        }
+                        layer.close(index);
+                        $("#body").show();
+                    },
+                    complete: function () {
+                        layer.close(index);
+                        $("#body").show();
+                    }
+                })
+        });
+    </script>
 </head>
-<body>
+<body id="body" hidden>
 <div class="layui-fluid">
     <!-- 顶部的一个tip -->
     <blockquote class="layui-elem-quote">欢迎访问软件学院学科竞赛管理系统</blockquote>
@@ -76,179 +119,279 @@
         </div>
     </div> -->
     <!-- 中间的一个多块块条子 -->
-    <div class="messagebox">
+
+<!--  如果判断是学生，那么就显示学生信息块  -->
+    <div class="messagebox" th:if="${session.type} eq '1'">
         <div class="boxitem">
             <a href="">
                 <i class="layui-icon layui-icon-notice"></i>
-                <span>我的消息&nbsp;<span class="layui-badge">99+</span></span>
+                <span>待审核激励<span class="layui-badge unReadApp">0</span></span>
             </a>
         </div>
         <div class="boxitem ">
             <a href="">
                 <i class="layui-icon layui-icon-chart"></i>
-                <span>申报进度&nbsp; <span class="layui-badge">3</span></span>
+                <span>未通过激励<span class="layui-badge refusedApp">0</span></span>
             </a>
         </div>
         <div class="boxitem ">
             <a href="">
                 <i class="layui-icon layui-icon-chart"></i>
-                <span>审核进度&nbsp; <span class="layui-badge">1</span></span>
+                <span class>已通过激励<span class="layui-badge passedApp">0</span></span>
+            </a>
+        </div>
+        <div class="boxitem ">
+            <a href="">
+                <i class="layui-icon layui-icon-chart"></i>
+                <span class>已完成激励<span class="layui-badge finishedApp">0</span></span>
+            </a>
+        </div>
+        <div class="boxitem ">
+            <a href="">
+                <i class="layui-icon layui-icon-chart"></i>
+                <span class>待审核备案<span class="layui-badge unReadBill">0</span></span>
+            </a>
+        </div>
+        <div class="boxitem ">
+            <a href="">
+                <i class="layui-icon layui-icon-chart"></i>
+                <span class>已通过备案<span class="layui-badge passedApp">0</span></span>
+            </a>
+        </div>
+        <div class="boxitem ">
+            <a href="">
+                <i class="layui-icon layui-icon-chart"></i>
+                <span class>为通过备案<span class="layui-badge refusedBill">0</span></span>
             </a>
         </div>
     </div>
-    <!-- 数据图，四个差不多 -->
+
+<!--  教师备案框  -->
+    <div class="messagebox" th:if="${session.type} eq '2'">
+        <div class="boxitem">
+            <a href="">
+                <i class="layui-icon layui-icon-notice"></i>
+                <span>待审核激励<span class="layui-badge unReadApp">0</span></span>
+            </a>
+        </div>
+        <div class="boxitem ">
+            <a href="">
+                <i class="layui-icon layui-icon-chart"></i>
+                <span>未通过激励<span class="layui-badge refusedApp">0</span></span>
+            </a>
+        </div>
+        <div class="boxitem ">
+            <a href="">
+                <i class="layui-icon layui-icon-chart"></i>
+                <span class>已通过激励<span class="layui-badge passedApp">0</span></span>
+            </a>
+        </div>
+        <div class="boxitem ">
+            <a href="">
+                <i class="layui-icon layui-icon-chart"></i>
+                <span class>已完成激励<span class="layui-badge finishedApp">0</span></span>
+            </a>
+        </div>
+    </div>
+<!--  管理员页面  -->
+    <div class="messagebox" th:if="${session.type} eq '3'">
+        <div class="boxitem">
+            <a href="">
+                <i class="layui-icon layui-icon-notice"></i>
+                <span>待审核激励<span class="layui-badge unReadApp">0</span></span>
+            </a>
+        </div>
+
+        <div class="boxitem ">
+            <a href="">
+                <i class="layui-icon layui-icon-chart"></i>
+                <span class>已完成激励<span class="layui-badge finishedApp">0</span></span>
+            </a>
+        </div>
+        <div class="boxitem ">
+            <a href="">
+                <i class="layui-icon layui-icon-chart"></i>
+                <span class>待审核备案<span class="layui-badge unReadBill">0</span></span>
+            </a>
+        </div>
+        <div class="boxitem ">
+            <a href="">
+                <i class="layui-icon layui-icon-chart"></i>
+                <span class>已通过备案<span class="layui-badge passedApp">0</span></span>
+            </a>
+        </div>
+        <div class="boxitem ">
+            <a href="">
+                <i class="layui-icon layui-icon-chart"></i>
+                <span class>未通过备案<span class="layui-badge refusedBill">0</span></span>
+            </a>
+        </div>
+    </div>
+
+<!--    激励：-->
+<!--    教师、学生获奖表-->
+<!--    报销：-->
     <div class="chartarea">
         <div class="chart">
-            <div id="app_chart1" style="width: 100%;height: 100%;">
+            <div id="app_chart1" style="width: 500px;height: 500px;">
             </div>
         </div>
-        <div class="chart">
-            <div id="app_chart2" style="width: 100%;height: 100%;">
-            </div>
-        </div>
-        <div class="chart">
-            <div id="bill_chart1" style="width: 100%;height: 100%;">
-            </div>
-        </div>
-        <div class="chart">
-            <div id="bill_chart2" style="width: 100%;height: 100%;">
-            </div>
-        </div>
+<!--        <div class="chart">-->
+<!--            <div id="app_chart2" style="width: 100%;height: 100%;">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="chart">-->
+<!--            <div id="bill_chart1" style="width: 100%;height: 100%;">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="chart">-->
+<!--            <div id="bill_chart2" style="width: 100%;height: 100%;">-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
 </div>
 <!-- layui样式js -->
+
+<!-- 图表样式js-->
 <script>
-    layui.use(['element','form','carousel','carousel'],function(){
-        var element = layui.element;
-        var form = layui.form;
-
-    });
-</script>
-<!-- 图表样式js -->
-<script type="text/javascript">
     // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('app_chart1'));
 
-    // 指定图表的配置项和数据
-    var option = {
-        title: {
-            text: '各等级竞赛成果统计图'
-        },
-        tooltip: {},
-        legend: {
-            data:['数量']
-        },
-        xAxis: {
-            data: ["国家特等奖","国一","国二","国三","省特等奖","省一","省二","省三","其他等级"]
-        },
-        yAxis: {},
-        series: [{
-            name: '数量',
-            type: 'bar',
-            data: [1,2,0,3,0,2,1,0,10]
-        }]
-    };
+        // 基于准备好的dom，初始化echarts实例
 
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
-</script>
-<script>
-    var myChart = echarts.init(document.getElementById('app_chart2'));
-    option = {
-        title: {
-            text: '各月度激励金额'
-        },
-        xAxis: {
-            type: 'category',
-            data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月','八月','九月','十月','十一月','十二月']
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [{
-            data: [300, 600, 200, 700, 0, 0, 0,300,200,100,200,300],
-            type: 'line'
-        }]
-    };
-    myChart.setOption(option);
-</script>
-<script type="text/javascript">
-    // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('bill_chart1'));
+        var formData;
+        $.ajax({
+            url: "/user/getInfo",
+            type: "POST",
+            success: function (data) {
+                // 分别修改message、App、Bill内容的数量
+                // TODO 判断角色权限决定显示内容
+                // 未审核、拒绝、通过三个消息数量
+                // 如果是学生
+                formData = data.data["AppPrizeInfo"];
+                var myChart = echarts.init(document.getElementById('app_chart1'));
+                var option = {
+                    title: {
+                        text: '各等级竞赛成果统计图'
+                    },
+                    tooltip: {},
+                    legend: {
+                        data:['数量']
+                    },
+                    xAxis: {
+                        data: ["国奖","省奖","校奖","院奖"]
+                    },
+                    yAxis: {},
+                    series: [{
+                        name: '数量',
+                        type: 'bar',
+                        data: formData
+                    }]
+                };
 
-    // 指定图表的配置项和数据
-    var option = {
-        title: {
-            text: '各报销状态数量图'
-        },
-        tooltip: {},
-        legend: {
-            data:['数量']
-        },
-        xAxis: {
-            data: ["待审核","审核不通过","审核通过"]
-        },
-        yAxis: {},
-        series: [{
-            name: '数量',
-            type: 'bar',
-            data: [1,2,2]
-        }]
-    };
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+            },
+        })
+        // 指定图表的配置项和数据
 
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
 </script>
-<script>
-    var myChart = echarts.init(document.getElementById('app_chart2'));
-    option = {
-        title: {
-            text: '各月度激励金额'
-        },
-        xAxis: {
-            type: 'category',
-            data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月','八月','九月','十月','十一月','十二月']
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [{
-            data: [300, 600, 200, 700, 0, 0, 0,300,200,100,200,300],
-            type: 'line'
-        }]
-    };
-    myChart.setOption(option);
-</script>
-<script type="text/javascript">
-    // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('bill_chart2'));
+<!--<script>-->
+<!--    var myChart = echarts.init(document.getElementById('app_chart2'));-->
+<!--    option = {-->
+<!--        title: {-->
+<!--            text: '各月度激励金额'-->
+<!--        },-->
+<!--        xAxis: {-->
+<!--            type: 'category',-->
+<!--            data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月','八月','九月','十月','十一月','十二月']-->
+<!--        },-->
+<!--        yAxis: {-->
+<!--            type: 'value'-->
+<!--        },-->
+<!--        series: [{-->
+<!--            data: [300, 600, 200, 700, 0, 0, 0,300,200,100,200,300],-->
+<!--            type: 'line'-->
+<!--        }]-->
+<!--    };-->
+<!--    myChart.setOption(option);-->
+<!--</script>-->
+<!--<script type="text/javascript">-->
+<!--    // 基于准备好的dom，初始化echarts实例-->
+<!--    var myChart = echarts.init(document.getElementById('bill_chart1'));-->
 
-    option = {
-        title:{
-            text:'近年报销审核状况'
-        },
-        legend: {},
-        tooltip: {},
-        dataset: {
-            source: [
-                ['product', '2016', '2017', '2018','2019'],
-                ['审核通过', 1, 2, 3,1],
-                ['审核不通过', 0, 1, 2,1],
-            ]
-        },
-        xAxis: {type: 'category'},
-        yAxis: {},
-        // Declare several bar series, each will be mapped
-        // to a column of dataset.source by default.
-        series: [
-            {type: 'bar'},
-            {type: 'bar'},
-            {type: 'bar'},
-            {type: 'bar'}
-        ]
-    };
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
-</script>
+<!--    // 指定图表的配置项和数据-->
+<!--    var option = {-->
+<!--        title: {-->
+<!--            text: '各报销状态数量图'-->
+<!--        },-->
+<!--        tooltip: {},-->
+<!--        legend: {-->
+<!--            data:['数量']-->
+<!--        },-->
+<!--        xAxis: {-->
+<!--            data: ["待审核","审核不通过","审核通过"]-->
+<!--        },-->
+<!--        yAxis: {},-->
+<!--        series: [{-->
+<!--            name: '数量',-->
+<!--            type: 'bar',-->
+<!--            data: [1,2,2]-->
+<!--        }]-->
+<!--    };-->
+
+<!--    // 使用刚指定的配置项和数据显示图表。-->
+<!--    myChart.setOption(option);-->
+<!--</script>-->
+<!--<script>-->
+<!--    var myChart = echarts.init(document.getElementById('app_chart2'));-->
+<!--    option = {-->
+<!--        title: {-->
+<!--            text: '各月度激励金额'-->
+<!--        },-->
+<!--        xAxis: {-->
+<!--            type: 'category',-->
+<!--            data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月','八月','九月','十月','十一月','十二月']-->
+<!--        },-->
+<!--        yAxis: {-->
+<!--            type: 'value'-->
+<!--        },-->
+<!--        series: [{-->
+<!--            data: [300, 600, 200, 700, 0, 0, 0,300,200,100,200,300],-->
+<!--            type: 'line'-->
+<!--        }]-->
+<!--    };-->
+<!--    myChart.setOption(option);-->
+<!--</script>-->
+<!--<script type="text/javascript">-->
+<!--    // 基于准备好的dom，初始化echarts实例-->
+<!--    var myChart = echarts.init(document.getElementById('bill_chart2'));-->
+
+<!--    option = {-->
+<!--        title:{-->
+<!--            text:'近年报销审核状况'-->
+<!--        },-->
+<!--        legend: {},-->
+<!--        tooltip: {},-->
+<!--        dataset: {-->
+<!--            source: [-->
+<!--                ['product', '2016', '2017', '2018','2019'],-->
+<!--                ['审核通过', 1, 2, 3,1],-->
+<!--                ['审核不通过', 0, 1, 2,1],-->
+<!--            ]-->
+<!--        },-->
+<!--        xAxis: {type: 'category'},-->
+<!--        yAxis: {},-->
+<!--        // Declare several bar series, each will be mapped-->
+<!--        // to a column of dataset.source by default.-->
+<!--        series: [-->
+<!--            {type: 'bar'},-->
+<!--            {type: 'bar'},-->
+<!--            {type: 'bar'},-->
+<!--            {type: 'bar'}-->
+<!--        ]-->
+<!--    };-->
+<!--    // 使用刚指定的配置项和数据显示图表。-->
+<!--    myChart.setOption(option);-->
+<!--</script>-->
 </body>
 </html>
