@@ -49,11 +49,16 @@
         delete dept where dno = #{dept_id}
     </delete>
 
-    <parameterMap id="AppParams" type="java.util.Map">
-
-    </parameterMap>
+    <parameterMap id="AppParams" type="java.util.Map"></parameterMap>
     <select id="selectCountFromApplication" parameterMap="AppParams" resultType="java.lang.Integer">
         select count(*) from
         (select APPID from APPLICATION where  STATUS=#{status} and APPID in (select APP_ID from APPLICATION_MEMBER where APP_TM_ID like #{sno}))
+    </select>
+
+    <parameterMap id="AppPriceParams" type="java.util.Map"></parameterMap>
+    <select id="selectAppPrize" parameterMap="AppPriceParams" resultType="java.lang.Integer">
+        SELECT COUNT(*) NUM FROM
+        (SELECT * FROM APPLICATION WHERE STATUS=#{STATUS}) A JOIN AWARD_TYPE AT ON A.AWARDTYPEID=AT.ATID
+        WHERE AT.LEVEL_TYPE =#{LEVELTYPE}
     </select>
 </mapper>

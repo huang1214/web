@@ -6,9 +6,11 @@ import com.aca.springboot.mapper.ConsoleDataMapper;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.ibatis.session.defaults.DefaultSqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +18,7 @@ import java.util.Map;
 
 @Service
 public class testService {
-    @Autowired
+    @Resource
     private ConsoleDataMapper consoleDataMapper;
 
     //表格初始化
@@ -99,6 +101,19 @@ public class testService {
         map.put("status",status);
         map.put("sno",no);
         return consoleDataMapper.selectCountFromApplication(map);
+    }
+
+    public Object getAppPrizeInfo(){
+        Map map=new HashMap<String,String>();
+        map.put("STATUS",3);
+        map.put("LEVELTYPE",1);
+        map.put("PRICETYPE",1);
+        List a=new ArrayList<Integer>();
+        for(int i = 0;i<4;i++){
+            map.put("LEVELTYPE",i);
+            a.add(consoleDataMapper.selectAppPrize(map));
+        }
+        return a;
     }
 
 }

@@ -22,4 +22,6 @@ public interface ConsoleDataMapper {
     public String get_dno(@Param("dname") String dname,@Param("dcollege") String dcollege);
 
     int selectCountFromApplication(Map map);
+
+    int selectAppPrize(Map map);
 }
