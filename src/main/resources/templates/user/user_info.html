@@ -41,7 +41,8 @@
             <div class="layui-form-item" >
                 <label class="layui-form-label">性别</label>
                 <div class="layui-input-block">
-                    <input type="text" class="layui-btn" name="ctSex" autocomplete="off"  placeholder="请输入修改后的编号" lay-verify="verify_ctSex" th:value="@{(${session.type}eq '1'?${session.loginUser.ssex}:${session.loginUser.tsex})}">
+                    <input th:checked="@{(${session.type}eq '1'?${session.loginUser.ssex == '男'}:${session.loginUser.tsex == '男'})}" type="radio" name="ctSex" lay-verify="verify_ctSex" value="男" title="男">
+                    <input th:checked="@{(${session.type}eq '1'?${session.loginUser.ssex == '女'}:${session.loginUser.tsex == '女'})}" type="radio" name="ctSex" lay-verify="verify_ctSex" value="女" title="女" checked>
                 </div>
             </div>
             <div class="layui-form-item">
