@@ -234,6 +234,7 @@ public class LoginController {
             map.put("unReadBill",billService.getBillCountAdmin(0));
             map.put("passedBill",billService.getBillCountAdmin(2));
             map.put("refusedBill",billService.getBillCountAdmin(1));
+            map.put("AppPrizeInfo",testService.getAppPrizeInfo());
             map.put("role","3");
         }else{
             m.setCode(-1);
