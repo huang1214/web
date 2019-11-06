@@ -3,11 +3,14 @@ package com.aca.springboot.service;
 import com.aca.springboot.entities.JsonMessage;
 import com.aca.springboot.entities.test;
 import com.aca.springboot.mapper.ConsoleDataMapper;
+import com.aca.springboot.vo.StudentCountVO;
+import com.aca.springboot.vo.TeacherCountVO;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.ibatis.session.defaults.DefaultSqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jms.activemq.ActiveMQProperties;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -116,4 +119,23 @@ public class testService {
         return a;
     }
 
+    //TODO 这里是可以根据传过来的时间来动态查询的，暂时不做
+    public List<StudentCountVO> getTopStudent(int num,String ST,String ET){
+        Map map=new HashMap<String,String>();
+        map.put("STATUS",0);
+        map.put("ST",ST);
+        map.put("ET",ET);
+        map.put("NUM",num);
+        return consoleDataMapper.getTopStudent(map);
+    }
+
+    //TODO 这里是可以根据传过来的时间来动态查询的，暂时不做
+    public List<TeacherCountVO> getTopTeacher(int num, String ST, String ET){
+        Map map=new HashMap<String,String>();
+        map.put("STATUS",0);
+        map.put("ST",ST);
+        map.put("ET",ET);
+        map.put("NUM",num);
+        return consoleDataMapper.getTopTeacher(map);
+    }
 }

@@ -10,6 +10,17 @@
         <result property="dtel" column="dtel"/>
         <result property="dcollege" column="dcollege"/>
     </resultMap>
+    <resultMap id="SCVO" type="com.aca.springboot.vo.StudentCountVO">
+        <result property="sno" column="SNO" />
+        <result property="sname" column="SNAME" />
+        <result property="count" column="PCOUNT" />
+    </resultMap>
+    <resultMap id="TCVO" type="com.aca.springboot.vo.TeacherCountVO">
+        <result property="tno" column="TNO" />
+        <result property="tname" column="TNAME" />
+        <result property="count" column="PCOUNT" />
+    </resultMap>
+
     <select id = "dept_All" resultMap="test_result">
         select * from dept
     </select>
@@ -60,5 +71,23 @@
         SELECT COUNT(*) NUM FROM
         (SELECT * FROM APPLICATION WHERE STATUS=#{STATUS}) A JOIN AWARD_TYPE AT ON A.AWARDTYPEID=AT.ATID
         WHERE AT.LEVEL_TYPE =#{LEVELTYPE}
+    </select>
+
+    <parameterMap id="StudentCountParams" type="java.util.Map"></parameterMap>
+    <select id="getTopStudent" parameterMap="StudentCountParams" resultMap="SCVO">
+        select * from (select s.sno,s.SNAME,res.pcount from STUDENT s join (select count(*) pcount,AM.APP_TM_ID id from
+        ((select APPID from APPLICATION where APPID >= #{ST} and APPID &lt;= #{ET} and STATUS =#{STATUS} ) AID join
+        (select * from APPLICATION_MEMBER where APP_TYPE = 1) AM
+        ON AID.APPID= AM.APP_ID)
+        GROUP BY AM.APP_TM_ID ORDER BY pcount DESC) res on s.SNO=res.id) where ROWNUM &lt;=#{NUM} order by pcount desc,ROWNUM
+    </select>
+
+    <parameterMap id="TeacherCountParams" type="java.util.Map"></parameterMap>
+    <select id="getTopTeacher" parameterMap="TeacherCountParams" resultMap="TCVO">
+        select * from (select t.TNO,T.TNAME,res.pcount from TEACHER t join (select count(*) pcount,AM.APP_TM_ID id from
+        ((select APPID from APPLICATION where APPID >= #{ST} and APPID &lt;= #{ET} and STATUS =#{STATUS}) AID join
+        (select * from APPLICATION_MEMBER where APP_TYPE = 2) AM
+        ON AID.APPID= AM.APP_ID)
+        GROUP BY AM.APP_TM_ID ORDER BY pcount DESC) res on t.TNO=res.id) where ROWNUM &lt;=#{NUM} order by pcount desc,ROWNUM
     </select>
 </mapper>

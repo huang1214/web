@@ -1,5 +1,7 @@
 package com.aca.springboot.mapper;
 
+import com.aca.springboot.vo.StudentCountVO;
+import com.aca.springboot.vo.TeacherCountVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -24,4 +26,7 @@ public interface ConsoleDataMapper {
     int selectCountFromApplication(Map map);
 
     int selectAppPrize(Map map);
+
+    List<StudentCountVO> getTopStudent(Map map);
+    List<TeacherCountVO> getTopTeacher(Map map);
 }

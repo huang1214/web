@@ -204,7 +204,10 @@ public class LoginController {
 
     @ResponseBody
     @PostMapping("/getInfo")
-    public Message getInfo(HttpSession session){
+    public Message getInfo(@RequestParam(value = "StartTime",defaultValue = "20190901",required = false)String ST,
+                           @RequestParam(value = "EndTime",defaultValue = "20200630",required = false)String ET,
+                           @RequestParam(value = "PersonNum",defaultValue = "5",required = false)int num,
+                           HttpSession session){
         Message m=new Message();
         int type= (int) session.getAttribute("type");
         //学生老师需要获取 未审核+待确认+已完成(已确认+已拒绝)
@@ -235,6 +238,8 @@ public class LoginController {
             map.put("passedBill",billService.getBillCountAdmin(2));
             map.put("refusedBill",billService.getBillCountAdmin(1));
             map.put("AppPrizeInfo",testService.getAppPrizeInfo());
+            map.put("StudentCount",testService.getTopStudent(num,ST,ET));
+            map.put("TeacherCount",testService.getTopTeacher(num,ST,ET));
             map.put("role","3");
         }else{
             m.setCode(-1);
