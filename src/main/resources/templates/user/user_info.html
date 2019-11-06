@@ -20,10 +20,10 @@
     <form class="layui-form layui-form-pane" action="" >
         <input type="hidden" th:value="${session.type}" id="identification" />
             <div class="layui-form-item layui-col-xs6 layui-col-sm6 layui-col-md12">
-                <label class="layui-form-label" th:text="@{(${session.type}eq '1'?'学号':'职工号')}"></label>
+                <label class="layui-form-label" th:text="${session.type}eq '1'?'学号':'职工号'"></label>
                 <div class="layui-input-block">
                     <input disabled type="text"  class="layui-input layui-disabled" name="sno" id="sno" style="width: 270px"
-                           lay-verify="verify_ctno" th:value="@{(${session.type}eq '1'?${session.loginUser.sno}:${session.loginUser.tno})}" >
+                           lay-verify="verify_ctno" th:value="${session.type}eq '1'?${session.loginUser.sno}:${session.loginUser.tno}" >
                 </div>
             </div>
             <div class="layui-form-item">
@@ -36,8 +36,8 @@
             <div class="layui-form-item" >
                 <label class="layui-form-label">性别</label>
                 <div class="layui-input-block">
-                    <input th:checked="@{(${session.type}eq '1'?${session.loginUser.ssex == '男'}:${session.loginUser.tsex == '男'})}" type="radio" name="ssex" lay-verify="verify_ctSex" value="男" title="男">
-                    <input th:checked="@{(${session.type}eq '1'?${session.loginUser.ssex == '女'}:${session.loginUser.tsex == '女'})}" type="radio" name="ssex" lay-verify="verify_ctSex" value="女" title="女" checked>
+                    <input th:checked="${session.type}eq '1'?${session.loginUser.ssex == '男'}:${session.loginUser.tsex == '男'}" type="radio" name="ssex" lay-verify="verify_ctSex" value="男" title="男">
+                    <input th:checked="${session.type}eq '1'?${session.loginUser.ssex == '女'}:${session.loginUser.tsex == '女'}" type="radio" name="ssex" lay-verify="verify_ctSex" value="女" title="女" checked>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -48,17 +48,17 @@
             </div>
 
             <!--teacher!!-->
-            <div class="layui-form-item" th:style="'display:'+ @{(${session.type}eq '2'?'block':'none')}">
+            <div class="layui-form-item" th:style="'display:'+ (${session.type}eq '2'?'block':'none')">
 
                 <div class="layui-inline layui-col-md3">
                     <label class="layui-form-label">职称</label>
                     <div class="layui-input-block">
-                        <select name="city" id="city" lay-verify="required" th:value="@{(${session.type}eq '1'?'':${session.loginUser.ttitle})}">
-                            <option th:selected="@{(${session.type}eq '1'?'':${session.loginUser.ttitle == ''})}" value="">--请选择--</option>
-                            <option th:selected="@{(${session.type}eq '1'?'':${session.loginUser.ttitle == '副教授'})}" value="副教授">副教授</option>
-                            <option th:selected="@{(${session.type}eq '1'?'':${session.loginUser.ttitle == '讲师'})}" value="讲师">讲师</option>
-                            <option th:selected="@{(${session.type}eq '1'?'':${session.loginUser.ttitle == '助教'})}" value="助教">助教</option>
-                            <option th:selected="@{(${session.type}eq '1'?'':${session.loginUser.ttitle == '高工'})}" value="高工">高工</option>
+                        <select name="city" id="city" lay-verify="required" th:value="${session.type}eq '1'?'':${session.loginUser.ttitle}">
+                            <option th:selected="${session.type}eq '1'?'':${session.loginUser.ttitle == ''}" value="">--请选择--</option>
+                            <option th:selected="${session.type}eq '1'?'':${session.loginUser.ttitle == '副教授'}" value="副教授">副教授</option>
+                            <option th:selected="${session.type}eq '1'?'':${session.loginUser.ttitle == '讲师'}" value="讲师">讲师</option>
+                            <option th:selected="${session.type}eq '1'?'':${session.loginUser.ttitle == '助教'}" value="助教">助教</option>
+                            <option th:selected="${session.type}eq '1'?'':${session.loginUser.ttitle == '高工'}" value="高工">高工</option>
                         </select>
                     </div>
                 </div>
@@ -66,12 +66,12 @@
                 <div class="layui-inline layui-col-md3">
                     <label class="layui-form-label">所属部门</label>
                     <div class="layui-input-block">
-                        <select name="ctDepartment" id="ctDepartment" lay-verify="required" th:value="@{(${session.type}eq '1'?'':${session.loginUser.dno})}">
-                            <option th:selected="@{(${session.type}eq '1'?'':${session.loginUser.dno == ''})}" value="" >--请选择--</option>
-                            <option th:selected="@{(${session.type}eq '1'?'':${session.loginUser.dno == '2'})}" value="2" selected>软件工程</option>
-                            <option th:selected="@{(${session.type}eq '1'?'':${session.loginUser.dno == '3'})}" value="3" selected>信息安全</option>
-                            <option th:selected="@{(${session.type}eq '1'?'':${session.loginUser.dno == '4'})}" value="4" selected>研究生院办</option>
-                            <option th:selected="@{(${session.type}eq '1'?'':${session.loginUser.dno == '5'})}" value="5" selected>学工办</option>
+                        <select name="ctDepartment" id="ctDepartment" lay-verify="required" th:value="${session.type}eq '1'?'':${session.loginUser.dno}">
+                            <option th:selected="${session.type}eq '1'?'':${session.loginUser.dno == ''}" value="" >--请选择--</option>
+                            <option th:selected="${session.type}eq '1'?'':${session.loginUser.dno == '2'}" value="2" selected>软件工程</option>
+                            <option th:selected="${session.type}eq '1'?'':${session.loginUser.dno == '3'}" value="3" selected>信息安全</option>
+                            <option th:selected="${session.type}eq '1'?'':${session.loginUser.dno == '4'}" value="4" selected>研究生院办</option>
+                            <option th:selected="${session.type}eq '1'?'':${session.loginUser.dno == '5'}" value="5" selected>学工办</option>
                         </select>
                     </div>
                 </div>
@@ -79,17 +79,17 @@
                 <div class="layui-inline layui-col-md3">
                     <label class="layui-form-label">在职状态</label>
                     <div class="layui-input-block">
-                        <select name="teacherState" id="teacherState" lay-verify="required" th:value="@{(${session.type}eq '1'?'':${session.loginUser.tstate})}">
-                            <option th:selected="@{(${session.type}eq '1'?'':${session.loginUser.tstate == ''})}" value="">--请选择--</option>
-                            <option th:selected="@{(${session.type}eq '1'?'':${session.loginUser.tstate == '0'})}" value="0" selected>在职</option>
-                            <option th:selected="@{(${session.type}eq '1'?'':${session.loginUser.tstate == '1'})}" value="1">离职</option>
+                        <select name="teacherState" id="teacherState" lay-verify="required" th:value="${session.type}eq '1'?'':${session.loginUser.tstate}">
+                            <option th:selected="${session.type}eq '1'?'':${session.loginUser.tstate == ''}" value="">--请选择--</option>
+                            <option th:selected="${session.type}eq '1'?'':${session.loginUser.tstate == '0'}" value="0" selected>在职</option>
+                            <option th:selected="${session.type}eq '1'?'':${session.loginUser.tstate == '1'}" value="1">离职</option>
                         </select>
                     </div>
                 </div>
             </div>
 
             <!--student!!-->
-            <div class="layui-form-item" th:style="'display:'+ @{(${session.type}eq '1'?'block':'none')}">
+            <div class="layui-form-item" th:style="'display:'+ (${session.type}eq '1'?'block':'none')">
 
                 <div class="layui-inline layui-col-md3">
                     <label class="layui-form-label">班级号</label>
@@ -108,10 +108,10 @@
                 <div class="layui-inline layui-col-md3">
                     <label class="layui-form-label">在校状态</label>
                         <div class="layui-input-block">
-                            <select name="state" lay-verify="required" th:value="@{(${session.type}eq '1'?${session.loginUser.state}:'')}">
-                                <option th:selected="@{(${session.type}eq '1'?${session.loginUser.state == ''}:'')}" value="">--请选择--</option>
-                                <option th:selected="@{(${session.type}eq '1'?${session.loginUser.state == '0'}:'')}"  value="0">在校</option>
-                                <option th:selected="@{(${session.type}eq '1'?${session.loginUser.state == '1'}:'')}" value="1">离校</option>
+                            <select name="state" lay-verify="required" th:value="${session.type}eq '1'?${session.loginUser.state}:''">
+                                <option th:selected="${session.type}eq '1'?${session.loginUser.state == ''}:''" value="">--请选择--</option>
+                                <option th:selected="${session.type}eq '1'?${session.loginUser.state == '0'}:''"  value="0">在校</option>
+                                <option th:selected="${session.type}eq '1'?${session.loginUser.state == '1'}:''" value="1">离校</option>
                             </select>
                         </div>
                 </div>
@@ -119,13 +119,15 @@
             <div class="layui-form-item" >
                 <label class="layui-form-label">电话号码</label>
                 <div class="layui-input-block">
-                    <input type="number" name="stel" id="stel" autocomplete="off" class="layui-input" lay-verify="verify_cttel" th:value="@{(${session.type}eq '1'?${session.loginUser.stel}:${session.loginUser.ttel})}">
+                    <input type="number" name="stel" id="stel" autocomplete="off"
+                           class="layui-input" lay-verify="verify_cttel" th:value="${session.type}eq '1'?${session.loginUser.stel}:${session.loginUser.ttel}">
                 </div>
             </div>
             <div class="layui-form-item" >
                 <label class="layui-form-label">银行卡号</label>
                 <div class="layui-input-block">
-                    <input type="number" name="cardNum" id="cardNum" autocomplete="off" class="layui-input" lay-verify="verify_ctbankcard"  th:value="@{(${session.type}eq '1'?${session.loginUser.card_num}:${session.loginUser.card_num})}">
+                    <input type="number" name="cardNum" id="cardNum" autocomplete="off"
+                           class="layui-input" lay-verify="verify_ctbankcard"  th:value="${session.type}eq '1'?${session.loginUser.card_num}:${session.loginUser.card_num}">
                 </div>
             </div>
         <button  id="confirmrevise" class="layui-btn layui-hide" lay-submit lay-filter="updateBtn" >
@@ -147,13 +149,10 @@
 <script>
     // 是否可以点击，动态切换
     $('#requestrevise').on('click', function(){
-
         $('#ctshade').attr("hidden",true);
         document.getElementById("confirmrevise").classList.remove("layui-hide");
         document.getElementById("cancelrevise").classList.remove("layui-hide");
         document.getElementById("requestrevise").classList.add("layui-hide");
-
-
     });
     $('#confirmrevise').on('click', function(){
         //提交数据
@@ -215,8 +214,6 @@
                 console.log(params);
                 $.ajax({
                     type: "POST",
-                    //dataType: "json",//服务器返回的数据类型
-                    //contentType: "application/json",//post请求的信息格式
                     url: "/user/edit2" ,
                     data: params,
                     dataType: 'json',
@@ -224,7 +221,6 @@
                         console.log(result);//在浏览器中打印服务端返回的数据(调试用)
                         if(result.code == 200){
                             layer.alert(result.message);
-                            // location.reload();
                         }else {
                             layer.alert(result.message);
                         }

@@ -275,7 +275,6 @@ public class userController {
             @RequestParam(value = "state", required = false) String state,
             @RequestParam(value = "cardNum", required = false) String card_num
     ){
-        System.out.println(sno+"--"+sname+"--"+ssex+"--"+card_num);
         Message userEditMessage=new Message();
         Student student=new Student();
         student.setSno(sno);
@@ -306,7 +305,6 @@ public class userController {
             @RequestParam(value = "tstate", required = false) String tstate,
             @RequestParam(value = "cardNum", required = false) String card_num
     ){
-        System.out.println(tno+"--"+tname+"--"+tsex+"--"+card_num);
         Message userEditMessage2=new Message();
         Teacher teacher=new Teacher();
         teacher.setTno(tno);
