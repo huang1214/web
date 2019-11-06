@@ -40,7 +40,7 @@
             width: 550px;
             height: 400px;
             float: left;
-            /* padding: 20px; */
+            margin-top: 70px;
         }
         .layui-badge{
             vertical-align: middle;
@@ -88,6 +88,93 @@
                             $(".passedBill").text(data.data["passedBill"]);
                             $(".refusedBill").text(data.data["refusedBill"]);
                         }
+                        var AppPrizeInfo = data.data["AppPrizeInfo"];
+                        var TeacherCountList = data.data["TeacherCount"];
+                        var StudentCountList = data.data["StudentCount"];
+                        var TeacherArray = [];
+                        var TeacherData = [];
+                        var StudentArray = [];
+                        var StudentData = [];
+                        for (var teacherCountListKey in TeacherCountList) {
+                            var temp = TeacherCountList[teacherCountListKey];
+                            console.log(temp);
+                            // 分别处理其中的tno，名字以及count数量，分两个数组
+                            var tempName = temp.tname;
+                            var tempDate = temp.count;
+                            TeacherArray.push(tempName);
+                            TeacherData.push(tempDate);
+                        }
+                        for (var studentCountListKey in StudentCountList) {
+                            var temp = StudentCountList[studentCountListKey];
+                            var tempName = temp.sname;
+                            var tempDate = temp.count;
+                            StudentArray.push(tempName);
+                            StudentData.push(tempDate);
+                        }
+
+                        var myChart = echarts.init(document.getElementById('app_chart1'));
+                        var TeacherChart = echarts.init(document.getElementById('app_chart2'));
+                        var StudentChart = echarts.init(document.getElementById('app_chart3'));
+                        var AppCountOption = {
+                            title: {
+                                text: '各等级竞赛成果统计图'
+                            },
+                            tooltip: {
+                                show:true
+                            },
+                            legend: {
+                                data:['数量/项']
+                            },
+                            xAxis: {
+                                data: ["国奖","省奖","校奖","院奖"]
+                            },
+                            yAxis: {},
+                            series: [{
+                                name: '数量',
+                                type: 'bar',
+                                data: AppPrizeInfo
+                            }]
+                        };
+                        var TeacherCountOption={
+                            title: {
+                                text: '教师激励项目数排名'
+                            },
+                            tooltip: {},
+                            legend: {
+                                data:['数量/项']
+                            },
+                            xAxis: {
+                                data: TeacherArray
+                            },
+                            yAxis: {},
+                            series: [{
+                                name: '数量',
+                                type: 'bar',
+                                data: TeacherData
+                            }]
+                        };
+                        var StudentCountOption={
+                            title: {
+                                text: '学生激励项目数排名'
+                            },
+                            tooltip: {},
+                            legend: {
+                                data:['数量/项']
+                            },
+                            xAxis: {
+                                data: StudentArray
+                            },
+                            yAxis: {},
+                            series: [{
+                                name: '数量',
+                                type: 'bar',
+                                data: StudentData
+                            }]
+                        }
+                        // 使用刚指定的配置项和数据显示图表。
+                        myChart.setOption(AppCountOption);
+                        TeacherChart.setOption(TeacherCountOption);
+                        StudentChart.setOption(StudentCountOption);
                         layer.close(index);
                         $("#body").show();
                     },
@@ -236,14 +323,14 @@
             <div id="app_chart1" style="width: 500px;height: 500px;">
             </div>
         </div>
-<!--        <div class="chart">-->
-<!--            <div id="app_chart2" style="width: 100%;height: 100%;">-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="chart">-->
-<!--            <div id="bill_chart1" style="width: 100%;height: 100%;">-->
-<!--            </div>-->
-<!--        </div>-->
+        <div class="chart">
+            <div id="app_chart2" style="width: 500px;height: 500px;">
+            </div>
+        </div>
+        <div class="chart">
+            <div id="app_chart3" style="width: 500px;height: 500px;">
+            </div>
+        </div>
 <!--        <div class="chart">-->
 <!--            <div id="bill_chart2" style="width: 100%;height: 100%;">-->
 <!--            </div>-->
@@ -253,48 +340,48 @@
 <!-- layui样式js -->
 
 <!-- 图表样式js-->
-<script>
-    // 基于准备好的dom，初始化echarts实例
+<!--<script>-->
+<!--    // 基于准备好的dom，初始化echarts实例-->
 
-        // 基于准备好的dom，初始化echarts实例
+<!--        // 基于准备好的dom，初始化echarts实例-->
 
-        var formData;
-        $.ajax({
-            url: "/user/getInfo",
-            type: "POST",
-            success: function (data) {
-                // 分别修改message、App、Bill内容的数量
-                // TODO 判断角色权限决定显示内容
-                // 未审核、拒绝、通过三个消息数量
-                // 如果是学生
-                formData = data.data["AppPrizeInfo"];
-                var myChart = echarts.init(document.getElementById('app_chart1'));
-                var option = {
-                    title: {
-                        text: '各等级竞赛成果统计图'
-                    },
-                    tooltip: {},
-                    legend: {
-                        data:['数量']
-                    },
-                    xAxis: {
-                        data: ["国奖","省奖","校奖","院奖"]
-                    },
-                    yAxis: {},
-                    series: [{
-                        name: '数量',
-                        type: 'bar',
-                        data: formData
-                    }]
-                };
+<!--        var formData;-->
+<!--        $.ajax({-->
+<!--            url: "/user/getInfo",-->
+<!--            type: "POST",-->
+<!--            success: function (data) {-->
+<!--                // 分别修改message、App、Bill内容的数量-->
+<!--                // TODO 判断角色权限决定显示内容-->
+<!--                // 未审核、拒绝、通过三个消息数量-->
+<!--                // 如果是学生-->
+<!--                formData = data.data["AppPrizeInfo"];-->
+<!--                var myChart = echarts.init(document.getElementById('app_chart1'));-->
+<!--                var option = {-->
+<!--                    title: {-->
+<!--                        text: '各等级竞赛成果统计图'-->
+<!--                    },-->
+<!--                    tooltip: {},-->
+<!--                    legend: {-->
+<!--                        data:['数量']-->
+<!--                    },-->
+<!--                    xAxis: {-->
+<!--                        data: ["国奖","省奖","校奖","院奖"]-->
+<!--                    },-->
+<!--                    yAxis: {},-->
+<!--                    series: [{-->
+<!--                        name: '数量',-->
+<!--                        type: 'bar',-->
+<!--                        data: formData-->
+<!--                    }]-->
+<!--                };-->
 
-                // 使用刚指定的配置项和数据显示图表。
-                myChart.setOption(option);
-            },
-        })
-        // 指定图表的配置项和数据
+<!--                // 使用刚指定的配置项和数据显示图表。-->
+<!--                myChart.setOption(option);-->
+<!--            },-->
+<!--        })-->
+<!--        // 指定图表的配置项和数据-->
 
-</script>
+<!--</script>-->
 <!--<script>-->
 <!--    var myChart = echarts.init(document.getElementById('app_chart2'));-->
 <!--    option = {-->
