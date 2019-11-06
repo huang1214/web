@@ -818,19 +818,13 @@
                 dataType: 'json',
                 success: function (result) {
                     console.log(result);//在浏览器中打印服务端返回的数据(调试用)
-                    /*                    if (result.resultCode == 200) {
-                                            alert("SUCCESS");
-                                        };*/
                     if(result.code == 200){
                         layer.alert(result.message);
                        // location.reload();
                     }else {
-                        // layer.alert('审核失败！');
                         layer.alert(result.message);
                     }
-
                 },
-
                 error : function() {
                     alert("异常！");
                 }

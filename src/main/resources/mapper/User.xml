@@ -151,5 +151,10 @@
         select adm_id,adm_pwd,adm_name  from ADMINISTRATOR where ADM_ID = #{username}
     </select>
 
+    <update id="studentEdit" parameterType="com.aca.springboot.entities.Student">
+        update student set sname = #{sname},ssex = #{ssex},sbirthday =#{sbirthday}
+        ,sdomitory = #{sdomitory}, cno = #{cno},stel = #{stel}, state = #{state},card_num = #{card_num}
+        where sno = #{sno}
+    </update>
 
 </mapper>

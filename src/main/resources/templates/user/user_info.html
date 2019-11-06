@@ -20,34 +20,29 @@
     <form class="layui-form layui-form-pane" action="" >
 
             <div class="layui-form-item layui-col-xs6 layui-col-sm6 layui-col-md12">
-                <label class="layui-form-label" >编号</label>
+                <label class="layui-form-label" >学号</label>
                 <div class="layui-input-block">
-                    <input type="text"  class="layui-btn layui-btn-primary" name="ctNo" id="ctNo"  autocomplete="off"  placeholder="请输入修改后的编号" lay-verify="verify_ctno" th:value="@{(${session.type}eq '1'?${session.loginUser.sno}:${session.loginUser.tno})}" >
+                    <input type="text"  class="layui-btn layui-btn-primary" name="sno" id="sno"  autocomplete="off"  placeholder="请输入修改后的编号" lay-verify="verify_ctno" th:value="@{(${session.type}eq '1'?${session.loginUser.sno}:${session.loginUser.tno})}" >
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">姓名</label>
                 <div class="layui-input-block">
-                    <input type="text" name="ctName" id="ctName" autocomplete="off" placeholder="请输入修改后的姓名" class="layui-input" lay-verify="verify_ctname"  th:value="@{(${session.type}eq '1'?${session.loginUser.sname}:${session.loginUser.tname})}">
+                    <input type="text" name="sname" id="sname" autocomplete="off" placeholder="请输入修改后的姓名" class="layui-input" lay-verify="verify_ctname"  th:value="@{(${session.type}eq '1'?${session.loginUser.sname}:${session.loginUser.tname})}">
                 </div>
             </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">密码</label>
-                <div class="layui-input-inline">
-                    <input type="Password" name="ctPassword" lay-verify="verify_ctpassword" placeholder="请输入修改后的密码" autocomplete="off" class="layui-input"  value="······">
-                </div>
-            </div>
+
             <div class="layui-form-item" >
                 <label class="layui-form-label">性别</label>
                 <div class="layui-input-block">
-                    <input th:checked="@{(${session.type}eq '1'?${session.loginUser.ssex == '男'}:${session.loginUser.tsex == '男'})}" type="radio" name="ctSex" lay-verify="verify_ctSex" value="男" title="男">
-                    <input th:checked="@{(${session.type}eq '1'?${session.loginUser.ssex == '女'}:${session.loginUser.tsex == '女'})}" type="radio" name="ctSex" lay-verify="verify_ctSex" value="女" title="女" checked>
+                    <input th:checked="@{(${session.type}eq '1'?${session.loginUser.ssex == '男'}:${session.loginUser.tsex == '男'})}" type="radio" name="ssex" lay-verify="verify_ctSex" value="男" title="男">
+                    <input th:checked="@{(${session.type}eq '1'?${session.loginUser.ssex == '女'}:${session.loginUser.tsex == '女'})}" type="radio" name="ssex" lay-verify="verify_ctSex" value="女" title="女" checked>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">生日</label>
                 <div class="layui-input-block">
-                    <input type="text" name="ctBir" id="ctBir" autocomplete="off" placeholder="yyyy-mm-dd" class="layui-input"  th:value="@{(${session.type}eq '1'?${session.loginUser.sbirthday}:${session.loginUser.tbirthday})}">
+                    <input type="text" name="sbirthday" id="sbirthday" autocomplete="off" placeholder="yyyy-mm-dd" class="layui-input"  th:value="@{(${session.type}eq '1'?${session.loginUser.sbirthday}:${session.loginUser.tbirthday})}">
                 </div>
             </div>
 
@@ -98,21 +93,21 @@
                 <div class="layui-inline layui-col-md3">
                     <label class="layui-form-label">班级号</label>
                     <div class="layui-input-block">
-                        <input type="text" name="ctClass" id="ctClass" autocomplete="off" class="layui-input" lay-verify="verify_ctclass"  th:value="@{(${session.type}eq '1'?${session.loginUser.cno}:'')}">
+                        <input type="text" name="cno" id="cno" autocomplete="off" class="layui-input" lay-verify="verify_ctclass"  th:value="@{(${session.type}eq '1'?${session.loginUser.cno}:'')}">
                     </div>
                 </div>
 
                 <div class="layui-inline layui-col-md3">
                     <label class="layui-form-label">寝室号</label>
                     <div class="layui-input-block">
-                        <input type="text" name="ctDormitory" id="ctDormitory"  autocomplete="off" class="layui-input" lay-verify="verify_ctdormitory"  th:value="@{(${session.type}eq '1'?${session.loginUser.sdomitory}:'')}">
+                        <input type="text" name="sdomitory" id="sdomitory"  autocomplete="off" class="layui-input" lay-verify="verify_ctdormitory"  th:value="@{(${session.type}eq '1'?${session.loginUser.sdomitory}:'')}">
                     </div>
                 </div>
 
                 <div class="layui-inline layui-col-md3">
                     <label class="layui-form-label">在校状态</label>
                         <div class="layui-input-block">
-                            <select name="city" lay-verify="required" th:value="@{(${session.type}eq '1'?${session.loginUser.state}:'')}">
+                            <select name="state" lay-verify="required" th:value="@{(${session.type}eq '1'?${session.loginUser.state}:'')}">
                                 <option th:selected="@{(${session.type}eq '1'?${session.loginUser.state == ''}:'')}" value="">--请选择--</option>
                                 <option th:selected="@{(${session.type}eq '1'?${session.loginUser.state == '0'}:'')}"  value="0">在校</option>
                                 <option th:selected="@{(${session.type}eq '1'?${session.loginUser.state == '1'}:'')}" value="1">离校</option>
@@ -123,23 +118,22 @@
             <div class="layui-form-item" >
                 <label class="layui-form-label">电话号码</label>
                 <div class="layui-input-block">
-                    <input type="number" name="ctTel" id="ctTel" autocomplete="off" class="layui-input" lay-verify="verify_cttel" th:value="@{(${session.type}eq '1'?${session.loginUser.stel}:${session.loginUser.ttel})}">
+                    <input type="number" name="stel" id="stel" autocomplete="off" class="layui-input" lay-verify="verify_cttel" th:value="@{(${session.type}eq '1'?${session.loginUser.stel}:${session.loginUser.ttel})}">
                 </div>
             </div>
             <div class="layui-form-item" >
                 <label class="layui-form-label">银行卡号</label>
                 <div class="layui-input-block">
-                    <input type="number" name="ctBankcard" id="ctBankcard" autocomplete="off" class="layui-input" lay-verify="verify_ctbankcard"  th:value="@{(${session.type}eq '1'?${session.loginUser.card_num}:${session.loginUser.card_num})}">
+                    <input type="number" name="cardNum" id="cardNum" autocomplete="off" class="layui-input" lay-verify="verify_ctbankcard"  th:value="@{(${session.type}eq '1'?${session.loginUser.card_num}:${session.loginUser.card_num})}">
                 </div>
             </div>
         <button  id="confirmrevise" class="layui-btn layui-hide" lay-submit lay-filter="updateBtn" >
             <i class="layui-icon">&#xe605;</i>确认修改
         </button>
-        <button  id="cancelrevise" class="layui-btn layui-hide"  lay-filter="updateBtn" >
+        <button  id="cancelrevise" class="layui-btn layui-hide"  >
             <i class="layui-icon">&#x1006;</i>取消修改
         </button>
     </form>
-
 </div>
 
 <div class="layui-input-block">
@@ -162,21 +156,16 @@
     });
     $('#confirmrevise').on('click', function(){
         //提交数据
-
         $('#ctshade').attr("hidden",false);
         document.getElementById("requestrevise").classList.remove("layui-hide");
         document.getElementById("confirmrevise").classList.add("layui-hide");
         document.getElementById("cancelrevise").classList.add("layui-hide");
     });
-
     $('#cancelrevise').on('click', function(){
-
         $('#ctshade').attr("hidden",false);
         document.getElementById("requestrevise").classList.remove("layui-hide");
         document.getElementById("confirmrevise").classList.add("layui-hide");
         document.getElementById("cancelrevise").classList.add("layui-hide");
-
-
     });
 </script>
 <script>
@@ -187,16 +176,37 @@
         form.on('submit(updateBtn)', function(data){
             console.log("进入");
             console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+            $.ajax({
+                type: "POST",
+                //dataType: "json",//服务器返回的数据类型
+                //contentType: "application/json",//post请求的信息格式
+                url: "/user/edit" ,
+                data: data.field,
+                dataType: 'json',
+                success: function (result) {
+                    console.log(result);//在浏览器中打印服务端返回的数据(调试用)
+                    if(result.code == 200){
+                        layer.alert(result.message);
+                        // location.reload();
+                    }else {
+                        layer.alert(result.message);
+                    }
+                },
+                error : function() {
+                    alert("异常！");
+                }
+            });
             return false;
         });
-
         //执行一个laydate实例
         laydate.render({
             elem: '#ctBir' //指定元素
             ,type: 'date'
             ,trigger: 'click'//呼出事件改成click
         });
-
+        laydate.render({
+            elem: '#sbirthday' //指定元素
+        });
         //自定义验证规则
         form.verify({
             verify_ctno: function(value){
@@ -207,11 +217,6 @@
             ,verify_ctname: function(value){
                 if(value==null|| value == ""){
                     return '姓名不能为空';
-                }
-            }
-            ,verify_ctpassword: function(value){
-                if(value==null|| value == ""){
-                    return '密码不能为空';
                 }
             }
             ,verify_ctbankcard: function(value){
@@ -225,8 +230,6 @@
         });
         form.render();//菜单渲染 把内容加载进去
     });
-
-
 </script>
 </body>
 </html>

@@ -1,13 +1,10 @@
 package com.aca.springboot.mapper;
 
 import com.aca.springboot.entities.Administrator;
+import com.aca.springboot.entities.Student;
 import com.aca.springboot.entities.Teacher;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.hibernate.validator.constraints.Range;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Map;
@@ -66,4 +63,5 @@ public interface UserMapper {
     public Teacher selectTeacherBytno(@Param("tno") String tno);
 
     public Administrator selectAdministrator(@Param("username") String username);
+    public int studentEdit(Student student);
 }

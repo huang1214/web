@@ -1,10 +1,7 @@
 package com.aca.springboot.service;
 
 
-import com.aca.springboot.entities.JsonMessage;
-import com.aca.springboot.entities.Teacher;
-import com.aca.springboot.entities.test;
-import com.aca.springboot.entities.Administrator;
+import com.aca.springboot.entities.*;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -171,5 +168,8 @@ public class UserService {
     }
     public Administrator selectBy_ADM_ID_ReturnObject(String username ){
         return UserMapper.selectAdministrator(username);
+    }
+    public int studentUpdate(Student student){
+        return UserMapper.studentEdit(student);
     }
 }

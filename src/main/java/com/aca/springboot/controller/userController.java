@@ -1,6 +1,8 @@
 package com.aca.springboot.controller;
 
 import com.aca.springboot.entities.JsonMessage;
+import com.aca.springboot.entities.Message;
+import com.aca.springboot.entities.Student;
 import com.aca.springboot.service.StudentService;
 import com.aca.springboot.service.UserService;
 import com.aca.springboot.service.testService;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -256,5 +259,37 @@ public class userController {
                                @RequestParam(value = "pageNum",required = false,defaultValue = "1")int pageNum,
                                @RequestParam(value = "pageSize",required = false,defaultValue = "1")int pageSize){
         return studentService.selectByName(sname,pageNum,pageSize);
+    }
+
+    @PostMapping(value = "/user/edit")
+    @ResponseBody
+    public Message updateUser(
+            @RequestParam(value = "sno", required = false) String sno,
+            @RequestParam(value = "sname", required = false) String sname,
+            @RequestParam(value = "ssex", required = false) String ssex,
+            @RequestParam(value = "sbirthday", required = false) Date sbirthday,
+            @RequestParam(value = "sdomitory", required = false) String sdomitory,
+            @RequestParam(value = "cno", required = false) String cno,
+            @RequestParam(value = "stel", required = false) String stel,
+            @RequestParam(value = "state", required = false) String state,
+            @RequestParam(value = "cardNum", required = false) String card_num
+    ){
+        System.out.println(sno+"--"+sname+"--"+ssex+"--"+card_num);
+        Message userEditMessage=new Message();
+        Student student=new Student();
+        student.setSno(sno);
+        student.setSname(sname);
+        student.setSsex(ssex);
+        student.setSbirthday(sbirthday);
+        student.setSdomitory(sdomitory);
+        student.setCno(cno);
+        student.setStel(stel);
+        student.setState(state);
+        student.setCard_num(card_num);
+        int res=userService.studentUpdate(student);
+        System.out.println(res);
+        userEditMessage.setCode(200);
+        userEditMessage.setMessage("修改成功！");
+        return userEditMessage;
     }
 }
