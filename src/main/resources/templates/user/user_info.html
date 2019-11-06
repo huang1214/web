@@ -18,11 +18,12 @@
         <legend>个人信息</legend>
     </fieldset>
     <form class="layui-form layui-form-pane" action="" >
-
+        <input type="hidden" th:value="${session.type}" id="identification" />
             <div class="layui-form-item layui-col-xs6 layui-col-sm6 layui-col-md12">
-                <label class="layui-form-label" >学号</label>
+                <label class="layui-form-label" th:text="@{(${session.type}eq '1'?'学号':'职工号')}"></label>
                 <div class="layui-input-block">
-                    <input type="text"  class="layui-btn layui-btn-primary" name="sno" id="sno"  autocomplete="off"  placeholder="请输入修改后的编号" lay-verify="verify_ctno" th:value="@{(${session.type}eq '1'?${session.loginUser.sno}:${session.loginUser.tno})}" >
+                    <input disabled type="text"  class="layui-input layui-disabled" name="sno" id="sno" style="width: 270px"
+                           lay-verify="verify_ctno" th:value="@{(${session.type}eq '1'?${session.loginUser.sno}:${session.loginUser.tno})}" >
                 </div>
             </div>
             <div class="layui-form-item">
@@ -52,7 +53,7 @@
                 <div class="layui-inline layui-col-md3">
                     <label class="layui-form-label">职称</label>
                     <div class="layui-input-block">
-                        <select name="city" lay-verify="required" th:value="@{(${session.type}eq '1'?'':${session.loginUser.ttitle})}">
+                        <select name="city" id="city" lay-verify="required" th:value="@{(${session.type}eq '1'?'':${session.loginUser.ttitle})}">
                             <option th:selected="@{(${session.type}eq '1'?'':${session.loginUser.ttitle == ''})}" value="">--请选择--</option>
                             <option th:selected="@{(${session.type}eq '1'?'':${session.loginUser.ttitle == '副教授'})}" value="副教授">副教授</option>
                             <option th:selected="@{(${session.type}eq '1'?'':${session.loginUser.ttitle == '讲师'})}" value="讲师">讲师</option>
@@ -78,7 +79,7 @@
                 <div class="layui-inline layui-col-md3">
                     <label class="layui-form-label">在职状态</label>
                     <div class="layui-input-block">
-                        <select name="city" lay-verify="required" th:value="@{(${session.type}eq '1'?'':${session.loginUser.tstate})}">
+                        <select name="teacherState" id="teacherState" lay-verify="required" th:value="@{(${session.type}eq '1'?'':${session.loginUser.tstate})}">
                             <option th:selected="@{(${session.type}eq '1'?'':${session.loginUser.tstate == ''})}" value="">--请选择--</option>
                             <option th:selected="@{(${session.type}eq '1'?'':${session.loginUser.tstate == '0'})}" value="0" selected>在职</option>
                             <option th:selected="@{(${session.type}eq '1'?'':${session.loginUser.tstate == '1'})}" value="1">离职</option>
@@ -174,28 +175,65 @@
         var laydate = layui.laydate;//获取laydate模块
         //监听提交按钮
         form.on('submit(updateBtn)', function(data){
-            console.log("进入");
-            console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
-            $.ajax({
-                type: "POST",
-                //dataType: "json",//服务器返回的数据类型
-                //contentType: "application/json",//post请求的信息格式
-                url: "/user/edit" ,
-                data: data.field,
-                dataType: 'json',
-                success: function (result) {
-                    console.log(result);//在浏览器中打印服务端返回的数据(调试用)
-                    if(result.code == 200){
-                        layer.alert(result.message);
-                        // location.reload();
-                    }else {
-                        layer.alert(result.message);
+            var identification=document.getElementById("identification").value;// 1是学生，2是老师
+             //data.field 当前容器的全部表单字段，名值对形式：{name: value}
+            if(identification==1){
+                console.log("学生");
+                $.ajax({
+                    type: "POST",
+                    //dataType: "json",//服务器返回的数据类型
+                    //contentType: "application/json",//post请求的信息格式
+                    url: "/user/edit" ,
+                    data: data.field,
+                    dataType: 'json',
+                    success: function (result) {
+                        console.log(result);//在浏览器中打印服务端返回的数据(调试用)
+                        if(result.code == 200){
+                            layer.alert(result.message);
+                            // location.reload();
+                        }else {
+                            layer.alert(result.message);
+                        }
+                    },
+                    error : function() {
+                        alert("异常！");
                     }
-                },
-                error : function() {
-                    alert("异常！");
+                });
+            }else {
+                console.log("老师");
+                var params = {
+                    "tno":data.field.sno,
+                    "tname":data.field.sname,
+                    "tsex":data.field.ssex,
+                    "tbirthday":data.field.sbirthday,
+                    "dno":data.field.ctDepartment,
+                    "ttel":data.field.stel,
+                    "ttitle":data.field.city,
+                    "tstate":data.field.teacherState,
+                    "cardNum":data.field.cardNum
                 }
-            });
+                console.log(params);
+                $.ajax({
+                    type: "POST",
+                    //dataType: "json",//服务器返回的数据类型
+                    //contentType: "application/json",//post请求的信息格式
+                    url: "/user/edit2" ,
+                    data: params,
+                    dataType: 'json',
+                    success: function (result) {
+                        console.log(result);//在浏览器中打印服务端返回的数据(调试用)
+                        if(result.code == 200){
+                            layer.alert(result.message);
+                            // location.reload();
+                        }else {
+                            layer.alert(result.message);
+                        }
+                    },
+                    error : function() {
+                        alert("异常！");
+                    }
+                });
+            }
             return false;
         });
         //执行一个laydate实例

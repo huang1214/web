@@ -63,5 +63,8 @@ public interface UserMapper {
     public Teacher selectTeacherBytno(@Param("tno") String tno);
 
     public Administrator selectAdministrator(@Param("username") String username);
+    //修改学生信息
     public int studentEdit(Student student);
+    //修改教师信息
+    public int teacherEdit(Teacher teacher);
 }

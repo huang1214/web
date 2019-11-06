@@ -172,4 +172,7 @@ public class UserService {
     public int studentUpdate(Student student){
         return UserMapper.studentEdit(student);
     }
+    public int teacherUpdate(Teacher teacher){
+        return UserMapper.teacherEdit(teacher);
+    }
 }

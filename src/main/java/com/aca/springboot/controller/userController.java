@@ -3,6 +3,7 @@ package com.aca.springboot.controller;
 import com.aca.springboot.entities.JsonMessage;
 import com.aca.springboot.entities.Message;
 import com.aca.springboot.entities.Student;
+import com.aca.springboot.entities.Teacher;
 import com.aca.springboot.service.StudentService;
 import com.aca.springboot.service.UserService;
 import com.aca.springboot.service.testService;
@@ -291,5 +292,36 @@ public class userController {
         userEditMessage.setCode(200);
         userEditMessage.setMessage("修改成功！");
         return userEditMessage;
+    }
+    @PostMapping(value = "/user/edit2")
+    @ResponseBody
+    public Message updateUser2(
+            @RequestParam(value = "tno", required = false) String tno,
+            @RequestParam(value = "tname", required = false) String tname,
+            @RequestParam(value = "tsex", required = false) String tsex,
+            @RequestParam(value = "tbirthday", required = false) String tbirthday,
+            @RequestParam(value = "dno", required = false) String dno,
+            @RequestParam(value = "ttel", required = false) String ttel,
+            @RequestParam(value = "ttitle", required = false) String ttitle,
+            @RequestParam(value = "tstate", required = false) String tstate,
+            @RequestParam(value = "cardNum", required = false) String card_num
+    ){
+        System.out.println(tno+"--"+tname+"--"+tsex+"--"+card_num);
+        Message userEditMessage2=new Message();
+        Teacher teacher=new Teacher();
+        teacher.setTno(tno);
+        teacher.setTname(tname);
+        teacher.setTsex(tsex);
+        teacher.setTbirthday(tbirthday);
+        teacher.setDno(dno);
+        teacher.setTtel(ttel);
+        teacher.setTtitle(ttitle);
+        teacher.setTstate(tstate);
+        teacher.setCard_num(card_num);
+        int res=userService.teacherUpdate(teacher);
+        System.out.println(res);
+        userEditMessage2.setCode(200);
+        userEditMessage2.setMessage("修改成功！");
+        return userEditMessage2;
     }
 }

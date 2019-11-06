@@ -107,7 +107,8 @@
     </delete>
 
     <update id="teacher_edit">
-        update teacher set tname = #{tname},tsex = #{tsex},tbirthday =to_date(substr(#{tbirthday},1,10),'yyyy/mm/dd') ,dno = #{dno}, ttel = #{ttel},ttitle = #{ttitle},tstate = #{tstate}, card_num = #{card_num} where tno = #{tno}
+        update teacher set tname = #{tname},tsex = #{tsex},tbirthday =to_date(substr(#{tbirthday},1,10),'yyyy/mm/dd'),
+        dno = #{dno}, ttel = #{ttel},ttitle = #{ttitle},tstate = #{tstate}, card_num = #{card_num} where tno = #{tno}
     </update>
 
     <!--获取所有教师职称，数据不重复-->
@@ -155,6 +156,11 @@
         update student set sname = #{sname},ssex = #{ssex},sbirthday =#{sbirthday}
         ,sdomitory = #{sdomitory}, cno = #{cno},stel = #{stel}, state = #{state},card_num = #{card_num}
         where sno = #{sno}
+    </update>
+    <update id="teacherEdit" parameterType="com.aca.springboot.entities.Teacher">
+        update teacher set tname = #{tname},tsex = #{tsex},tbirthday =to_date(#{tbirthday},'yyyy-mm-dd')
+        ,dno = #{dno}, ttel = #{ttel},ttitle = #{ttitle}, tstate = #{tstate},card_num = #{card_num}
+        where tno = #{tno}
     </update>
 
 </mapper>
