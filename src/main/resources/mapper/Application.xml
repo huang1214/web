@@ -190,17 +190,17 @@
       C.CTID c_ctid,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE,C.REFERENCE_PAPER,
       S1.SNO S1_SNO,S1.SNAME S1_SNAME,S2.SNO S2_SNO,S2.SNAME S2_SNAME
 
-      from (select * from application where STATUS=#{status} order by APPID desc) A JOIN
-      (select * from com_table ) C ON A.ctid=C.ctid JOIN
-      (select * from STUDENT) S1 ON S1.SNO=A.APPLICANTID JOIN
-      (select * from STUDENT) S2 ON S2.SNO=A.LEADER
+      from (select * from application where STATUS=0 order by APPID desc) A LEFT JOIN
+         (select * from com_table ) C ON A.ctid=C.ctid LEFT JOIN
+         (select * from STUDENT) S1 ON S1.SNO=A.APPLICANTID LEFT JOIN
+         (select * from STUDENT) S2 ON S2.SNO=A.LEADER
     )) temp
     WHERE ROWNUM &lt;= #{endIndex}
     )
     WHERE RN >=#{startIndex}
     </select>
     <select id="get_application_list_m_count" parameterMap="get_app_list_params_m" resultType="java.lang.Integer">
-        select count(*) from application where STATUS=#{status} order by APPID desc
+        select count(*) from application where STATUS=#{status}
     </select>
     <!--取得detail-->
     <parameterMap id="get_app_detail_params" type="java.util.Map">
