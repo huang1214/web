@@ -87,94 +87,95 @@
                             $(".unReadBill").text(data.data["unReadBill"]);
                             $(".passedBill").text(data.data["passedBill"]);
                             $(".refusedBill").text(data.data["refusedBill"]);
-                        }
-                        var AppPrizeInfo = data.data["AppPrizeInfo"];
-                        var TeacherCountList = data.data["TeacherCount"];
-                        var StudentCountList = data.data["StudentCount"];
-                        var TeacherArray = [];
-                        var TeacherData = [];
-                        var StudentArray = [];
-                        var StudentData = [];
-                        for (var teacherCountListKey in TeacherCountList) {
-                            var temp = TeacherCountList[teacherCountListKey];
-                            console.log(temp);
-                            // 分别处理其中的tno，名字以及count数量，分两个数组
-                            var tempName = temp.tname;
-                            var tempDate = temp.count;
-                            TeacherArray.push(tempName);
-                            TeacherData.push(tempDate);
-                        }
-                        for (var studentCountListKey in StudentCountList) {
-                            var temp = StudentCountList[studentCountListKey];
-                            var tempName = temp.sname;
-                            var tempDate = temp.count;
-                            StudentArray.push(tempName);
-                            StudentData.push(tempDate);
+                            var AppPrizeInfo = data.data["AppPrizeInfo"];
+                            var TeacherCountList = data.data["TeacherCount"];
+                            var StudentCountList = data.data["StudentCount"];
+                            var TeacherArray = [];
+                            var TeacherData = [];
+                            var StudentArray = [];
+                            var StudentData = [];
+                            for (var teacherCountListKey in TeacherCountList) {
+                                var temp = TeacherCountList[teacherCountListKey];
+                                console.log(temp);
+                                // 分别处理其中的tno，名字以及count数量，分两个数组
+                                var tempName = temp.tname;
+                                var tempDate = temp.count;
+                                TeacherArray.push(tempName);
+                                TeacherData.push(tempDate);
+                            }
+                            for (var studentCountListKey in StudentCountList) {
+                                var temp = StudentCountList[studentCountListKey];
+                                var tempName = temp.sname;
+                                var tempDate = temp.count;
+                                StudentArray.push(tempName);
+                                StudentData.push(tempDate);
+                            }
+
+                            var myChart = echarts.init(document.getElementById('app_chart1'));
+                            var TeacherChart = echarts.init(document.getElementById('app_chart2'));
+                            var StudentChart = echarts.init(document.getElementById('app_chart3'));
+                            var AppCountOption = {
+                                title: {
+                                    text: '各等级竞赛成果统计图'
+                                },
+                                tooltip: {
+                                    show:true
+                                },
+                                legend: {
+                                    data:['数量']
+                                },
+                                xAxis: {
+                                    data: ["国奖","省奖","校奖","院奖"]
+                                },
+                                yAxis: {},
+                                series: [{
+                                    name: '数量',
+                                    type: 'bar',
+                                    data: AppPrizeInfo
+                                }]
+                            };
+                            var TeacherCountOption={
+                                title: {
+                                    text: '教师激励项目数排名'
+                                },
+                                tooltip: {},
+                                legend: {
+                                    data:['数量']
+                                },
+                                xAxis: {
+                                    data: TeacherArray
+                                },
+                                yAxis: {},
+                                series: [{
+                                    name: '数量',
+                                    type: 'bar',
+                                    data: TeacherData
+                                }]
+                            };
+                            var StudentCountOption={
+                                title: {
+                                    text: '学生激励项目数排名'
+                                },
+                                tooltip: {},
+                                legend: {
+                                    data:['数量']
+                                },
+                                xAxis: {
+                                    data: StudentArray
+                                },
+                                yAxis: {},
+                                series: [{
+                                    name: '数量',
+                                    type: 'bar',
+                                    data: StudentData
+                                }]
+                            }
+                            // 使用刚指定的配置项和数据显示图表。
+                            myChart.setOption(AppCountOption);
+                            TeacherChart.setOption(TeacherCountOption);
+                            StudentChart.setOption(StudentCountOption);
                         }
 
-                        var myChart = echarts.init(document.getElementById('app_chart1'));
-                        var TeacherChart = echarts.init(document.getElementById('app_chart2'));
-                        var StudentChart = echarts.init(document.getElementById('app_chart3'));
-                        var AppCountOption = {
-                            title: {
-                                text: '各等级竞赛成果统计图'
-                            },
-                            tooltip: {
-                                show:true
-                            },
-                            legend: {
-                                data:['数量']
-                            },
-                            xAxis: {
-                                data: ["国奖","省奖","校奖","院奖"]
-                            },
-                            yAxis: {},
-                            series: [{
-                                name: '数量',
-                                type: 'bar',
-                                data: AppPrizeInfo
-                            }]
-                        };
-                        var TeacherCountOption={
-                            title: {
-                                text: '教师激励项目数排名'
-                            },
-                            tooltip: {},
-                            legend: {
-                                data:['数量']
-                            },
-                            xAxis: {
-                                data: TeacherArray
-                            },
-                            yAxis: {},
-                            series: [{
-                                name: '数量',
-                                type: 'bar',
-                                data: TeacherData
-                            }]
-                        };
-                        var StudentCountOption={
-                            title: {
-                                text: '学生激励项目数排名'
-                            },
-                            tooltip: {},
-                            legend: {
-                                data:['数量']
-                            },
-                            xAxis: {
-                                data: StudentArray
-                            },
-                            yAxis: {},
-                            series: [{
-                                name: '数量',
-                                type: 'bar',
-                                data: StudentData
-                            }]
-                        }
-                        // 使用刚指定的配置项和数据显示图表。
-                        myChart.setOption(AppCountOption);
-                        TeacherChart.setOption(TeacherCountOption);
-                        StudentChart.setOption(StudentCountOption);
                         layer.close(index);
                         $("#body").show();
                     },
