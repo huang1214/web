@@ -123,7 +123,7 @@
                                 show:true
                             },
                             legend: {
-                                data:['数量/项']
+                                data:['数量']
                             },
                             xAxis: {
                                 data: ["国奖","省奖","校奖","院奖"]
@@ -141,7 +141,7 @@
                             },
                             tooltip: {},
                             legend: {
-                                data:['数量/项']
+                                data:['数量']
                             },
                             xAxis: {
                                 data: TeacherArray
@@ -159,7 +159,7 @@
                             },
                             tooltip: {},
                             legend: {
-                                data:['数量/项']
+                                data:['数量']
                             },
                             xAxis: {
                                 data: StudentArray
@@ -318,7 +318,7 @@
 <!--    激励：-->
 <!--    教师、学生获奖表-->
 <!--    报销：-->
-    <div class="chartarea">
+    <div class="chartarea" th:if="${session.type} eq '3'">
         <div class="chart">
             <div id="app_chart1" style="width: 500px;height: 500px;">
             </div>
@@ -351,7 +351,7 @@
 <!--            type: "POST",-->
 <!--            success: function (data) {-->
 <!--                // 分别修改message、App、Bill内容的数量-->
-<!--                // TODO 判断角色权限决定显示内容-->
+<!
 <!--                // 未审核、拒绝、通过三个消息数量-->
 <!--                // 如果是学生-->
 <!--                formData = data.data["AppPrizeInfo"];-->
