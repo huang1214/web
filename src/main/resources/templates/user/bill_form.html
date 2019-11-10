@@ -85,9 +85,10 @@
     <form class="layui-form" action="" style="margin-top: 20px">
         <label class="layui-form-label">关键词：</label>
         <div class="layui-inline">
-            <input class="layui-input" name="search_ctname" id="search_ctname" autocomplete="off" placeholder="请输入比赛名称的关键词">
+            <input class="layui-input" name="search_ctname" id="search_ctname"
+                   autocomplete="off" placeholder="请输入比赛名称的关键词">
         </div>
-        <button type="button" class="layui-btn" data-type="reload" id="search">搜索</button>
+        <button type="button" class="layui-btn" data-type="reload" id="btn_search_ctname">搜索</button>
         <button type="reset" class="layui-btn">重置</button>
     </form>
     <table class="layui-hide" id="layer_com_table" lay-filter="layer_com_table"></table>
@@ -128,7 +129,8 @@
     <form class="layui-form" action="" style="margin-top: 20px">
         <div class="layui-form-item" style="text-align: center">
             <div class="layui-inline">
-                <input class="layui-input" style="width: 300px" name="search_sno" id="search_sno" autocomplete="off" placeholder="输入学号或姓名" >
+                <input class="layui-input" style="width: 300px" name="search_sno" id="search_sno"
+                       autocomplete="off" placeholder="输入学号或姓名" >
             </div>
             <div class="layui-inline">
                 <button type="button" class="layui-btn layui-btn-radius" data-type="reload" id="btn_search_student">
@@ -137,7 +139,6 @@
             </div>
         </div>
      <!--   <div class="layui-inline" style="text-align: center;">
-
             <button type="reset" class="layui-btn" data-type="reload">重置</button>
         </div>-->
     </form>
@@ -168,10 +169,21 @@
 
 <!--        比赛时间-->
         <div class="layui-form-item">
-                <label class="layui-form-label">比赛时间<span style="color: red">*</span></label>
-                <div class="layui-input-block">
-                    <input type="text" name="cyear" id="cyear" autocomplete="off" placeholder="yyyy-mm-dd" class="layui-input" lay-verify="verify_cyear">
+                <label class="layui-form-label">比赛年份<span style="color: red">*</span></label>
+                <div class="layui-inline">
+                    <input type="text" name="cyear" id="cyear" autocomplete="off" style="width: 100px"
+                           placeholder="yyyy" class="layui-input" lay-verify="verify_cyear">
                 </div>
+            <div class="layui-inline">
+                <span>年</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">起始日期<span style="color: red">*</span></label>
+            <div class="layui-inline">
+                <input type="text" id="startDate" autocomplete="off" lay-verify="verify_time"
+                        class="layui-input" placeholder="yyyy-MM-dd~yyyy-MM-dd">
+            </div>
         </div>
 
         <!-- 类别型号编号（0省赛，1国赛 -->
@@ -223,12 +235,12 @@
             </div>
         </div>
 
-
         <!-- 参赛作品名：这里判断成果类型作为依据是否出现 -->
         <div class="layui-form-item" id="div_workName">
             <label class="layui-form-label">参赛作品名称</label>
             <div class="layui-input-block">
-                <input type="text" name="workName" id="workName" autocomplete="off" placeholder="请输入参赛作品名称" class="layui-input" lay-verify="required" >
+                <input type="text" name="workName" id="workName" autocomplete="off"
+                       placeholder="请输入参赛作品名称" class="layui-input" lay-verify="required" >
             </div>
         </div>
         <!-- 预算金额：必写 -->
@@ -242,7 +254,8 @@
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">预算描述<span style="color: red">*</span></label>
             <div class="layui-input-block">
-                <textarea name="preditfeedesc" placeholder="请输入内容" lay-verify="required" class="layui-textarea"></textarea>
+                <textarea name="preditfeedesc" placeholder="请输入内容" lay-verify="required"
+                          class="layui-textarea"></textarea>
             </div>
         </div>
         <!-- 申请状态：0.未审核，1审核不通过，2审核通过，样式待定 -->
@@ -279,6 +292,11 @@
           elem: '#cyear'
           ,type:'year'//指定元素
         });
+       var sedate= laydate.render({
+            elem: '#startDate' //指定元素
+            ,range: '~'
+            ,min:1
+        });
     });
 </script>
 
@@ -288,7 +306,6 @@
         <button class="layui-btn layui-btn-sm" lay-event="getCheckData_ctname">获取选中行数据</button>
     </div>
 </script>
-
 
 <!--获得指导老师2-获取选中行数据-->
 <script type="text/html" id="toolbar_teacher2Id">
@@ -305,15 +322,12 @@
     </div>
 </script>
 
-
 <script>
     layui.define(['table','layer'], function(){
         var table = layui.table;
         var layer = layui.layer; //独立版的layer无需执行这一句
         var $ = layui.jquery;
-
         var teacherInputCount = 0;  //限制指导老师人数
-
         var teamCount = 0;  // 限制团队成员人数
 
         var active = {
@@ -374,7 +388,6 @@
         });
 
         // 设置按钮悬停显示tips
-
         var tip_index = 0;
         $(document).on('mouseenter', '#addStudent', function(){
             tip_index = layer.tips('即使是个人赛，也能通过该按钮导入同一批次参赛的同学', '#addStudent', {time: 0});
@@ -460,7 +473,6 @@
                 ]
             ]
         });
-
         // 比赛名称 >> 弹出层 >> 表格实例的单选框的选择的监听工作条（隐藏模块）
         table.on('toolbar(layer_com_table)', function(obj){//注：tool 是工具条事件名，layer_com_table 是 table 原始容器的属性 lay-filter="对应的值"
             var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
@@ -481,7 +493,6 @@
                         $("#workName").attr("lay-verify");
                         $("#div_workName,#div_textarea,#div_leader,#div_teamNum,#div_workBriefIntro").show();
                     }
-
                     layer.closeAll(); //疯狂模式，关闭所有层
                     break;
             };
@@ -587,14 +598,10 @@
             });
         });
 
-
         $('#btn_search_ctname').on('click', function () {      //点击查询调用表格重载，这两行我也没太看懂，就会改个名
-            alert("btn_search_ctname已经按下");
             var type = $(this).data('type');      //百度说固定用法，无需深究
             act1[type] ? act1[type].call(this) : '';   //不太懂，反正就开始重载 了
         });
-
-
         $('#btn_search_teacher2Id').on('click', function () {
             var type = $(this).data('type');
             act3[type] ? act3[type].call(this) : '';
@@ -619,37 +626,7 @@
                     ,url: '/queryBySname'    //访问UserController中的方法
                 }, 'data');
             }
-           /* if (search_sno != ""){  // 如果学号不为空，则按学号搜索
-                //执行重载
-                table.reload('layer_studentId_table', {
-                    method:'POST'
-                    ,page: {
-                        curr: 1 //重新从第 1 页开始
-                    }
-                    , where: {
-                        sno: search_sno//注意用，隔开
-                    }
-                    ,url: '/queryBySno'
-                }, 'data');
-            }
-            if (search_sno == "" && search_sname != ""){    // 如果学号为空，名字不为空，则按名字搜索
-                //执行重载
-                table.reload('layer_studentId_table', {
-                    method:'POST'
-                    ,page: {
-                        curr: 1 //重新从第 1 页开始
-                    }
-                    , where: {
-                        sname: search_sname,//注意用，隔开
-                        pageNum : 1,
-                        pageSize : 1
-                    }
-                    ,url: '/queryBySname'    //访问UserController中的方法
-                }, 'data');
-            }*/
         });
-
-
         //比赛名称条件模糊查询
         var $ = layui.$, act1 = {
             reload: function () {
@@ -704,13 +681,6 @@
         var upload =layui.upload;
         var img_bill_url;
         var upload_bill;
-        //执行一个laydate实例
-        /*日期与时间选择*/
-        laydate.render({
-            elem: '#awardDate' //指定元素
-            ,type: 'date'
-            ,trigger: 'click'//呼出事件改成click
-        });
         //自定义验证规则
         form.verify({
             verify_ctname: function(value){
@@ -725,7 +695,12 @@
             }
             ,verify_cyear: function(value){
                 if(value==null|| value == ""){
-                    return '参赛时间不能为空';
+                    return '参赛年份不能为空！';
+                }
+            }
+            ,verify_time:function (value) {
+                if(value==null||value==''){
+                    return "起始日期不能为空！"
                 }
             }
             ,verify_level_type: function(value){
@@ -733,13 +708,6 @@
                     return '请选择您的获奖类型(省级/国家级)';
                 }
             }
-
-            ,verify_applicantId: function(value){
-                if(value==null|| value == ""){
-                    return '申请人的ID不能为空';
-                }
-            }
-
         });
         upload.render({
             elem: '#test2' //绑定元素
