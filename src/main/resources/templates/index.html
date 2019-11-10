@@ -82,7 +82,7 @@
                         <dd><a href="javascript:;" data-url="user/bill_form" data-id="3" data-title="备案申报"
                                class="site-active" data-type="tabAdd">备案申报</a></dd>
                         <dd><a href="javascript:;" data-url="user/bill_state" data-id="4" data-title="备案状态"
-                               class="site-active" data-type="tabAdd">备案状态</a></dd>
+                               class="site-active" data-type="tabAdd">备案列表</a></dd>
                         <dd><a href="javascript:;" data-url="user/bill_history" data-id="5" data-title="备案历史"
                                class="site-active" data-type="tabAdd">备案历史</a></dd>
                     </dl>
@@ -118,9 +118,9 @@
                     奖金审核</a></li>
                 <!--报销审核-->
                 <li th:if="${session.type} eq '3' " class="layui-nav-item"><a class="nav-item-side site-active" data-url="admin/bill_audit" data-id="11"
-                                              data-title="暂时的报销审核页面" data-type="tabAdd"><i class="fa fa-search fa-fw"
+                                              data-title="备案审核" data-type="tabAdd"><i class="fa fa-search fa-fw"
                                                                                            aria-hidden="true"></i></i>
-                    暂时的报销审核页面</a></li>
+                    备案审核</a></li>
                 <!--消息管理-->
                 <li th:if="${session.type} eq '3' " class="layui-nav-item">
                     <a class="nav-item-side" ><i class="fa fa-comment"

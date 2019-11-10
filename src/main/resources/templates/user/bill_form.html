@@ -182,6 +182,9 @@
                 <input type="text" id="startDate" autocomplete="off" lay-verify="verify_time"
                         class="layui-input" placeholder="yyyy-MM-dd~yyyy-MM-dd">
             </div>
+            <div class="layui-inline">
+                <span style="color: red">(提示：备案需要在比赛之前，详情查看备案须知)</span>
+            </div>
         </div>
 
         <!-- 类别型号编号（0省赛，1国赛 -->
@@ -745,13 +748,10 @@
                 //上传完毕回调
                 img_bill_url = "http://localhost:8083/"+res.data;
                 upload_bill=res.data;
-                //alert("上传完毕");
                 console.log(res);
-                //alert(img_bill_url);
                 document.getElementById("img_demo").src = img_bill_url;
             }
             ,error: function(){
-                //请求异常回调
                 alert("请求异常");
             }
         });
