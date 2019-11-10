@@ -161,13 +161,11 @@
         <div class="layui-form-item " style="display: none">
             <label class="layui-form-label" >比赛编号<span style="color: red">*</span></label>
             <div class="layui-input-block" id="layerDemo_ctId">
-                <input type="text"  class="layui-btn layui-btn-primary" name="ctid" id="ctId" data-method="offset" autocomplete="off" data-type="t" lay-verify="verify_ctId" placeholder="">
+                <input type="text"  class="layui-btn layui-btn-primary" name="ctid" id="ctId"
+                       data-method="offset" autocomplete="off" data-type="t" lay-verify="verify_ctId">
             </div>
         </div>
-
-
-
-<!--        比赛时间-->
+        <!--比赛时间-->
         <div class="layui-form-item">
                 <label class="layui-form-label">比赛年份<span style="color: red">*</span></label>
                 <div class="layui-inline">
@@ -208,10 +206,11 @@
         </div>
 
         <!-- 团队名称，判断 -->
-        <div class="layui-form-item">
+        <div class="layui-form-item" id="div_groupName">
             <label class="layui-form-label">团队名称</label>
             <div class="layui-input-block">
-                <input type="text" name="groupname" placeholder="请输入团队名称" autocomplete="off" class="layui-input">
+                <input type="text" name="groupname" placeholder="请输入团队名称" autocomplete="off"
+                       class="layui-input">
             </div>
         </div>
 <!--        添加指导老师及学生-->
@@ -223,7 +222,8 @@
         <div class="layui-form-item" style="display: none">
             <div class="layui-inline ">
                 <label class="layui-form-label">真实指导老师</label>
-                <input type="text" name="ts" id="ts" lay-filter="ts" data-method="offset" value="" data-type="t" autocomplete="off" class="layui-input layui-btn layui-btn-primary">
+                <input type="text" name="ts" id="ts" lay-filter="ts" data-method="offset"
+                       value="" data-type="t" autocomplete="off" class="layui-input layui-btn layui-btn-primary">
             </div>
         </div>
 <!--        TODO 需修改name值-->
@@ -390,7 +390,7 @@
         // 设置按钮悬停显示tips
         var tip_index = 0;
         $(document).on('mouseenter', '#addStudent', function(){
-            tip_index = layer.tips('即使是个人赛，也能通过该按钮导入同一批次参赛的同学', '#addStudent', {time: 0});
+            tip_index = layer.tips('即使是个人赛，也需指定负责人', '#addStudent', {time: 0});
         }).on('mouseleave', '#addStudent', function(){
             layer.close(tip_index);
         });
@@ -487,11 +487,10 @@
                     if (data[0].result_type==1)
                     {
                         $("#workName").removeAttr("lay-verify");
-                        $("#div_workName,#div_textarea,#div_leader,#div_teamNum,#div_workBriefIntro").hide();
-                        /*alert($("#div_workName").html());*/
+                        $("#div_workName,#div_groupName").hide();
                     }else{
                         $("#workName").attr("lay-verify");
-                        $("#div_workName,#div_textarea,#div_leader,#div_teamNum,#div_workBriefIntro").show();
+                        $("#div_workName,#div_groupName").show();
                     }
                     layer.closeAll(); //疯狂模式，关闭所有层
                     break;

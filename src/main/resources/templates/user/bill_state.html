@@ -145,7 +145,7 @@
                     ,{field: 'predictfee', title: '预算费用',align:'center', width: 133, sort: true}
                     ,{field: 'state', title: '申请状态',align:'center', width: 120,templet: function(d){
                         if (d.state==0) {  // 自定义内容
-                            return '<span style="color: #c2c2c2;">未审核</span>';
+                            return '<span style="color: #c2c2c2;">待审核</span>';
                         } else if (d.state==1) {
                             return '<span style="color: #FF5722;">审核未通过</span>';
                         }
@@ -230,8 +230,8 @@
             }
             bid.innerHTML=data.bid;               // 使用 DOM
             ctname.innerHTML=data.competition.ctname;
-            workName.innerHTML=data.workName;
             cyear.innerHTML=data.cyear+"年";
+            workName.innerHTML=data.workName;
             com_type.innerHTML=data.competition.com_type;
             predictfee.innerHTML=data.predictfee;
             preditfeedesc.innerHTML=data.preditfeedesc;

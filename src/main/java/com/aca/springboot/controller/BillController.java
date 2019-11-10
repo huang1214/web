@@ -48,16 +48,15 @@ public class BillController {
                             @RequestParam(value = "clevel", required = false) String clevel,
                             @RequestParam(value = "cdesc", required = false) String cdesc,
                             @RequestParam(value = "groupleader", required = false) String groupleader,
-                            @RequestParam(value = "groupname", required = false) String groupname,
-                            @RequestParam(value = "workName", required = false) String workName,
+                            @RequestParam(value = "groupname", required = false,defaultValue = "个人") String groupname,
+                            @RequestParam(value = "workName", required = false,defaultValue = "考试") String workName,
                             @RequestParam(value = "preditfeedesc", required = false) String preditfeedesc,
                             @RequestParam(value = "predictfee", required = false) String predictfee,
                             @RequestParam(value = "attachfile", required = false) String attachfile,
                             @RequestParam(value = "ts",required = false) String teachers,
                             @RequestParam(value = "tms",required = false) String students
                             ){
-     //   ModelAndView mv = new ModelAndView("redirect:/user/bill_form");
-        System.out.println(ctid+"----"+attachfile);
+        System.out.println(ctid+"----"+attachfile+"--"+groupname);
         Message addAwardMessage=new Message();
         Bill bill=new Bill();
         bill.setBid(TimeUtil.getBillNumber());  //获取报销编号
