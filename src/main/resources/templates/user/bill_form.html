@@ -45,6 +45,11 @@
         .comLeaderBox{
             background-color:#2F4056;
         }
+        .zhouQuanImg{
+            width: 120px;
+            height: 120px;
+            margin: 0 10px 10px 0;
+        }
     </style>
 </head>
 <script>
@@ -265,21 +270,19 @@
 
         <!-- 上传凭证附件：必填 -->
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-            <legend>上传多张凭证图片<span style="color: red">*</span></legend>
+            <legend>上传入围名单截图<span style="color: red">*</span></legend>
         </fieldset>
 
         <div class="layui-upload">
             <button type="button" class="layui-btn" id="uploadbillimg" >图片上传</button>
             <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
                 预览图：
-                <img id="img_demo" />
+               <img id="img_demo" class="zhouQuanImg" />
             </blockquote>
         </div>
         <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" lay-submit="" lay-filter="bill_form_submit" id="bill_form_btn">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-            </div>
+                <button class="layui-btn layui-btn-fluid layui-btn-normal layui-btn-radius"
+                        lay-submit="" lay-filter="bill_form_submit" id="bill_form_btn">立即提交</button>
         </div>
     </form>
 </div>
