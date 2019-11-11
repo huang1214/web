@@ -254,7 +254,9 @@
         <div class="layui-form-item" >
             <label class="layui-form-label">银行卡号<span style="color: red">*</span></label>
             <div class="layui-input-block">
-                <input type="number" name="applicantBankCard" id="applicantBankCard" autocomplete="off" class="layui-input" lay-verify="verify_BankCard">
+                <input th:if="${session.type} eq '1'" type="number" disabled="true" th:value="${session.loginUser.card_num}" name="applicantBankCard" id="applicantBankCard" autocomplete="off" class="layui-input" lay-verify="verify_BankCard">
+                <!--<input th:if="${session.type} eq '1'" type="number" disabled="true" th:value="${session.user.card_num}" name="applicantBankCard" id="applicantBankCard" autocomplete="off" class="layui-input" lay-verify="verify_BankCard">-->
+                <!--<input th:if="${session.type} eq '2'" type="number" disabled="true" th:value="${session.user.card_num}" name="applicantBankCard" id="applicantBankCard" autocomplete="off" class="layui-input" lay-verify="verify_BankCard">-->
             </div>
         </div>
 
@@ -299,7 +301,7 @@
         </div>
 
         <div class="layui-form-item">
-            <button class="layui-btn" lay-submit="" lay-filter="application_form_submit" id="application_form_btn">提交申请</button>
+            <button class="layui-btn layui-btn-fluid layui-btn-normal layui-btn-radius" lay-submit="" lay-filter="application_form_submit" id="application_form_btn">提交申请</button>
         </div>
     </div>
     </form>
@@ -800,7 +802,7 @@
 
                 alert("上传完毕");
                 console.log(res);
-                alert(img_url);
+                // alert(img_url);
                 document.getElementById("img_demo").src = img_url;
             }
             ,error: function(){

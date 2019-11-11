@@ -203,7 +203,7 @@ public class LoginController {
     }
 
     @ResponseBody
-    @PostMapping("/getInfo")
+    @GetMapping("/getInfo")
     public Message getInfo(@RequestParam(value = "StartTime",defaultValue = "20190901",required = false)String ST,
                            @RequestParam(value = "EndTime",defaultValue = "20200630",required = false)String ET,
                            @RequestParam(value = "PersonNum",defaultValue = "5",required = false)int num,
