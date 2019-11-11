@@ -256,7 +256,7 @@
                 /*   $("<tr></tr>").append("<td>"+"上传凭证"+"</td>")
                        .append("<td><img src='"+img_url+"'/>")
                        .appendTo("#bill_detail_table");*/
-                evidence.innerHTML="<img src='"+img_url+"'/>";
+                evidence.innerHTML="<img src='"+img_url+"'/><a href='"+img_url+" ' download='"+data.student.sname+data.cyear+data.competition.ctname+"'>下载</a>";
             }else {
                 evidence.innerHTML="未上传凭证"
             }
