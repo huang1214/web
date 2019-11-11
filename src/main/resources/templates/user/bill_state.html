@@ -5,7 +5,6 @@
     <title>查看备案状态</title>
     <link rel="stylesheet" href="https://www.layuicdn.com/layui/css/layui.css">
     <script src="https://www.layuicdn.com/layui/layui.js"></script>
-
     <style>
         .layui-input:focus, .layui-textarea:focus{
             border-color:#5FB878!important
@@ -21,10 +20,8 @@
         <legend>申请状态表</legend>
     </fieldset>
     <table class="layui-hide" id="bill_state" lay-filter="bill_operate"></table>
-    <!-- <table class="layui-hide" id="bill_state_detail" lay-filter="application_state_detail"></table>-->
 </div>
 <div id="layer_bill_detail">
-    <!-- <table class="layui-hide" ></table>-->
     <table class="layui-table" id="bill_detail_table" lay-filter="bill_detail" lay-size="lg">
         <colgroup>
             <col width="150">
@@ -125,18 +122,6 @@
             ,page: true //开启分页
             ,cols: [
                 [ //表头
-                    /*                    //详情中含有 指导老师，团队具体人员，第一单位，
-                                        //layui中显示一个对象中另一个对象的属性值
-                                        // { field: 'dname', title : '部门', width:80,templet: '<div>{{d.dept.dname}}</div>'}
-                                        {field: 'appid', title: '申请编号', minWidth:109, sort: true,fixed: 'left'}
-                                        // ,{field: 'ctname', title: '比赛名称', minWidth:200,templet: '<div>{{d.competion.ctname}}</div>'}
-                                        // ,{field: 'applicantId', title: '申请人', minWidth:105,templet: '<div>{{d.appplicantStu.sname}}</div>'}
-                                        // ,{field: 'leader', title: '项目组长', minWidth:105,templet: '<div>{{d.leaderStu.sname}}</div>'}
-                                        ,{field: 'studentPrice', title: '学生奖励金额', minWidth: 50,templet: function(d){
-                                            return d.studentPrice/100;}}
-                                        ,{field: 'teacherPrice', title: '老师奖励金额', minWidth: 50,templet: function(d){
-                                            return d.teacherPrice/100;}}
-                                        ,{field: 'awardDate', title: '申请时间', minWidth: 150, sort: true}*/
                     {field: 'bid', title: '备案编号', width:170, sort: true, fixed: 'left',align: 'center'}
                     ,{field: 'ctname', title: '竞赛名称', minWidth:200,align:'center',templet: '<div>{{d.competition.ctname}}</div>'}
                     ,{field: 'workName', title: '参赛作品名',align:'center', width:140}
@@ -204,9 +189,6 @@
             var note=document.getElementById("note");
             var img_url = "http://localhost:8083/"+data.attachfile;
             if(data.attachfile!=null){
-                /*   $("<tr></tr>").append("<td>"+"上传凭证"+"</td>")
-                       .append("<td><img src='"+img_url+"'/>")
-                       .appendTo("#bill_detail_table");*/
                 evidence.innerHTML="<img src='"+img_url+"'/>";
             }else {
                 evidence.innerHTML="未上传凭证"
@@ -232,12 +214,20 @@
             ctname.innerHTML=data.competition.ctname;
             cyear.innerHTML=data.cyear+"年";
             workName.innerHTML=data.workName;
-            com_type.innerHTML=data.competition.com_type;
             predictfee.innerHTML=data.predictfee;
             preditfeedesc.innerHTML=data.preditfeedesc;
             member.innerHTML=tempMember;
             memberCaptainName.innerHTML=data.student.sname;
             memberCaptainNum.innerHTML=data.student.sno;
+            var str_1=data.competition.com_type;
+            var competitionType = str_1.replace(/\s*/g,"");
+            console.log("长度"+competitionType+"---"+competitionType.length);
+            if(competitionType.length==2){
+                var str2=competitionType.substr(1,1);
+                com_type.innerHTML="重点竞赛"+str2+"类";
+            }else {
+                com_type.innerHTML="一般竞赛";
+            }
             //参赛级别类型
             if(data.clevel==0)
             {
@@ -281,7 +271,6 @@
             }else {
                 describeCompetition.innerHTML="暂无描述";
             }
-
         }
     });
 </script>

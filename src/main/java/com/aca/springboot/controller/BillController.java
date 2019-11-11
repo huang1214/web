@@ -55,7 +55,7 @@ public class BillController {
                             @RequestParam(value = "ts",required = false) String teachers,
                             @RequestParam(value = "tms",required = false) String students
                             ){
-        System.out.println(ctid+"----"+attachfile+"--"+groupname);
+        System.out.println(ctid+"----"+attachfile+"--"+groupname+"--"+teachers);
         Message addAwardMessage=new Message();
         Bill bill=new Bill();
         bill.setBid(TimeUtil.getBillNumber());  //获取报销编号
