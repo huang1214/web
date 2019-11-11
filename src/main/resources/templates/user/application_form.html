@@ -88,7 +88,12 @@
             }
         });
     }
+    var masterNum = 0;  // 队长数量
     function deleteMySelf(othis) {
+        //alert(othis.id);
+        if (othis.id == "leaderNum"){
+            masterNum--;
+        }
         $(othis).remove();
 
         document.getElementById('ts').value = "";
@@ -274,7 +279,7 @@
 
         <div class="layui-form-item" id="studentArea">
             <button type="button" class="layui-btn" id="addStudent" onclick="chooseStudentBox(this)">添加成员</button>
-            <input type="hidden" name="leader" id="leader" value="">
+            <input type="hidden" name="leader" lay-verify="verify_leader" id="leader" value="">
             <input type="hidden" name="tms" id="tms" value="">
             <div id="studentBoxArea">
             </div>
@@ -548,11 +553,6 @@
                         data[0].tno+":"+data[0].tname+
                         "'></div></div>";
                     $("#teacherArea").append(inpT);
-                    // if (document.getElementById("ts").value != ""){
-                    //     document.getElementById("ts").value = document.getElementById("ts").value+","+ data[0].tno;
-                    // }else{
-                    //     document.getElementById("ts").value = data[0].tno;
-                    // }
                     layer.closeAll(); //疯狂模式，关闭所有层
                     break;
             };
@@ -570,34 +570,32 @@
             switch(obj.event){
                 case 'getCheckData_studentId':
                     // alert("1");
-                    var data = checkStatus.data;  //获取选中行数据
-                    var inpS="<div class='layui-inline deleteTips' onclick='deleteMySelf(this)' ><div class='layui-input-inline'>" +
-                        "<input type='text' class='layui-input layui-btn layui-btn-primary layui-bg-cyan comLeaderBox tmsBox' value='"+
-                        data[0].sno+":"+data[0].sname+
-                        "'></div></div>";
-                    //把原来的队长去掉
-                    $(".comLeaderBox").removeClass("comLeaderBox");
-                    $("#studentBoxArea").prepend(inpS);
-                    document.getElementById('leader').value = data[0].sno;
-                    layer.closeAll(); //疯狂模式，关闭所有层
+                    if (masterNum == 0){
+                        var data = checkStatus.data;  //获取选中行数据
+                        var inpS="<div class='layui-inline deleteTips' id='leaderNum' onclick='deleteMySelf(this)' ><div class='layui-input-inline'>" +
+                            "<input type='text' class='layui-input layui-btn layui-btn-primary layui-bg-cyan comLeaderBox tmsBox' value='"+
+                            data[0].sno+":"+data[0].sname+
+                            "'></div></div>";
+                        //把原来的队长去掉
+                        $(".comLeaderBox").removeClass("comLeaderBox");
+                        $("#studentBoxArea").prepend(inpS);
+                        document.getElementById('leader').value = data[0].sno;
+                        masterNum++;
+                        layer.closeAll(); //疯狂模式，关闭所有层
+                    }
+                    else{
+                        layer.msg("已经添加了队长了",{time: 1800});
+                    }
+
                     break;
                 case 'getCheckData_teamId':
                     var data = checkStatus.data;  //获取选中行数据
                     var inpS=
-                        "<div class='layui-inline' onclick='deleteMySelf(this)' ><div class='layui-input-inline'>" +
+                        "<div class='layui-inline deleteTips' onclick='deleteMySelf(this)' ><div class='layui-input-inline'>" +
                         "<input type='text' class='layui-input layui-btn layui-btn-primary tmsBox' value='"+
                         data[0].sno+":"+data[0].sname+
                         "'></div></div>";
                     if (teamCount < 6){
-                        // let teamClass = 'teammate'+teamCount;
-                        // $("#tmsArea").append("<input type='text' id=teamClass autocomplete='off' class='layui-input layui-btn layui-btn-primary' onclick='chooseStudentBox(this)'>");
-                        // document.getElementById(teamClass).value = data[0].sno+":"+data[0].sname
-                        // if (document.getElementById("tms").value != ""){
-                        //     document.getElementById("tms").value = document.getElementById("tms").value+","+ data[0].tno;
-                        // }else{
-                        //     document.getElementById("tms").value = data[0].tno;
-                        // }
-                        // alert(inpS)
                         $("#studentBoxArea").append(inpS);
                         teamCount++;
                     }else{
@@ -758,6 +756,12 @@
                 }
                 if(value.length>20){
                     return '请检查银行卡号是否有误';
+                }
+            }
+            ,verify_leader:function (value) {
+                if(value==null|| value == ""){
+                    layer.tips('请点击该项', '#addStudent');
+                    return '必须点击添加成员选择';
                 }
             }
             ,verify_workBriefIntro: function(value){
