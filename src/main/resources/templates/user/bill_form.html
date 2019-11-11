@@ -84,6 +84,25 @@
             }
         });
     }
+    function deleteMySelf(othis) {
+        $(othis).remove();
+
+        document.getElementById('ts').value = "";
+        $(".tsBox").each(function (index,item) {
+            var val1=item.value;
+            var aa=val1.split(":")[0];
+            document.getElementById('ts').value += ","+aa;
+        });
+        document.getElementById('tms').value = "";
+
+        $(".tmsBox").each(function (index,item) {
+            // alert(item.value);
+            var val1=item.value;
+            var aa=val1.split(":")[0];
+            // alert(aa)
+            document.getElementById('tms').value += ","+aa;
+        });
+    }
 </script>
 <body>
 <div id="layer_ctname">
@@ -407,7 +426,11 @@
             layer.close(tip_index);
         });
 
-        // TODO 添加老师按钮
+        $(document).on('mouseenter', '.deleteTips', function(){
+            // tip_index = layer.tips('点击删除这条记录', '.deleteTips', {time: 0});
+            layer.msg('点击按钮可以删除',{time: 1800});
+        });
+
         $('#addteacher').on('click', function(){
             // TODO 需要修改一下样式，使得出现的更加合理
             // if (teacherInputCount < 3){     // 限制指导老师框的数量
@@ -528,7 +551,7 @@
             switch(obj.event){
                 case 'getCheckData_teacher2Id':
                     var data = checkStatus.data;  //获取选中行数据
-                    var inpT="<div class='layui-inline' ><div class='layui-input-inline'>" +
+                    var inpT="<div class='layui-inline deleteTips' onclick='deleteMySelf(this)' ><div class='layui-input-inline'>" +
                         "<input type='text' class='layui-input layui-btn layui-btn-primary tsBox' value='"+
                         data[0].tno+":"+data[0].tname+
                         "'></div></div>";
@@ -557,7 +580,7 @@
                 case 'getCheckData_studentId':
                     // alert("1");
                     var data = checkStatus.data;  //获取选中行数据
-                    var inpS="<div class='layui-inline' ><div class='layui-input-inline'>" +
+                    var inpS="<div class='layui-inline deleteTips' onclick='deleteMySelf(this)'><div class='layui-input-inline'>" +
                         "<input type='text' class='layui-input layui-btn layui-btn-primary comLeaderBox layui-bg-cyan tmsBox' value='"+
                         data[0].sno+":"+data[0].sname+
                         "'></div></div>";
@@ -570,7 +593,7 @@
                 case 'getCheckData_teamId':
                     var data = checkStatus.data;  //获取选中行数据
                     var inpS=
-                        "<div class='layui-inline' ><div class='layui-input-inline'>" +
+                        "<div class='layui-inline deleteTips' onclick='deleteMySelf(this)'><div class='layui-input-inline'>" +
                         "<input type='text' class='layui-input layui-btn layui-btn-primary tmsBox' value='"+
                         data[0].sno+":"+data[0].sname+
                         "'></div></div>";
