@@ -230,9 +230,7 @@
                 });*/
             }
         });
-
         function setTableValue(data){
-            // console.log(data.appid+"这里执行了应该显示的申请号");
             /*比赛信息*/
             console.log(data);
             var bid=document.getElementById('bid');
@@ -253,10 +251,7 @@
             var note=document.getElementById("note");
             var img_url = "http://localhost:8083/"+data.attachfile;
             if(data.attachfile!=null){
-                /*   $("<tr></tr>").append("<td>"+"上传凭证"+"</td>")
-                       .append("<td><img src='"+img_url+"'/>")
-                       .appendTo("#bill_detail_table");*/
-                evidence.innerHTML="<img src='"+img_url+"'/><a href='"+img_url+" ' download='"+data.student.sname+data.cyear+data.competition.ctname+"'>下载</a>";
+                evidence.innerHTML="<img src='"+img_url+"'/>&emsp;&emsp;<a style='color: #0000FF' href='"+img_url+" ' download='"+data.student.sname+data.cyear+data.competition.ctname+"'>下载</a>";
             }else {
                 evidence.innerHTML="未上传凭证"
             }
@@ -317,9 +312,6 @@
              }
             if(data.cdesc!= null)
             {
-                /*$("<tr></tr>").append("<td>"+"竞赛描述"+"</td>")
-                    .append("<td>"+data.cdesc+"</td>")
-                    .appendTo("#bill_detail_table");*/
                 describeCompetition.innerHTML=data.cdesc;
             }else {
                 describeCompetition.innerHTML="暂无描述";

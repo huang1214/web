@@ -465,7 +465,7 @@
 
         // 指导老师弹出层>>表格
         table.render({
-            elem: '#layer_teacher2Id_table'
+             elem: '#layer_teacher2Id_table'
             ,height: 312
             ,url: '/getAllTeacher' //数据接口
             ,method:"get"
@@ -748,7 +748,7 @@
                 if(value==null|| value == ""){
                     // TODO
                     layer.tips('请点击该项', '#addStudent');
-                    return '必须点击添加成员选择';
+                    return '必须有项目组长';
                 }
             }
         });
