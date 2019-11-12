@@ -99,32 +99,45 @@
                     </dl>
                 </li>
                 <!--查询教师-->
-                <li th:if="${session.type} eq '3' " class="layui-nav-item"><a class="nav-item-side site-active" data-url="teacher" data-id="10"
-                                              data-title="教育科研" data-type="tabAdd"><i class="fa fa-flask fa-fw"
-                                                                                      aria-hidden="true"></i>教育科研</a>
+                <li th:if="${session.type} eq '3' " class="layui-nav-item">
+                    <a class="nav-item-side site-active" data-url="teacher" data-id="10"
+                       data-title="教育科研" data-type="tabAdd">
+                        <i class="fa fa-flask fa-fw" aria-hidden="true"></i>教育科研
+                    </a>
                 </li>
                 <!--竞赛查询-->
-                <li class="layui-nav-item"><a class="nav-item-side site-active" data-url="admin/com_search" data-id="11"
-                                              data-title="竞赛查询" data-type="tabAdd"><i class="fa fa-search fa-fw"
-                                                                                      aria-hidden="true"></i></i>
-                    竞赛查询</a></li>
+                <li class="layui-nav-item">
+                    <a class="nav-item-side site-active" data-url="admin/com_search" data-id="11"
+                       data-title="竞赛查询" data-type="tabAdd">
+                        <i class="fa fa-search fa-fw" aria-hidden="true"></i>竞赛查询
+                    </a>
+                </li>
                 <!--激励审核-->
-                <li th:if="${session.type} eq '3' " class="layui-nav-item"><a class="nav-item-side site-active" data-url="admin/audit" data-id="11"
-                                              data-title="奖金审核" data-type="tabAdd"><i class="layui-icon">&#xe65e;</i>
-                    奖金审核</a></li>
+                <li th:if="${session.type} eq '3' " class="layui-nav-item">
+                    <a class="nav-item-side site-active" data-url="admin/audit" data-id="11"
+                       data-title="奖金审核" data-type="tabAdd"><i class="layui-icon">&#xe65e;</i>奖金审核
+                    </a>
+                </li>
                 <!--报销审核-->
-                <li th:if="${session.type} eq '3' " class="layui-nav-item"><a class="nav-item-side site-active" data-url="admin/bill_audit" data-id="11"
-                                              data-title="备案审核" data-type="tabAdd"><i class="layui-icon">&#xe655;</i>
-                    备案审核</a></li>
+                <li th:if="${session.type} eq '3' " class="layui-nav-item">
+                    <a class="nav-item-side site-active" data-url="admin/bill_audit" data-id="12"
+                       data-title="备案审核" data-type="tabAdd">
+                        <i class="layui-icon">&#xe655;</i>备案审核
+                    </a>
+                </li>
                 <!--消息管理-->
                 <li th:if="${session.type} eq '3' " class="layui-nav-item">
-                    <a class="nav-item-side" ><i class="fa fa-comment"
-                                                                    aria-hidden="true"></i>消息管理</a>
+                    <a class="nav-item-side" >
+                        <i class="fa fa-comment" aria-hidden="true"></i>消息管理
+                    </a>
                     <dl class="layui-nav-child">
-                        <dd><a data-id="12" data-title="发送信息" class="site-active"
-                               data-type="tabAdd">发送消息</a></dd>
-                        <dd><a data-id="13" data-title="确认金额" class="site-active"
-                               data-type="tabAdd">确认金额</a></dd>
+                        <dd><a data-id="13" data-title="发布备案公告" class="nav-item-side site-active"
+                               data-type="tabAdd" data-url="admin/billRelease">
+                            <i class="layui-icon">&#xe645;</i>发布备案公告</a>
+                        </dd>
+                        <dd><a data-id="14" data-title="确认金额" class="site-active"
+                               data-type="tabAdd">确认金额</a>
+                        </dd>
                     </dl>
                 </li>
                 <!--竞赛管理-->
