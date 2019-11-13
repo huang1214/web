@@ -76,8 +76,9 @@ public class ApplicationService {
         return moreResult;
     }
 
-    public int addMultMember(String tms, String ts, int stuPrice,int teaPrice, String date, String appid) throws Exception {
+    public int addMultMember(String tms, String ts, int stuPrice, int teaPrice, String date, String appid) throws Exception {
         int maxAmount = 2000000, temp = 0;
+        boolean isEmpty = true;
         if (null == tms)
             return 0;
         String st, et, year, month;
@@ -104,11 +105,18 @@ public class ApplicationService {
                 map.put("id", id);
                 int getMount = selectMoney(map);
                 if ((nowMount + getMount) >= maxAmount) {
-                    throw new Exception("学号为[" + map.get("id") + "]的同学在" + st + "-" + et + "中已获得共计" + getMount/100 + "元奖金，超出上限" + maxAmount/100 + "元");
+                    throw new Exception("学号为[" + map.get("id") + "]的同学在" + st + "-" + et + "中已获得共计" + getMount / 100 + "元奖金，超出上限" + maxAmount / 100 + "元");
                 }
                 list1.add(new ApplicationMember(appid, id, "1", i + 1 + "", proportion, nowMount));
+                temp += proportion;
+                isEmpty = false;
             }
         }
+        if (!isEmpty) {
+            if (temp != 100)
+                throw new Exception("学生奖金占比总和须为100");
+        }
+        temp = 0;isEmpty=true;
         split = ts.split(",");
         for (int i = 0; i < split.length; i++) {
             if (split[i].length() > 0) {
@@ -118,10 +126,16 @@ public class ApplicationService {
                 map.put("id", id);
                 int getMount = selectMoney(map);
                 if ((nowMount + getMount) >= maxAmount) {
-                    throw new Exception("编号为[" + map.get("id") + "]的指导老师在" + st + "-" + et + "中已获得共计" + getMount/100 + "元奖金，超出上限" + maxAmount/100 + "元");
+                    throw new Exception("编号为[" + map.get("id") + "]的指导老师在" + st + "-" + et + "中已获得共计" + getMount / 100 + "元奖金，超出上限" + maxAmount / 100 + "元");
                 }
                 list1.add(new ApplicationMember(appid, id, "2", i + 1 + "", proportion, nowMount));
+                temp += proportion;
+                isEmpty=false;
             }
+        }
+        if (!isEmpty) {
+            if (temp != 100)
+                throw new Exception("老师奖金占比总和须为100");
         }
         return addMoreApplicationMember(list1);
     }
@@ -279,12 +293,13 @@ public class ApplicationService {
     public int delete(String appid) {
         return applicationMapper.deleteApp(appid) + applicationMapper.deleteAppRes(appid);
     }
-    public int selectMoney(Map map){
+
+    public int selectMoney(Map map) {
         Object o = applicationMapper.selectMoney(map);
-        if(o==null)
+        if (o == null)
             return 0;
         else {
-            java.math.BigDecimal bigDecimal= (BigDecimal) o;
+            java.math.BigDecimal bigDecimal = (BigDecimal) o;
             return Integer.parseInt(bigDecimal.toString());
         }
     }
