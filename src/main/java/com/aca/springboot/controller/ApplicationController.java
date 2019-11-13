@@ -16,6 +16,7 @@ import java.util.*;
 @Controller
 @RequestMapping("/app")
 @Api(value = "激励")
+@CrossOrigin
 public class ApplicationController {
     @Autowired
     ApplicationService applicationService;
@@ -63,7 +64,6 @@ public class ApplicationController {
             m.setMessage("当前用户无权限！");
             return m;
         }
-
         Application app = new Application();
         String awardTypeId = getawardtype(ctId, level_type, prize_type);  //获取获奖类型编号
 
@@ -71,41 +71,23 @@ public class ApplicationController {
         String studentPrice = applicationService.get_price(awardTypeId).get("STUDENT_PRICE").toString();
         //获取老师获奖金额tea_price
         String teacherPrice = applicationService.get_price(awardTypeId).get("TEACHER_PRICE").toString();
-/*        System.out.println("学生获奖金额"+studentPrice);
-        System.out.println("老师获奖金额"+teacherPrice);*/
-//        System.out.println("上传的图片" + file);
-/*
-        现在这三个数据还没有添加
-        certificateImg blob ,
-        getAwardImg blob,
-        highLight blob,*/
 
-        //pic.setImg(bytes);
-//        Calendar currTime = Calendar.getInstance();
-//        String time = String.valueOf(currTime.get(Calendar.YEAR)) + String.valueOf((currTime.get(Calendar.MONTH) + 1));
-//        String path = "d:" + File.separator + "img" + File.separator + time;   //图片保存路径
-//        String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-//        suffix = suffix.toLowerCase();      //文件格式
-//        if (suffix.equals(".jpg") || suffix.equals(".jpeg") || suffix.equals(".png") || suffix.equals(".gif")) {
-//            String fileName = UUID.randomUUID().toString() + suffix;
-//            File targetFile = new File(path, fileName);
-//            if (!targetFile.getParentFile().exists()) {             //注意，判断父级路径是否存在
-//                targetFile.getParentFile().mkdirs();      //不存在创建文件夹
-//            }
-//            long size = 0;
-//            //保存
-//            try {
-//                file.transferTo(targetFile);
-//                size = file.getSize();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-        //添加
-//        InputStream is = null;//得到文件流
         String appid = StrUtils.timeStamp();
+        if(null==tms||"".equals(tms)){
+            tms=sno+":100";
+        }
+        try{
+            System.out.println("tms:"+tms+"\nts:"+ts);
+            //插入相关学生
+            applicationService.addMultMember(tms,ts,Integer.parseInt(studentPrice)*100,Integer.parseInt(teacherPrice)*100,awardDate,appid);
+//            System.out.println(tms);
+        }catch (Exception e){
+            m.setCode(5);
+            m.setMessage(e.getMessage());
+            e.printStackTrace();
+            return m;
+        }
         try {
-//                is = new FileInputStream(targetFile);
-//                byte[] bytes = FileCopyUtils.copyToByteArray(is);//得到byte
             app.setAppid(appid);
             app.setCtid(ctId);
             app.setApplicantId(sno);
@@ -118,35 +100,14 @@ public class ApplicationController {
             app.setWorkName(workName);
             app.setWorkBriefIntro(workBriefIntro);
             app.setAwardTypeId(awardTypeId);
-//                app.setCertificateimg(bytes);
-            /*int result = applicationService.add(comName, applicantId, teacher1Id, teacher2Id, unit, leader, teamNum, team, studentPrice, teacherPrice, awardTypeId, awardDate, applicantBankCard, workName, workBriefIntro, bytes);//添加到数据库中*/
-            //插入application
             applicationService.add(app);
-
         } catch (Exception e) {
             m.setCode(4);
             m.setMessage("添加时出错，请检查是否漏填！");
             e.printStackTrace();
             return m;
         }
-        try{
-            //插入相关学生
-            applicationService.addMultMember(tms, appid, 1);
-        }catch (Exception e){
-            m.setCode(5);
-            m.setMessage("插入团队成员时出错");
-            e.printStackTrace();
-            return m;
-        }
-        try{
-            //插入相关老师
-            applicationService.addMultMember(ts, appid, 2);
-        }catch (Exception e){
-            m.setCode(6);
-            m.setMessage("插入指导老师时出错");
-            e.printStackTrace();
-            return m;
-        }
+
         m.setCode(0);
         m.setMessage("插入成功");
         return m;

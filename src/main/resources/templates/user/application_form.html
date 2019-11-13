@@ -6,10 +6,9 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" th:href="@{/asserts/js/layui/css/layui.css}">
-    <script th:src="@{/asserts/js/layui/layui.js}"></script>
+    <link rel="stylesheet" th:href="@{/asserts/js/layui/css/layui.css}" media="all">
     <script th:src="@{/asserts/js/jquery-1.12.4.js}"></script>
-    <script th:src="@{/asserts/js/layui/layui.all.js}"></script>
+    <script th:src="@{/asserts/js/layui/layui.js}"></script>
     <script th:src="@{/asserts/js/app_form.js}"></script>
 </head>
 <style>
@@ -57,7 +56,6 @@
     .comLeaderBox{
         background-color:#2F4056;
     }
-
 </style>
 <body>
 <!--弹出层：比赛名称-->
@@ -129,12 +127,12 @@
 
 <!--表单部分-->
 
-<div class="formdata">
+<div class="formdata layui-form">
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
         <legend>学科竞赛成果申报表</legend>
     </fieldset>
 <!--    <form class="layui-form layui-form-pane" action="/app/add" method="post" enctype="multipart/form-data">-->
-    <form id="form_application" class="layui-form layui-form-pane" method="post" enctype="multipart/form-data">
+    <form id="form_application" class="layui-form-pane" method="post" enctype="multipart/form-data">
     <div class="layui-row">
         <div class="layui-form-item layui-col-xs6 layui-col-sm6 layui-col-md12">
             <label class="layui-form-label" >比赛名称<span style="color: red">*</span></label>
@@ -195,13 +193,6 @@
             </div>
         </div>
 
-<!--        <div class="layui-form-item" >
-            <label class="layui-form-label">申请人<span style="color: red">*</span></label>
-            <div class="layui-input-block">
-                <input type="text" name="applicantId" id="applicantId" th:value="@{(${session.type}eq '1'?${session.loginUser.sno}:${session.loginUser.tno})}" autocomplete="off" class="layui-input" lay-verify="verify_applicantId" readonly>
-            </div>
-        </div>-->
-
         <div class="layui-form-item" >
             <label class="layui-form-label">银行卡号<span style="color: red">*</span></label>
             <div class="layui-input-block">
@@ -212,29 +203,33 @@
         </div>
 
         <div class="layui-form-item"  id="teacherArea">
-            <button type="button" class="layui-btn" id="addteacher" onclick="chooseTeacherBox()">添加老师</button>
+
+            <table id="teacherListTable" lay-filter="teacherListTableFilter">
+
+            </table>
         </div>
 
 
         <div class="layui-form-item" style="display: none">
             <div class="layui-inline ">
                 <label class="layui-form-label">真实指导老师</label>
-                <input type="text" name="ts" id="ts" lay-filter="ts" data-method="offset" value="" data-type="t" autocomplete="off" class="layui-input layui-btn layui-btn-primary">
+                <input type="text" name="ts" id="ts" data-method="offset" value="" data-type="t" autocomplete="off" class="layui-input layui-btn layui-btn-primary">
             </div>
         </div>
 
         <div class="layui-form-item" id="studentArea">
-            <button type="button" class="layui-btn" id="addStudent" onclick="chooseStudentBox(this)">添加成员</button>
-            <input type="hidden" name="leader" lay-verify="verify_leader" id="leader" value="">
-            <input type="hidden" name="tms" id="tms" value="">
-            <div id="studentBoxArea">
-            </div>
+
+            <input type="hidden" name="leader" id="leader" th:if="${session.type} eq '1'" th:value="${session.loginUser.sno}">
+            <input type="hidden" name="leader" id="leader" th:else value="">
+            <input type="hidden" name="tms" id="tms" value=""  lay-verify="verify_tms">
+            <table id="stuListTable" lay-filter="stuListTableFilter">
+            </table>
         </div>
 
         <div class="layui-form-item layui-form-text" id="div_workBriefIntro">
             <label class="layui-form-label">作品简介<span style="color: red">*</span></label>
             <div class="layui-input-block"  >
-                <textarea name="workBriefIntro" placeholder="100字左右即可" class="layui-textarea" lay-verify="verify_workBriefIntro"></textarea>
+                <textarea name="workBriefIntro" id="workBriefIntro" placeholder="100字左右即可" class="layui-textarea" lay-verify="verify_workBriefIntro"></textarea>
             </div>
         </div>
 
@@ -279,6 +274,27 @@
         <button class="layui-btn layui-btn-sm" lay-event="getCheckData_studentId">选为项目组长</button>
         <button class="layui-btn layui-btn-sm" lay-event="getCheckData_teamId">选为团队成员</button>
     </div>
+</script>
+<!--添加老师按钮-->
+<script type="text/html" id="toolbar_teacherAdd">
+    <div>
+        <button type="button" class="layui-btn" id="addteacher" onclick="chooseTeacherBox()">添加老师</button>
+        <blockquote style="display: inline;margin-left: 30px">提示：奖金占比总和须为100;此顺序为指导顺序</blockquote>
+    </div>
+</script>
+<script type="text/html" id="toolbar_teacherDel">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-xs" lay-event="changeP">更改占比</a>
+</script>
+<script type="text/html" id="toolbar_stuAdd">
+    <div class="">
+        <button type="button" class="layui-btn" id="addStudent" onclick="chooseStudentBox(this)">添加成员</button>
+        <blockquote style="display: inline;margin-left: 30px">提示：奖金占比总和须为100;此顺序为作者顺序</blockquote>
+    </div>
+</script>
+<script type="text/html" id="toolbar_strDel">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-xs" lay-event="changeP">更改占比</a>
 </script>
 </html>
 

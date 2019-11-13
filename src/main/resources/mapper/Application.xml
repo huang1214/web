@@ -115,14 +115,14 @@
     </resultMap>
 
     <insert id="add" parameterType="com.aca.springboot.entities.Application">
-        insert into Application(appId,ctid,applicantId,unit,leader,awardDate,applicantBankCard,workName,workBriefIntro,certificateImg,studentPrice,teacherPrice,awardTypeId)
-        values (#{appid},#{ctid},#{applicantId},#{unit},#{leader},to_date(substr(#{awardDate},1,10),'yyyy-mm-dd'),#{applicantBankCard},#{workName},#{workBriefIntro},#{certificateImg,jdbcType=BLOB},#{studentPrice},#{teacherPrice},#{awardTypeId})
+        insert into Application(appId,ctid,applicantId,unit,leader,awardDate,applicantBankCard,workName,workBriefIntro,studentPrice,teacherPrice,awardTypeId)
+        values (#{appid},#{ctid},#{applicantId},#{unit},#{leader},to_date(substr(#{awardDate},1,10),'yyyy-mm-dd'),#{applicantBankCard},#{workName},#{workBriefIntro},#{studentPrice},#{teacherPrice},#{awardTypeId})
     </insert>
 
     <!--插入奖金申请表对应表-->
     <insert id="addApplicationMember" parameterType="com.aca.springboot.entities.ApplicationMember">
-        insert into APPLICATION_MEMBER(APP_ID,APP_TM_ID,APP_TYPE,APP_ORDER)
-        values (#{appId},#{appTmId},#{appType},#{appOrder})
+        insert into APPLICATION_MEMBER(APP_ID,APP_TM_ID,APP_TYPE,APP_ORDER,APP_PROPORTION,APP_MONEY)
+        values (#{appId},#{appTmId},#{appType},#{appOrder},#{propertion},#{money})
     </insert>
     <!-- 查询全部比赛名称 -->
     <resultMap id="com_name_all" type="com.aca.springboot.entities.Application">
@@ -163,9 +163,9 @@
         S1.SNO S1_SNO,S1.SNAME S1_SNAME,S2.SNO S2_SNO,S2.SNAME S2_SNAME
 
         from (select * from application where APPID IN (SELECT APP_ID FROM APPLICATION_MEMBER WHERE APP_TM_ID =
-        #{SNO}) order by status desc) A JOIN
-        (select * from com_table ) C ON A.ctid=C.ctid JOIN
-        (select * from STUDENT) S1 ON S1.SNO=A.APPLICANTID JOIN
+        #{SNO}) order by status desc) A LEFT JOIN
+        (select * from com_table ) C ON A.ctid=C.ctid LEFT JOIN
+        (select * from STUDENT) S1 ON S1.SNO=A.APPLICANTID LEFT JOIN
         (select * from STUDENT) S2 ON S2.SNO=A.LEADER
         )) temp
         WHERE ROWNUM &lt;= #{endIndex}
@@ -259,4 +259,9 @@
     <delete id="deleteAppRes" parameterType="java.lang.String">
         delete from APPLICATION_MEMBER where APP_ID =#{appid}
     </delete>
+    <parameterMap id="selectMoneyParam" type="java.util.Map"></parameterMap>
+    <select id="selectMoney" parameterMap="selectMoneyParam" resultType="java.lang.Object">
+        SELECT SUM(APP_MONEY) FROM APPLICATION_MEMBER
+        WHERE APP_TM_ID = #{id} AND APP_STATUS = #{status} AND APP_ID > #{st} AND APP_ID &lt; #{et}
+    </select>
 </mapper>

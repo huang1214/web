@@ -44,4 +44,5 @@ public interface ApplicationMapper {
 
     int deleteApp(String appid);
     int deleteAppRes(String appid);
+    Object selectMoney(Map map);
 }

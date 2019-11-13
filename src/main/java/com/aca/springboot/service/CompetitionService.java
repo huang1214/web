@@ -72,8 +72,6 @@ public class CompetitionService {
         js.setData(objects);
         String jsonTheLast = JSON.toJSONString(js);
         JSONObject jsonObj = JSON.parseObject(jsonTheLast);
-        System.out.println("这里执行国");
-        System.out.println(jsonObj);
         return jsonObj;
     }
 

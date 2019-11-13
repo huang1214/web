@@ -72,9 +72,10 @@ function deleteMySelf(othis) {
         document.getElementById('tms').value += "," + aa;
     });
 };
-layui.use(['form', 'laydate', 'upload', 'table', 'layer'], function () {
-    var laydate = layui.laydate;
+layui.use(['laydate', 'upload', 'table', 'layer', 'form'], function () {
+    // alert(1)
     var form = layui.form;
+    var laydate = layui.laydate;
     var upload = layui.upload;
     var table = layui.table;
     var layer = layui.layer;
@@ -86,66 +87,6 @@ layui.use(['form', 'laydate', 'upload', 'table', 'layer'], function () {
         elem: '#awardDate' //指定元素
         , type: 'date'
         , trigger: 'click'//呼出事件改成click
-    });
-    //自定义验证规则
-    form.verify({
-        verify_ctname: function (value) {
-            if (value == null || value == "") {
-                return '比赛名称不能为空';
-            }
-        }
-        , verify_workName: function (value) {
-            if (value == null || value == "") {
-                return '作品名称不能为空';
-            }
-        }
-        , verify_awardDate: function (value) {
-            if (value == null || value == "") {
-                return '获奖时间不能为空';
-            }
-        }
-        , verify_unit: function (value) {
-            if (value == null || value == "") {
-                return '第一单位不能为空！';
-            }
-            if (value != '南昌大学软件学院') {
-                return '第一单位必须为南昌大学软件学院！';
-            }
-        }
-        , verify_level_type: function (value) {
-            if (value == null || value == "") {
-                return '请选择您的获奖类型(省级/国家级)';
-            }
-        }
-        , verify_prize_type: function (value) {
-            if (value == null || value == "") {
-                return '请选择您的获奖类型(特/一等/二等/三等/优秀)';
-            }
-        }
-        , verify_applicantId: function (value) {
-            if (value == null || value == "") {
-                return '申请人的ID不能为空';
-            }
-        }
-        , verify_BankCard: function (value) {
-            if (value == null || value == "") {
-                return '申请人的银行卡号不能为空';
-            }
-            if (value.length > 20) {
-                return '请检查银行卡号是否有误';
-            }
-        }
-        , verify_leader: function (value) {
-            if (value == null || value == "") {
-                layer.tips('请点击该项', '#addStudent');
-                return '必须点击添加成员选择';
-            }
-        }
-        , verify_workBriefIntro: function (value) {
-            if (value == null || value == "") {
-                return '作品简介不能为空';
-            }
-        }
     });
     upload.render({
         elem: '#test2' //绑定元素
@@ -182,7 +123,6 @@ layui.use(['form', 'laydate', 'upload', 'table', 'layer'], function () {
             img_url = "http://localhost:8083/" + res.data;
 
             alert("上传完毕");
-            console.log(res);
             // alert(img_url);
             document.getElementById("img_demo").src = img_url;
         }
@@ -191,55 +131,36 @@ layui.use(['form', 'laydate', 'upload', 'table', 'layer'], function () {
             alert("请求异常");
         }
     });
-    form.on('submit(application_form_submit)', function (data) {
-        console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
-        console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
-        console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
-
-        var params = {
-            "ctId": data.field.ctId,
-            "workName": data.field.workName,
-            "awardDate": data.field.awardDate,
-            "unit": data.field.unit,
-            "level_type": data.field.level_type,
-            "prize_type": data.field.prize_type,
-            "applicantId": data.field.applicantId,
-            "applicantBankCard": data.field.applicantBankCard,
-            "leader": data.field.leader,
-            "workBriefIntro": data.field.workBriefIntro,
-            "tms": data.field.tms,
-            "ts": data.field.ts,
-        }
-        alert(params.prize_type);
-        $.ajax({
-            type: "POST",
-            //dataType: "json",//服务器返回的数据类型
-            //contentType: "application/json",//post请求的信息格式
-            url: "/app/add",
-            data: params,
-            dataType: 'json',
-            success: function (result) {
-                console.log(result);//在浏览器中打印服务端返回的数据(调试用)
-                /*                    if (result.resultCode == 200) {
-                                        alert("SUCCESS");
-                                    };*/
-                if (result.code == 0) {
-                    layer.alert(result.message);
-
-                } else {
-                    // layer.alert('审核失败！');
-                    layer.alert(result.message);
-                }
-            },
-            error: function () {
-                alert("异常！");
-            }
-        });
-        return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+    table.render({
+        elem: '#teacherListTable'
+        , toolbar: '#toolbar_teacherAdd'
+        , text: '暂无数据'
+        , title: '指导老师'
+        , loading: false
+        , cols: [
+            [ //表头
+                {field: 'tid', title: '教师编号', width: 103,align:'center'}
+                , {field: 'tname', title: '教师姓名', width: 150,align:'center'}
+                , {field: 'proprotion', title: '奖金占比(百分制)', width: 200,align:'center'}
+                , {fixed: 'right', align: 'center', toolbar: '#toolbar_teacherDel'}
+            ]
+        ]
     });
-    form.render();//菜单渲染 把内容加载进去
-
-
+    table.render({
+        elem: '#stuListTable'
+        , toolbar: '#toolbar_stuAdd'
+        , text: '暂无数据'
+        , title: '参赛学生'
+        , loading: false
+        , cols: [
+            [ //表头
+                {field: 'sid', title: '学号', width: 130,align:'center'}
+                , {field: 'sname', title: '姓名', width: 150,align:'center'}
+                , {field: 'proprotion', title: '奖金占比(百分制)', width: 200,align:'center'}
+                , {fixed: 'right', align: 'center', toolbar: '#toolbar_strDel'}
+            ]
+        ]
+    });
     //比赛信息获取
     table.on('toolbar(layer_com_table)', function (obj) {//注：tool 是工具条事件名，layer_com_table 是 table 原始容器的属性 lay-filter="对应的值"
         var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
@@ -250,16 +171,16 @@ layui.use(['form', 'laydate', 'upload', 'table', 'layer'], function () {
                 document.getElementById("ctId").value = data[0].ctid;
                 /*'1:考试' '0:作品' */
                 /*                    如果匹配到的成果类型为考试
-                                    【参赛作品名称】【项目组长】【作品简介】消失 */
+                                    【参赛作品名称】【作品简介】消失 */
                 if (data[0].result_type == 1) {
-                    $("#workName").removeAttr("lay-verify");
-                    $("#div_workName,#div_textarea,#div_leader,#div_workBriefIntro,#addStudent").addClass("disappear");
-                    /*alert($("#div_workName").html());*/
+                    $("#workName,#workBriefIntro,#tms").removeAttr("lay-verify");
+                    $("#div_workName,#div_workBriefIntro,#studentArea").addClass("disappear");
                 } else {
-                    $("#div_workName,#div_textarea,#div_leader,#div_workBriefIntro,#addStudent").show();
-
+                    $("#tms").attr("lay-verify","verify_tms");
+                    $("#workName").attr("lay-verify","verify_workName");
+                    $("#workBriefIntro").attr("lay-verify","verify_workBriefIntro");
+                    $("#div_workName,#div_workBriefIntro,#studentArea").removeClass("disappear");
                 }
-                //TODO else又显示出来
                 layer.closeAll(); //疯狂模式，关闭所有层
                 break;
         }
@@ -268,67 +189,132 @@ layui.use(['form', 'laydate', 'upload', 'table', 'layer'], function () {
     // 指导老师信息获取
     table.on('toolbar(layer_teacher2Id_table)', function (obj) {//注：tool 是工具条事件名，layer_com_table 是 table 原始容器的属性 lay-filter="对应的值"
         var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+        var num = checkStatus.data.length;
+        if (num == 0) {
+            layer.msg("未选择指导老师");
+            return;
+        }
         switch (obj.event) {
             case 'getCheckData_teacher2Id':
                 var data = checkStatus.data;  //获取选中行数据
-                var inpT = "<div class='layui-inline deleteTips' onclick='deleteMySelf(this)' ><div class='layui-input-inline'>" +
-                    "<input type='text' class='layui-input layui-btn layui-btn-primary tsBox ' value='" +
-                    data[0].tno + ":" + data[0].tname +
-                    "'></div></div>";
-                $("#teacherArea").append(inpT);
+                // var inpT = "<div class='layui-inline deleteTips' onclick='deleteMySelf(this)' ><div class='layui-input-inline'>" +
+                //     "<input type='text' class='layui-input layui-btn layui-btn-primary tsBox ' value='" +
+                //     data[0].tno + ":" + data[0].tname +
+                //     "'></div></div>";
+                // $("#teacherArea").append(inpT);
+                var tableData = [];
+                var tableBak = table.cache['teacherListTable'];
+                if (typeof (tableBak) != "undefined") {
+                    for (var i = 0; i < tableBak.length; i++) {
+                        if (tableBak[i].length != 0)
+                            tableData.push(tableBak[i]);
+                    }
+                }
+                if (tableData.length > 0) {
+                    tableData.push({tid: data[0].tno, tname: data[0].tname, proprotion: 0});
+                } else {
+                    tableData.push({tid: data[0].tno, tname: data[0].tname, proprotion: 100});
+                }
+                table.reload('teacherListTable', {data: tableData});
                 layer.closeAll(); //疯狂模式，关闭所有层
                 break;
-        }
-        ;
-        document.getElementById('ts').value = "";
-        $(".tsBox").each(function (index, item) {
-            var val1 = item.value;
-            var aa = val1.split(":")[0];
-            document.getElementById('ts').value += "," + aa;
-        });
+        };
+        renewTeacher();
     });
     // 学生信息的获取
     table.on('toolbar(layer_studentId_table)', function (obj) {//注：tool 是工具条事件名，layer_com_table 是 table 原始容器的属性 lay-filter="对应的值"
         var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+        var num = checkStatus.data.length;
+        if (num == 0) {
+            layer.msg("未选择参赛学生");
+            return;
+        }
         switch (obj.event) {
             case 'getCheckData_studentId':
-                // alert("1");
                 var data = checkStatus.data;  //获取选中行数据
-                var inpS = "<div class='layui-inline deleteTips' id='leaderNum' onclick='deleteMySelf(this)' ><div class='layui-input-inline'>" +
-                    "<input type='text' class='layui-input layui-btn layui-btn-primary layui-bg-cyan comLeaderBox tmsBox' value='" +
-                    data[0].sno + ":" + data[0].sname +
-                    "'></div></div>";
-                //把原来的队长去掉
-                $(".comLeaderBox").removeClass("comLeaderBox");
-                $("#studentBoxArea").prepend(inpS);
-                document.getElementById('leader').value = data[0].sno;
+                var tableData = [];
+                tableData.push({sid: data[0].sno, sname: data[0].sname, proprotion: 100});
+                var tableBak = table.cache['stuListTable'];
+                if (typeof (tableBak) != "undefined") {
+                    for (var i = 0; i < tableBak.length; i++) {
+                        if (tableBak[i].length != 0)
+                            tableData.push(tableBak[i]);
+                    }
+                }
+                table.reload('stuListTable', {data: tableData});
                 layer.closeAll(); //疯狂模式，关闭所有层
                 break;
             case 'getCheckData_teamId':
                 var data = checkStatus.data;  //获取选中行数据
-                var inpS =
-                    "<div class='layui-inline deleteTips' onclick='deleteMySelf(this)' ><div class='layui-input-inline'>" +
-                    "<input type='text' class='layui-input layui-btn layui-btn-primary tmsBox' value='" +
-                    data[0].sno + ":" + data[0].sname +
-                    "'></div></div>";
-                $("#studentBoxArea").append(inpS);
+                var tableData = [];
+                var tableBak = table.cache['stuListTable'];
+                if (typeof (tableBak) != "undefined") {
+                    for (var i = 0; i < tableBak.length; i++) {
+                        if (tableBak[i].length != 0)
+                            tableData.push(tableBak[i]);
+                    }
+                }
+                tableData.push({sid: data[0].sno, sname: data[0].sname, proprotion: 0});
+                table.reload('stuListTable', {data: tableData});
                 layer.closeAll(); //疯狂模式，关闭所有层
                 break;
-        }
-        ;
-        document.getElementById('tms').value = "";
-        // $('#tms').value = "";
-        $(".tmsBox").each(function (index, item) {
-            // alert(item.value);
-            var val1 = item.value;
-            var aa = val1.split(":")[0];
-            // alert(aa)
-            document.getElementById('tms').value += "," + aa;
-        });
+        };
+        renewStu();
     });
+    //老师操作
+    table.on('tool(teacherListTableFilter)', function (obj) {
+        if (obj.event == 'del') {
+            layer.confirm('真的删除行么', function (index) {
+                obj.del();
+                renewTeacher();
+                layer.close(index);
+            });
+        } else if (obj.event == 'changeP') {
+            layer.prompt({
+                formType: 0,
+                value: obj.data.proprotion,
+                title: '请输入占比(介于0-100)'
+            }, function (value, index, elem) {
+                if (value >= 0 && value <= 100) {
+                    obj.update({
+                        proprotion: value
+                    });
+                    renewTeacher();
+                    layer.close(index);
+                } else {
+                    layer.msg("非法输入")
+                }
+            });
+        }
+    })
+    //学生操作
+    table.on('tool(stuListTableFilter)', function (obj) {
+        if (obj.event == 'del') {
+            layer.confirm('真的删除行么', function (index) {
+                obj.del();
+                renewStu();
+                layer.close(index);
+            });
+        } else if (obj.event == 'changeP') {
+            layer.prompt({
+                formType: 0,
+                value: obj.data.proprotion,
+                title: '请输入占比(介于0-100)'
+            }, function (value, index, elem) {
+                if (value >= 0 && value <= 100) {
+                    obj.update({
+                        proprotion: value
+                    });
+                    renewStu();
+                    layer.close(index);
+                } else {
+                    layer.msg("非法输入")
+                }
+            });
+        }
+    })
     $(document).on('click', '#btn_search_student', function () {
         var search_sno = $('#search_sno').val();
-        console.log(search_sno);
         if (search_sno == "") {
             layer.msg('输入不能为空');
         } else {
@@ -346,22 +332,21 @@ layui.use(['form', 'laydate', 'upload', 'table', 'layer'], function () {
             }, 'data');
         }
     });
-    $(document).on('click','#btn_search_ctname',function () {
+    $(document).on('click', '#btn_search_ctname', function () {
         var search_ctname = $('#search_ctname').val();
         //执行重载
-        console.log(search_ctname);
         table.reload('layer_com_table', {   //layer_com_table为表格的id名
-            method:'POST'
-            ,page: {
+            method: 'POST'
+            , page: {
                 curr: 1 //重新从第 1 页开始
             }
             , where: {
                 ctname: search_ctname
             }
-            ,url: '/competition/keyword_search_ctname'    //访问controller中的方法
+            , url: '/competition/keyword_search_ctname'    //访问controller中的方法
         }, 'data');
     });
-    $(document).on('click','#btn_search_teacher2Id',function () {
+    $(document).on('click', '#btn_search_teacher2Id', function () {
         var search_tno = $('#search_tno2').val();
         var search_tname = $('#search_tname2').val();
         var search_dcollege = $('#search_dcollege2').val();
@@ -369,18 +354,18 @@ layui.use(['form', 'laydate', 'upload', 'table', 'layer'], function () {
         var search_ttitle = $('#search_ttitle2').val();
         //执行重载
         table.reload('layer_teacher2Id_table', {   //layer_teacher2Id_table为表格的id名
-            method:'POST'
-            ,page: {
+            method: 'POST'
+            , page: {
                 curr: 1 //重新从第 1 页开始
             }
             , where: {
                 tno: search_tno,//注意用，隔开
                 tname: search_tname,
                 dcollege: search_dcollege,
-                dname:search_dname,
+                dname: search_dname,
                 ttitle: search_ttitle
             }
-            ,url: '/teacher1/keyword_search'    //访问UserController中的方法
+            , url: '/teacher1/keyword_search'    //访问UserController中的方法
         }, 'data');
     })
     //比赛
@@ -473,5 +458,137 @@ layui.use(['form', 'laydate', 'upload', 'table', 'layer'], function () {
             // layer.msg('点击按钮可以删除',{time: 1800});
         });
     }
-
+    //自定义验证规则
+    form.verify({
+        verify_ctname: function (value) {
+            if (value == null || value == "") {
+                return '比赛名称不能为空';
+            }
+        }
+        , verify_workName: function (value) {
+            if (value == null || value == "") {
+                return '作品名称不能为空';
+            }
+        }
+        , verify_awardDate: function (value) {
+            if (value == null || value == "") {
+                return '获奖时间不能为空';
+            }
+        }
+        , verify_unit: function (value) {
+            if (value == null || value == "") {
+                return '第一单位不能为空！';
+            }
+            if (value != '南昌大学软件学院') {
+                return '第一单位必须为南昌大学软件学院！';
+            }
+        }
+        , verify_level_type: function (value) {
+            if (value == null || value == "") {
+                return '请选择您的获奖类型(省级/国家级)';
+            }
+        }
+        , verify_prize_type: function (value) {
+            if (value == null || value == "") {
+                return '请选择您的获奖类型(特/一等/二等/三等/优秀)';
+            }
+        }
+        , verify_applicantId: function (value) {
+            if (value == null || value == "") {
+                return '申请人的ID不能为空';
+            }
+        }
+        , verify_BankCard: function (value) {
+            if (value == null || value == "") {
+                return '申请人的银行卡号不能为空';
+            }
+            if (value.length > 20) {
+                return '请检查银行卡号是否有误';
+            }
+        }
+        , verify_tms: function (value) {
+            if (value == null || value == "") {
+                layer.tips('请点击该项', '#addStudent');
+                return '必须添加成员';
+            }
+        }
+        , verify_workBriefIntro: function (value) {
+            if (value == null || value == "") {
+                return '作品简介不能为空';
+            }
+        }
+    });
+    form.render();//菜单渲染 把内容加载进去
+    form.on('submit(application_form_submit)', function (data) {
+        // console.log(data)
+        $("#application_form_btn").removeClass("layui-btn-normal");
+        $("#application_form_btn").addClass("layui-btn-disabled");
+        var params = {
+            "ctId": data.field.ctId,
+            "workName": data.field.workName,
+            "awardDate": data.field.awardDate,
+            "unit": data.field.unit,
+            "level_type": data.field.level_type,
+            "prize_type": data.field.prize_type,
+            "applicantId": data.field.applicantId,
+            "applicantBankCard": data.field.applicantBankCard,
+            "leader": data.field.leader,
+            "workBriefIntro": data.field.workBriefIntro,
+            "tms": data.field.tms,
+            "ts": data.field.ts,
+        };
+        // alert(params);
+        $.ajax({
+            type: "POST",
+            //contentType: "application/json",//post请求的信息格式
+            url: "/app/add",
+            data: params,
+            dataType: 'json',
+            success: function (result) {
+                if (result.code == 0) {
+                    layer.msg(result.message);
+                    document.getElementById("form_application").reset();
+                    $("#application_form_btn").removeClass("layui-btn-disabled");
+                    $("#application_form_btn").addClass("layui-btn-normal");
+                } else {
+                    layer.msg(result.message);
+                }
+            },
+            error: function () {
+                alert("异常！");
+            }
+        });
+        return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+    });
+    window.renewTeacher = function () {
+        var newParams = "";
+        var tableBak = table.cache['teacherListTable'];
+        if (typeof (tableBak) != "undefined") {
+            for (var i = 0; i < tableBak.length; i++) {
+                if (typeof(tableBak[i].tid) != "undefined")
+                    newParams += tableBak[i].tid + ":" + tableBak[i].proprotion + ",";
+            }
+        }
+        document.getElementById('ts').value = newParams;
+        // alert(document.getElementById('ts').value);
+    }
+    window.renewStu = function () {
+        var newParams = "";
+        var tableBak = table.cache['stuListTable'];
+        if (typeof (tableBak) != "undefined") {
+            for (var i = 0; i < tableBak.length; i++) {
+                if (typeof(tableBak[i].sid) != "undefined")
+                    newParams += tableBak[i].sid + ":" + tableBak[i].proprotion + ",";
+            }
+        }
+        document.getElementById('tms').value = newParams;
+        if (typeof (tableBak) != "undefined") {
+            for (var i = 0; i < tableBak.length; i++) {
+                if (typeof(tableBak[i].sid) != "undefined"){
+                    document.getElementById('leader').value=tableBak[i].sid;
+                    break;
+                }
+            }
+        }
+    }
 });
