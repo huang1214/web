@@ -7,8 +7,60 @@
     <script src="https://www.layuicdn.com/layui/layui.js"></script>
 </head>
 <body>
-<div>
-    这里发布公告
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px">
+    <legend>编辑备案须知</legend>
+</fieldset>
+<div class="layui-form">
+    <div class="layui-form-item">
+        <label class="layui-form-label">文章标题</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" placeholder="请输入标题"
+                   autocomplete="off" class="layui-input" style="width: 50%">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">文章内容</label>
+        <div class="layui-input-block" style="width: 80%">
+            <textarea id="billNotice" style="display: none;" placeholder="请编辑文章内容">
+            </textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block" style="width: 80%">
+            <button class="layui-btn layui-btn-fluid layui-btn-normal layui-btn-radius"
+                    id="billNoticeBtn">立即提交</button>
+        </div>
+    </div>
 </div>
+
+<script src="../asserts/js/jquery-1.12.4.js"></script>
+<script>
+    layui.use('layedit', function(){
+        var layedit = layui.layedit;
+        var index=layedit.build('billNotice',{
+            height: 500 //设置编辑器高度
+            ,tool: [
+                'strong' //加粗
+                ,'italic' //斜体
+                ,'underline' //下划线
+                ,'del' //删除线
+                ,'|' //分割线
+                ,'left' //左对齐
+                ,'center' //居中对齐
+                ,'right' //右对齐
+                ,'|'
+                ,'link' //超链接
+                ,'unlink' //清除链接
+                ,'face' //表情
+            ]
+        }); //建立编辑器
+        //监听事件
+        $("#billNoticeBtn").click(function(){
+            layer.msg("点击事件");
+            console.log(layedit.getContent(index));
+        });
+
+    });
+</script>
 </body>
 </html>
