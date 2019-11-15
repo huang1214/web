@@ -39,9 +39,12 @@ public class ApplicationController {
                             @RequestParam(value = "prize_type", required = false) String prize_type,
                             @RequestParam(value = "applicantBankCard", required = false) String applicantBankCard,
                             @RequestParam(value = "leader", required = false) String leader,
-                            @RequestParam(value = "workBriefIntro", required = false) String workBriefIntro,
-                            @RequestParam(value = "tms", required = false) String tms,
-                            @RequestParam(value = "ts", required = false) String ts,
+                            @RequestParam(value = "workBriefIntro", required = false,defaultValue = "") String workBriefIntro,
+                            @RequestParam(value = "tms", required = false,defaultValue = "") String tms,
+                            @RequestParam(value = "ts", required = false,defaultValue = "") String ts,
+                            @RequestParam(value = "certificateImg", required = false) String certificateImg,
+                            @RequestParam(value = "getawardImg", required = false) String getawardImg,
+                            @RequestParam(value = "highLight", required = false) String highLight,
                             HttpSession session) throws Exception {
 
 
@@ -100,6 +103,9 @@ public class ApplicationController {
             app.setWorkName(workName);
             app.setWorkBriefIntro(workBriefIntro);
             app.setAwardTypeId(awardTypeId);
+            app.setCertificateImg(certificateImg);
+            app.setGetawardImg(getawardImg);
+            app.setHighLight(highLight);
             applicationService.add(app);
         } catch (Exception e) {
             m.setCode(4);

@@ -4,6 +4,9 @@ server:
     uri-encoding: utf-8
 web:
   upload-path: D:/localServeResource/XKJSPicture/
+  certFilePath: D:/XKJS/2019-2/cert/
+  docFilePath: D:/XKJS/2019-2/doc/
+  packageFilePath: D:/XKJS/2019-2/package/
 
 spring:
   mvc:

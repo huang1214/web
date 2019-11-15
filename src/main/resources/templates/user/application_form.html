@@ -202,13 +202,43 @@
             </div>
         </div>
 
-        <div class="layui-form-item"  id="teacherArea">
-
-            <table id="teacherListTable" lay-filter="teacherListTableFilter">
-
-            </table>
+        <div class="layui-form-item layui-form-text" id="div_workBriefIntro">
+            <label class="layui-form-label">作品简介<span style="color: red">*</span></label>
+            <div class="layui-input-block"  >
+                <textarea name="workBriefIntro" id="workBriefIntro" placeholder="100字左右即可" class="layui-textarea" lay-verify="verify_workBriefIntro"></textarea>
+            </div>
         </div>
 
+        <div class="layui-collapse">
+            <div class="layui-collapse" lay-accordion="">
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">指导老师填写说明</h2>
+                    <div class="layui-colla-content">
+                        ① 以此顺序区分指导老师排名顺序<br>② 奖金比例总和100<br>③ 如为学生填写申请，请提前和老师商榷奖金比例
+                    </div>
+                </div>
+                <div class="layui-colla-item " id="stuTipsBox">
+                    <h2 class="layui-colla-title">学生填写说明</h2>
+                    <div class="layui-colla-content">
+                        ① 以此顺序区分排名顺序<br>② 奖金比例总和100
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item"  id="teacherArea">
+
+                <table id="teacherListTable" lay-filter="teacherListTableFilter">
+
+                </table>
+            </div>
+            <div class="layui-form-item" id="studentArea">
+                <input type="hidden" name="leader" id="leader" th:if="${session.type} eq '1'" th:value="${session.loginUser.sno}">
+                <input type="hidden" name="leader" id="leader" th:else value="">
+                <input type="hidden" name="tms" id="tms" value=""  lay-verify="verify_tms">
+                <table id="stuListTable" lay-filter="stuListTableFilter">
+                </table>
+            </div>
+        </div>
 
         <div class="layui-form-item" style="display: none">
             <div class="layui-inline ">
@@ -217,33 +247,82 @@
             </div>
         </div>
 
-        <div class="layui-form-item" id="studentArea">
-
-            <input type="hidden" name="leader" id="leader" th:if="${session.type} eq '1'" th:value="${session.loginUser.sno}">
-            <input type="hidden" name="leader" id="leader" th:else value="">
-            <input type="hidden" name="tms" id="tms" value=""  lay-verify="verify_tms">
-            <table id="stuListTable" lay-filter="stuListTableFilter">
-            </table>
-        </div>
-
-        <div class="layui-form-item layui-form-text" id="div_workBriefIntro">
-            <label class="layui-form-label">作品简介<span style="color: red">*</span></label>
-            <div class="layui-input-block"  >
-                <textarea name="workBriefIntro" id="workBriefIntro" placeholder="100字左右即可" class="layui-textarea" lay-verify="verify_workBriefIntro"></textarea>
+        <div class="layui-collapse">
+            <div class="layui-collapse" lay-accordion="">
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">获奖证书上传须知</h2>
+                    <div class="layui-colla-content">
+                        ① 字体清晰可见<br>② 文件大小不超过 1024KB<br>③ 支持格式：jpg、png、bmp、jpeg
+                    </div>
+                </div>
+                <div class="layui-colla-item " id="docTipsBox">
+                    <h2 class="layui-colla-title">参赛报告上传须知</h2>
+                    <div class="layui-colla-content">
+                        ① 文件大小不超过 1024KB<br>② 支持格式：PDF
+                    </div>
+                </div>
+                <div class="layui-colla-item " id="pacTipsBox">
+                    <h2 class="layui-colla-title">花絮上传须知</h2>
+                    <div class="layui-colla-content">
+                        ① 文件大小不超过 10MB<br>②包括但不限于一下文件：比赛花絮、邀请函、决赛名单<br>③ 支持格式：rar、zip、7z
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <!-- 上传凭证附件：必填 -->
-        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-            <legend>上传多张凭证图片<span style="color: red">*</span></legend>
-        </fieldset>
-
-        <div class="layui-upload">
-            <button type="button" class="layui-btn" id="test1" >多图片上传</button>
-            <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;">
-                预览图：
-                <img id="img_demo" />
-            </blockquote>
+            <div class="layui-upload layui-form-item">
+                <div class="layui-upload">
+                    <!--<button   type="button" class="layui-btn layui-btn-normal" id="testList">选择多文件</button>-->
+                    <div class="">
+                        <table class="layui-table" lay-filter="file_table_filter">
+                            <thead>
+                            <th>描述</th>
+                            <th>文件名</th>
+                            <th>文件大小</th>
+                            <th>文件状态</th>
+                            <th>操作</th>
+                            </thead>
+                            <tbody>
+                            <!--参赛证书-->
+                            <tr>
+                                <th>获奖证书</th>
+                                <th></th>
+                                <th>0</th>
+                                <th>未上传</th>
+                                <th>
+                                    <a class="layui-btn layui-btn-xs" id="upload_cer">上传</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-xs">删除</a>
+                                </th>
+                            </tr>
+                            <!--参赛报告-->
+                            <tr id="docFileBox">
+                                <th>参赛报告</th>
+                                <th></th>
+                                <th>0</th>
+                                <th>未上传</th>
+                                <th>
+                                    <a class="layui-btn layui-btn-xs" id="upload_doc">上传</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-xs">删除</a>
+                                </th>
+                            </tr>
+                            <!--花絮-->
+                            <tr id="pacFileBox">
+                                <th>其他文件</th>
+                                <th></th>
+                                <th>0</th>
+                                <th>未上传</th>
+                                <th>
+                                    <a class="layui-btn layui-btn-xs" id="upload_pac">上传</a>
+                                    <a class="layui-btn layui-btn-danger layui-btn-xs">删除</a>
+                                </th>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--<button type="button" class="layui-btn" id="testListAction">开始上传</button>-->
+                </div>
+                <input type="hidden" name="certificateImg" id="certificateImg" value="" lay-verify="certificateImgFilter">
+                <input type="hidden" name="getawardImg" id="getawardImg" value="" lay-verify="getawardImgFilter">
+                <input type="hidden" name="highLight" id="highLight" value="" lay-verify="highLightFilter">
+            </div>
         </div>
 
         <div class="layui-form-item">
@@ -279,7 +358,7 @@
 <script type="text/html" id="toolbar_teacherAdd">
     <div>
         <button type="button" class="layui-btn" id="addteacher" onclick="chooseTeacherBox()">添加老师</button>
-        <blockquote style="display: inline;margin-left: 30px">提示：奖金占比总和须为100;此顺序为指导顺序</blockquote>
+        <!--<blockquote style="display: inline;margin-left: 30px">提示：奖金占比总和须为100;此顺序为指导顺序</blockquote>-->
     </div>
 </script>
 <script type="text/html" id="toolbar_teacherDel">
@@ -289,12 +368,18 @@
 <script type="text/html" id="toolbar_stuAdd">
     <div class="">
         <button type="button" class="layui-btn" id="addStudent" onclick="chooseStudentBox(this)">添加成员</button>
-        <blockquote style="display: inline;margin-left: 30px">提示：奖金占比总和须为100;此顺序为作者顺序</blockquote>
+        <!--<blockquote style="display: inline;margin-left: 30px">提示：奖金占比总和须为100;此顺序为作者顺序</blockquote>-->
     </div>
 </script>
 <script type="text/html" id="toolbar_strDel">
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     <a class="layui-btn layui-btn-xs" lay-event="changeP">更改占比</a>
 </script>
+<!--文件操作-->
+<script type="text/html" id="toolbar_fileOp">
+    <a class="layui-btn layui-btn-xs" lay-event="upload">上传</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
 </html>
+
 

@@ -113,10 +113,10 @@
         </collection>
 
     </resultMap>
-
+    <!--插入新app-->
     <insert id="add" parameterType="com.aca.springboot.entities.Application">
-        insert into Application(appId,ctid,applicantId,unit,leader,awardDate,applicantBankCard,workName,workBriefIntro,studentPrice,teacherPrice,awardTypeId)
-        values (#{appid},#{ctid},#{applicantId},#{unit},#{leader},to_date(substr(#{awardDate},1,10),'yyyy-mm-dd'),#{applicantBankCard},#{workName},#{workBriefIntro},#{studentPrice},#{teacherPrice},#{awardTypeId})
+        insert into Application(appId,ctid,applicantId,unit,leader,awardDate,applicantBankCard,workName,workBriefIntro,studentPrice,teacherPrice,awardTypeId,CERTIFICATEIMG,GETAWARDIMG,HIGHLIGHT)
+        values (#{appid},#{ctid},#{applicantId},#{unit},#{leader},to_date(substr(#{awardDate},1,10),'yyyy-mm-dd'),#{applicantBankCard},#{workName},#{workBriefIntro},#{studentPrice},#{teacherPrice},#{awardTypeId},#{certificateImg},#{getawardImg},#{highLight})
     </insert>
 
     <!--插入奖金申请表对应表-->
@@ -222,43 +222,14 @@
     <update id="update_state" parameterMap="update_state_params">
         update APPLICATION set status =#{status},NOTE=#{note} where APPID=#{appid}
     </update>
-    <!--<resultMap id="workresult" type="com.aca.springboot.entities.work">-->
-    <!--<id column="app_id" property="app_id"/>-->
-    <!--<result column="competition_name" property="competition_name"/>-->
-    <!--<result column="work_name" property="work_name"/>-->
-    <!--<result column="leader_id" property="leader_id"/>-->
-    <!--<result column="teacher_id" property="teacher_id"/>-->
-    <!--<result column="date_year" property="date_year"/>-->
-    <!--<result column="stu_price" property="student_price"/>-->
-    <!--<result column="tea_price" property="teacher_price"/>-->
-    <!--<result column="is_check" property="is_check"/>-->
-    <!--</resultMap>-->
-    <!--<select id="workresult" resultMap="workresult">-->
-    <!--select a.app_id,a.competition_name,a.work_name,a.leader_id,a.teacher_id,a.date_year,s.stu_price,s.tea_price,s.is_check-->
-    <!--from application a,application_succ s-->
-    <!--where a.app_id = s.app_id and-->
-    <!--s.leader_id = #{leader_id}-->
-    <!--order by app_id-->
-    <!--</select>-->
-
-    <!--<select id="work_paaAll" resultMap="workresult">-->
-    <!--select a.app_id,a.competition_name,a.work_name,a.leader_id,a.teacher_id,a.date_year,s.stu_price,s.tea_price,s.is_check-->
-    <!--from application a,application_succ s-->
-    <!--where a.app_id = s.app_id-->
-    <!--order by app_id-->
-    <!--</select>-->
-
-    <!--申请表和获奖类型表一对一级联-->
-    <!--<select id="application_All" resultMap="applicationMap">-->
-    <!--select *  from application where applicantId= #{applicantId}-->
-    <!--</select>-->
-
+    <!--删除-->
     <delete id="deleteApp" parameterType="java.lang.String">
         delete from APPLICATION where APPID = #{appid}
     </delete>
     <delete id="deleteAppRes" parameterType="java.lang.String">
         delete from APPLICATION_MEMBER where APP_ID =#{appid}
     </delete>
+    <!--查询以获得金额-->
     <parameterMap id="selectMoneyParam" type="java.util.Map"></parameterMap>
     <select id="selectMoney" parameterMap="selectMoneyParam" resultType="java.lang.Object">
         SELECT SUM(APP_MONEY) FROM APPLICATION_MEMBER

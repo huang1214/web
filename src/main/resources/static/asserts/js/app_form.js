@@ -49,6 +49,14 @@ function chooseStudentBox(othis) {
     });
 }
 
+//上传文件
+function uploadFile(obj) {
+    var des=$(obj).parent('th').parent('tr').children('th')[0].innerHTML;
+    if('获奖证书'==des){
+
+    }
+}
+
 //删除弹框
 function deleteMySelf(othis) {
     //alert(othis.id);
@@ -72,13 +80,14 @@ function deleteMySelf(othis) {
         document.getElementById('tms').value += "," + aa;
     });
 };
-layui.use(['laydate', 'upload', 'table', 'layer', 'form'], function () {
+layui.use(['laydate', 'upload', 'table', 'layer', 'form','element'], function () {
     // alert(1)
     var form = layui.form;
     var laydate = layui.laydate;
     var upload = layui.upload;
     var table = layui.table;
     var layer = layui.layer;
+    var element = layui.element;
     var $ = layui.jquery;
     var img_url;
     //执行一个laydate实例
@@ -109,6 +118,103 @@ layui.use(['laydate', 'upload', 'table', 'layer', 'form'], function () {
         }
         , done: function (res) {
             //上传完毕回调。
+        }
+        , error: function () {
+            //请求异常回调
+        }
+    });
+    //上传证书
+    upload.render({
+        elem: '#upload_cer' //绑定元素
+        , url: '/common/uploadM'//上传接口
+        , auto: true
+        , data:{
+            type:1
+        }
+        , multiple: false
+        , size:1024
+        ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+            obj.preview(function (index, file, result) {
+                var ths=$("#upload_cer").parent('th').parent('tr').children('th');
+                ths[1].innerHTML=file.name;
+                ths[2].innerHTML=file.size;
+                ths[3].innerHTML="正在上传……";
+            })
+        }
+        , done: function (res) {
+            if(res.code==0){
+                document.getElementById("certificateImg").value=res.data;
+                $("#upload_cer").parent('th').parent('tr').children('th')[3].innerHTML="已上传";
+            }else{
+                layer.msg("请重试")
+                $("#upload_cer").parent('th').parent('tr').children('th')[3].innerHTML="上传失败";
+            }
+        }
+        , error: function () {
+            //请求异常回调
+        }
+    });
+    //上传doc
+    upload.render({
+        elem: '#upload_doc' //绑定元素
+        , url: '/common/uploadM'//上传接口
+        , auto: true
+        , data:{
+            type:2
+        }
+        , multiple: false
+        , size: 1024
+        , accept: 'file'
+        , exts: 'pdf'
+        ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+            obj.preview(function (index, file, result) {
+                var ths=$("#upload_doc").parent('th').parent('tr').children('th');
+                ths[1].innerHTML=file.name;
+                ths[2].innerHTML=file.size;
+                ths[3].innerHTML="正在上传……";
+            })
+        }
+        , done: function (res) {
+            if(res.code==0){
+                document.getElementById("getawardImg").value=res.data;
+                $("#upload_doc").parent('th').parent('tr').children('th')[3].innerHTML="已上传";
+            }else{
+                layer.msg("请重试")
+                $("#upload_doc").parent('th').parent('tr').children('th')[3].innerHTML="上传失败";
+            }
+        }
+        , error: function () {
+            //请求异常回调
+        }
+    });
+    //上传压缩包
+    upload.render({
+        elem: '#upload_pac' //绑定元素
+        , url: '/common/uploadM'//上传接口
+        , auto: true
+        , data:{
+            type:3
+        }
+        , multiple: false
+        , size: 1024
+        , accept: 'file'
+        , exts: 'zip|rar|7z'
+        ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+            obj.preview(function (index, file, result) {
+                var ths=$("#upload_pac").parent('th').parent('tr').children('th');
+                ths[1].innerHTML=file.name;
+                ths[2].innerHTML=file.size;
+                ths[3].innerHTML="正在上传……";
+            })
+        }
+        , done: function (res) {
+            if(res.code==0){
+                document.getElementById("highLight").value=res.data;
+                $("#upload_pac").parent('th').parent('tr').children('th')[3].innerHTML="已上传";
+            }else{
+                layer.msg("请重试")
+                $("#upload_pac").parent('th').parent('tr').children('th')[3].innerHTML="上传失败";
+            }
         }
         , error: function () {
             //请求异常回调
@@ -173,13 +279,15 @@ layui.use(['laydate', 'upload', 'table', 'layer', 'form'], function () {
                 /*                    如果匹配到的成果类型为考试
                                     【参赛作品名称】【作品简介】消失 */
                 if (data[0].result_type == 1) {
-                    $("#workName,#workBriefIntro,#tms").removeAttr("lay-verify");
-                    $("#div_workName,#div_workBriefIntro,#studentArea").addClass("disappear");
+                    $("#workName,#workBriefIntro,#tms,#getawardImg,#highLight").removeAttr("lay-verify");
+                    $("#div_workName,#div_workBriefIntro,#studentArea,#docFileBox,#pacFileBox,#stuTipsBox,#docTipsBox,#pacTipsBox").addClass("disappear");
                 } else {
                     $("#tms").attr("lay-verify","verify_tms");
                     $("#workName").attr("lay-verify","verify_workName");
                     $("#workBriefIntro").attr("lay-verify","verify_workBriefIntro");
-                    $("#div_workName,#div_workBriefIntro,#studentArea").removeClass("disappear");
+                    $("#getawardImg").attr("lay-verify","getawardImgFilter");
+                    $("#highLight").attr("lay-verify","highLightFilter");
+                    $("#div_workName,#div_workBriefIntro,#studentArea,#docFileBox,#pacFileBox,stuTipsBox,#stuTipsBox,#docTipsBox,#pacTipsBox").removeClass("disappear");
                 }
                 layer.closeAll(); //疯狂模式，关闭所有层
                 break;
@@ -460,7 +568,7 @@ layui.use(['laydate', 'upload', 'table', 'layer', 'form'], function () {
     }
     //自定义验证规则
     form.verify({
-        verify_ctname: function (value) {
+         verify_ctname: function (value) {
             if (value == null || value == "") {
                 return '比赛名称不能为空';
             }
@@ -517,6 +625,21 @@ layui.use(['laydate', 'upload', 'table', 'layer', 'form'], function () {
                 return '作品简介不能为空';
             }
         }
+        , certificateImgFilter: function (value) {
+             if (value == null || value == "") {
+                 layer.tips('请点击该项', '#upload_cer');
+                 return '必须上传获奖证书';
+             }
+        }
+        , getawardImgFilter: function (value) {
+            if (value == null || value == "") {
+                return '必须上传参赛报告';
+            }
+        }, highLightFilter: function (value) {
+            if (value == null || value == "") {
+                return '比赛花絮必须上传';
+            }
+        }
     });
     form.render();//菜单渲染 把内容加载进去
     form.on('submit(application_form_submit)', function (data) {
@@ -536,6 +659,9 @@ layui.use(['laydate', 'upload', 'table', 'layer', 'form'], function () {
             "workBriefIntro": data.field.workBriefIntro,
             "tms": data.field.tms,
             "ts": data.field.ts,
+            "certificateImg": data.field.certificateImg,
+            "getawardImg": data.field.getawardImg,
+            "highLight": data.field.highLight
         };
         // alert(params);
         $.ajax({
@@ -552,6 +678,8 @@ layui.use(['laydate', 'upload', 'table', 'layer', 'form'], function () {
                     $("#application_form_btn").addClass("layui-btn-normal");
                 } else {
                     layer.msg(result.message);
+                    $("#application_form_btn").removeClass("layui-btn-disabled");
+                    $("#application_form_btn").addClass("layui-btn-normal");
                 }
             },
             error: function () {

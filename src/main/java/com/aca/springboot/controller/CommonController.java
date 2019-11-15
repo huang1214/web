@@ -1,8 +1,11 @@
 package com.aca.springboot.controller;
 
 import com.aca.springboot.entities.Message;
+import com.aca.springboot.service.CommenService;
 import com.aca.springboot.utils.TimeUtil;
+import com.sun.org.apache.regexp.internal.RE;
 import io.swagger.annotations.Api;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
@@ -26,7 +29,8 @@ import java.io.IOException;
 public class CommonController {
     @Value("${web.upload-path}")
     private String path; //文件路径
-
+    @Autowired
+    private CommenService commenService;
     //文件上传
     @PostMapping(value = "/upload")
     @ResponseBody
@@ -49,6 +53,23 @@ public class CommonController {
             addFileMessage.setMessage("文件上传失败！");
         }
         return addFileMessage;
+    }
+
+    @PostMapping("/uploadM")
+    @ResponseBody
+    public Message upload_m(@RequestParam(value = "file") MultipartFile file,
+                            @RequestParam(value = "type",required = false,defaultValue = "1") int type
+        ){
+        Message message=new Message();
+        try{
+            message.setData(commenService.upoad(file,type));
+            message.setCode(0);
+        }catch (Exception e){
+            message.setCode(-1);
+            message.setMessage(e.getMessage());
+            e.printStackTrace();
+        }
+        return message;
     }
 
 }
