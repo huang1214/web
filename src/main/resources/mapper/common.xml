@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aca.springboot.mapper.AwardMapper">
+<mapper namespace="com.aca.springboot.mapper.CommonMapper">
     <resultMap id="awardMap" type="com.aca.springboot.entities.Award">
         <id property="atid" column="atid"></id>
         <result property="com_type" column="com_type"/>
@@ -15,4 +15,14 @@
     <select id="findAwardTypeByAtid" parameterType="string" resultMap="awardMap">
         SELECT atid, com_type, result_type, level_type,prize_type,teacher_price,student_price FROM award_type WHERE atid = #{awardTypeId}
     </select>
+
+    <insert id="addNotice" parameterType="com.aca.springboot.entities.Attachment">
+        <selectKey keyProperty="id" resultType="java.lang.String" order="AFTER">
+            select attachment_id_Seq.currval from dual
+        </selectKey>
+        insert into attachment (id,attachment_name,attachment_path,
+        create_time, flag) values (attachment_id_Seq.nextval, #{attachmentName},
+        #{attachmentPath},#{createTime},#{flag})
+    </insert>
+
 </mapper>

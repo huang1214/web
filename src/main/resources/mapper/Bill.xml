@@ -168,4 +168,5 @@
     <select id="getBillCountAdminNotState" parameterType="java.util.Map" resultType="java.lang.Integer">
         SELECT COUNT(*)  FROM BILL
     </select>
+
 </mapper>

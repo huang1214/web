@@ -14,7 +14,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">文章标题</label>
         <div class="layui-input-block">
-            <input type="text" name="title" placeholder="请输入标题"
+            <input type="text" id="title" placeholder="请输入标题"
                    autocomplete="off" class="layui-input" style="width: 50%">
         </div>
     </div>
@@ -61,33 +61,26 @@
         var layedit = layui.layedit;
         var $ = layui.jquery;
         var upload = layui.upload;
+        var attachmentList="";
         var index=layedit.build('billNotice',{
             height: 400 //设置编辑器高度
             ,tool: [
-                'strong' //加粗
-                ,'italic' //斜体
-                ,'underline' //下划线
-                ,'del' //删除线
-                ,'|' //分割线
-                ,'left' //左对齐
-                ,'center' //居中对齐
-                ,'right' //右对齐
-                ,'|'
-                ,'link' //超链接
-                ,'unlink' //清除链接
-                ,'face' //表情
+                'strong','italic' ,'underline','del','|','left','center' //居中对齐
+                ,'right' ,'|','link' ,'unlink','face' //表情
             ]
         }); //建立编辑器
         //监听事件
         $("#billNoticeBtn").click(function(){
             layer.msg("点击事件");
-            console.log(layedit.getContent(index));
+            var noticeTitle=$("#title").val();
+            var noticeContent=layedit.getContent(index);
+            console.log(noticeTitle+"-----"+noticeContent+"---"+attachmentList);
         });
 
         var demoListView = $('#demoList')
             ,uploadListIns = upload.render({
             elem: '#testList'
-            ,url: '/upload/'
+            ,url: '/common/attachment'
             ,accept: 'file'
             ,multiple: true
             ,auto: false
@@ -120,11 +113,13 @@
                 });
             }
             ,done: function(res, index, upload){
-                if(res.code == 0){ //上传成功
+                console.log(res);
+                if(res.code == 200){ //上传成功
                     var tr = demoListView.find('tr#upload-'+ index)
                         ,tds = tr.children();
                     tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
                     tds.eq(3).html(''); //清空操作
+                    attachmentList+=res.data+",";
                     return delete this.files[index]; //删除文件队列已经上传成功的文件
                 }
                 this.error(index, upload);

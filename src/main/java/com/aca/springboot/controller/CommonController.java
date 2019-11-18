@@ -1,9 +1,10 @@
 package com.aca.springboot.controller;
 
+import com.aca.springboot.entities.Attachment;
 import com.aca.springboot.entities.Message;
 import com.aca.springboot.service.CommenService;
+import com.aca.springboot.service.CommonService;
 import com.aca.springboot.utils.TimeUtil;
-import com.sun.org.apache.regexp.internal.RE;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * @Author: 周全
@@ -29,8 +31,12 @@ import java.io.IOException;
 public class CommonController {
     @Value("${web.upload-path}")
     private String path; //文件路径
+
+    @Autowired
+    private CommonService commonService;
     @Autowired
     private CommenService commenService;
+
     //文件上传
     @PostMapping(value = "/upload")
     @ResponseBody
@@ -54,12 +60,11 @@ public class CommonController {
         }
         return addFileMessage;
     }
-
     @PostMapping("/uploadM")
     @ResponseBody
     public Message upload_m(@RequestParam(value = "file") MultipartFile file,
                             @RequestParam(value = "type",required = false,defaultValue = "1") int type
-        ){
+    ){
         Message message=new Message();
         try{
             message.setData(commenService.upoad(file,type));
@@ -70,6 +75,36 @@ public class CommonController {
             e.printStackTrace();
         }
         return message;
+    }
+    //文件上传
+    @PostMapping(value = "/attachment")
+    @ResponseBody
+    public Message attachmentUpload(@RequestParam(value = "file") MultipartFile attachment){
+        Message addAttachmentMessage=new Message();
+        Attachment pojo=new Attachment();
+        System.out.println(attachment.getOriginalFilename());
+        String fileName=attachment.getOriginalFilename();
+        String extend=fileName.substring(fileName.lastIndexOf("."));
+        String newName= TimeUtil.getFileID()+extend;
+        System.out.println(newName);
+        pojo.setAttachmentName(fileName);
+        pojo.setAttachmentPath(newName);
+        pojo.setCreateTime(new Date());
+        pojo.setFlag("0");
+        commonService.addBillNotice(pojo);
+        String id=pojo.getId();
+        try {
+            FileOutputStream outputStream=new FileOutputStream(path+newName);
+            FileCopyUtils.copy(attachment.getInputStream(),outputStream);
+            addAttachmentMessage.setCode(200);
+            addAttachmentMessage.setMessage("附件上传成功！");
+            addAttachmentMessage.setData(id);
+        } catch (IOException e) {
+            e.printStackTrace();
+            addAttachmentMessage.setCode(202);
+            addAttachmentMessage.setMessage("附件上传失败！");
+        }
+        return addAttachmentMessage;
     }
 
 }
