@@ -34,7 +34,7 @@ public class Application {
             ", studentPrice='" + studentPrice + '\'' +
             ", teacherPrice='" + teacherPrice + '\'' +
             ", awardTypeId='" + awardTypeId + '\'' +
-            ", awardDate=" + awardDate +
+            ", awardDate='" + awardDate + '\'' +
             ", applicantBankCard='" + applicantBankCard + '\'' +
             ", workName='" + workName + '\'' +
             ", workBriefIntro='" + workBriefIntro + '\'' +

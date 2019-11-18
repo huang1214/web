@@ -115,8 +115,8 @@
     </resultMap>
     <!--插入新app-->
     <insert id="add" parameterType="com.aca.springboot.entities.Application">
-        insert into Application(appId,ctid,applicantId,unit,leader,awardDate,applicantBankCard,workName,workBriefIntro,studentPrice,teacherPrice,awardTypeId,CERTIFICATEIMG,GETAWARDIMG,HIGHLIGHT)
-        values (#{appid},#{ctid},#{applicantId},#{unit},#{leader},to_date(substr(#{awardDate},1,10),'yyyy-mm-dd'),#{applicantBankCard},#{workName},#{workBriefIntro},#{studentPrice},#{teacherPrice},#{awardTypeId},#{certificateImg},#{getawardImg},#{highLight})
+        insert into Application(appId,ctid,applicantId,unit,leader,awardDate,applicantBankCard,workName,workBriefIntro,studentPrice,teacherPrice,awardTypeId,CERTIFICATEIMG,GETAWARDIMG,HIGHLIGHT,STATUS)
+        values (#{appid},#{ctid},#{applicantId},#{unit},#{leader},to_date(substr(#{awardDate},1,10),'yyyy-mm-dd'),#{applicantBankCard},#{workName},#{workBriefIntro},#{studentPrice},#{teacherPrice},#{awardTypeId},#{certificateImg},#{getawardImg},#{highLight},#{status})
     </insert>
 
     <!--插入奖金申请表对应表-->
@@ -163,7 +163,7 @@
         S1.SNO S1_SNO,S1.SNAME S1_SNAME,S2.SNO S2_SNO,S2.SNAME S2_SNAME
 
         from (select * from application where APPID IN (SELECT APP_ID FROM APPLICATION_MEMBER WHERE APP_TM_ID =
-        #{SNO}) order by status desc) A LEFT JOIN
+        #{SNO}) and STATUS=#{TEMPSTATUS}) A LEFT JOIN
         (select * from com_table ) C ON A.ctid=C.ctid LEFT JOIN
         (select * from STUDENT) S1 ON S1.SNO=A.APPLICANTID LEFT JOIN
         (select * from STUDENT) S2 ON S2.SNO=A.LEADER
@@ -173,7 +173,9 @@
         WHERE RN >=#{startIndex}
     </select>
     <select id="get_application_list_count" parameterMap="get_app_list_params" resultType="java.lang.Integer">
-        SELECT count(*) FROM APPLICATION_MEMBER WHERE APP_TM_ID = #{SNO}
+        SELECT count(*) FROM
+          (select * from APPLICATION_MEMBER WHERE APP_TM_ID =#{SNO}) AM LEFT JOIN APPLICATION A ON AM.APP_ID=A.APPID
+          WHERE A.STATUS=#{TEMPSTATUS}
     </select>
     <!--管理员列表-->
     <parameterMap id="get_app_list_params_m" type="java.util.Map">

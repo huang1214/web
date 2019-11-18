@@ -242,16 +242,15 @@ public class ApplicationService {
      *
      * @return
      */
-    public JsonMessage get_list_json(String sno, int pageNum, int pageSize) {
+    public JsonMessage get_list_json(String sno, int pageNum, int pageSize,int type) {
         PageHelper.startPage(pageNum, pageSize);
         Map map = new HashMap<String, String>();
         map.put("SNO", sno);
         map.put("endIndex", pageNum * pageSize);
         map.put("startIndex", (pageNum - 1) * pageSize + 1);
+        map.put("TEMPSTATUS",type);
         JsonMessage result = new JsonMessage();
-//        PageInfo re=new PageInfo(applicationMapper.get_application_list(map));
         List<AppComAppLeaderVO> application_list = applicationMapper.get_application_list(map);
-//        List<AppComAppLeaderVO> list = re.getList();
         for (int i = 0; i < application_list.size(); i++) {
             if (sno.equals(application_list.get(i).getLeader()))
                 application_list.get(i).setRes(1);

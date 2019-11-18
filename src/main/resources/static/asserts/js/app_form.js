@@ -562,8 +562,7 @@ layui.use(['laydate', 'upload', 'table', 'layer', 'form','element'], function ()
             layer.close(tip_index);
         });
         $(document).on('mouseenter', '.deleteTips', function () {
-            // tip_index = layer.tips('点击删除这条记录', '.deleteTips', {time: 0});
-            // layer.msg('点击按钮可以删除',{time: 1800});
+              // layer.msg('点击按钮可以删除',{time: 1800});
         });
     }
     //自定义验证规则

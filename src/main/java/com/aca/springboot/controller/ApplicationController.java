@@ -54,22 +54,23 @@ public class ApplicationController {
         Object type = session.getAttribute("type");
         String sno="";
         Message m=new Message();
+        Application app = new Application();
         if(null == user){
             m.setCode(-1);
             m.setMessage("未登录");
             return m;
         }else if((int)type==1){
             sno=((Student)user).getSno();
+            app.setStatus("0");
         }else if((int)type==2){
             sno=((Teacher)user).getTno();
+            app.setStatus("1");
         }else{
             m.setCode(3);
             m.setMessage("当前用户无权限！");
             return m;
         }
-        Application app = new Application();
         String awardTypeId = getawardtype(ctId, level_type, prize_type);  //获取获奖类型编号
-
         //获取学生获奖金额stu_price
         String studentPrice = applicationService.get_price(awardTypeId).get("STUDENT_PRICE").toString();
         //获取老师获奖金额tea_price
@@ -80,7 +81,7 @@ public class ApplicationController {
             tms=sno+":100";
         }
         try{
-            System.out.println("tms:"+tms+"\nts:"+ts);
+//            System.out.println("tms:"+tms+"\nts:"+ts);
             //插入相关学生
             applicationService.addMultMember(tms,ts,Integer.parseInt(studentPrice)*100,Integer.parseInt(teacherPrice)*100,awardDate,appid);
 //            System.out.println(tms);
@@ -89,6 +90,20 @@ public class ApplicationController {
             m.setMessage(e.getMessage());
             e.printStackTrace();
             return m;
+        }
+        if(null!=tms&&tms.length()>=1){
+            String[] split = tms.split(",");
+            for(String t:split){
+                if(t.length()>0){
+                    leader=t.split(":")[0];
+                    break;
+                }
+            }
+        }else{
+            leader=sno;
+        }
+        if(leader.length()<=0){
+            leader=sno;
         }
         try {
             app.setAppid(appid);
@@ -106,6 +121,7 @@ public class ApplicationController {
             app.setCertificateImg(certificateImg);
             app.setGetawardImg(getawardImg);
             app.setHighLight(highLight);
+            System.out.println(app.toString());
             applicationService.add(app);
         } catch (Exception e) {
             m.setCode(4);
@@ -155,8 +171,10 @@ public class ApplicationController {
     @RequestMapping("/list")
     public JsonMessage get_list(@RequestParam(value = "page", required = false,defaultValue = "1") int pageNum,
                                 @RequestParam(value = "limit", required = false,defaultValue = "10") int pageSize,
+                                @RequestParam(value = "type",required = false,defaultValue = "1")int rtype,
                                 HttpSession session) {
         //首先检查权限
+        System.out.println("trype:"+rtype+"\npageNum:"+pageNum+"\nsize:"+pageSize);
         Object user = session.getAttribute("loginUser");
         Object type = session.getAttribute("type");
         String sno="";
@@ -175,7 +193,7 @@ public class ApplicationController {
             j.setMsg("位置错误，请重新登录");
             return j;
         }
-        return applicationService.get_list_json(sno, pageNum, pageSize);
+        return applicationService.get_list_json(sno, pageNum, pageSize,rtype);
     }
 
 
