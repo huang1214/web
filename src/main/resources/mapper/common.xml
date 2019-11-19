@@ -3,19 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aca.springboot.mapper.CommonMapper">
-    <resultMap id="awardMap" type="com.aca.springboot.entities.Award">
-        <id property="atid" column="atid"></id>
-        <result property="com_type" column="com_type"/>
-        <result property="result_type" column="result_type"/>
-        <result property="level_type" column="level_type"/>
-        <result property="prize_type" column="prize_type"/>
-        <result property="teacher_price" column="teacher_price"/>
-        <result property="student_price" column="student_price"/>
-    </resultMap>
-    <select id="findAwardTypeByAtid" parameterType="string" resultMap="awardMap">
-        SELECT atid, com_type, result_type, level_type,prize_type,teacher_price,student_price FROM award_type WHERE atid = #{awardTypeId}
-    </select>
-
+    <!--插入附件-->
     <insert id="addNotice" parameterType="com.aca.springboot.entities.Attachment">
         <selectKey keyProperty="id" resultType="java.lang.String" order="AFTER">
             select attachment_id_Seq.currval from dual
@@ -23,6 +11,23 @@
         insert into attachment (id,attachment_name,attachment_path,
         create_time, flag) values (attachment_id_Seq.nextval, #{attachmentName},
         #{attachmentPath},#{createTime},#{flag})
+    </insert>
+    <!--插入公告-->
+    <insert id="releaseNotice" parameterType="com.aca.springboot.entities.Notice">
+        <selectKey keyProperty="id" resultType="java.lang.String" order="AFTER">
+            select bill_notice_id_Seq.currval from dual
+        </selectKey>
+        insert into bill_notice (id,notice_title,notice_content,
+        update_time,update_userid, flag) values (bill_notice_id_Seq.nextval, #{noticeTitle},
+        #{noticeContent},#{updateTime},#{updateUserid},#{flag})
+    </insert>
+    <!--插入公告附件对应关系-->
+    <insert id="noticeAttachment" parameterType="com.aca.springboot.entities.NoticeAttachment">
+        <selectKey keyProperty="id" resultType="java.lang.String" order="AFTER">
+            select bill_notice_attachment_id_Seq.currval from dual
+        </selectKey>
+        insert into bill_notice_attachment (id,notice_id,attachment_id)
+        values (bill_notice_attachment_id_Seq.nextval,#{noticeId},#{attachmentId})
     </insert>
 
 </mapper>

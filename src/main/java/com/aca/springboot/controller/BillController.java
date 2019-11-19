@@ -2,6 +2,7 @@ package com.aca.springboot.controller;
 
 import com.aca.springboot.entities.*;
 import com.aca.springboot.service.BillService;
+import com.aca.springboot.service.CommonService;
 import com.aca.springboot.utils.TimeUtil;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -17,9 +19,11 @@ import java.util.List;
 @RequestMapping(value = "/bill")
 public class BillController {
     private final BillService billService;
+    private CommonService commonService;
     @Autowired
-    public BillController(BillService billService){
+    public BillController(BillService billService,CommonService commonService){
         this.billService=billService;
+        this.commonService=commonService;
     }
     //添加一条报销记录,通过测试
    /* @PostMapping(value = "add")
@@ -174,63 +178,40 @@ public class BillController {
         deleteMessage.setCount(res);
         return deleteMessage;
     }
-
-
-
-
-
-
-}
-/*
-package com.aca.springboot.controller;
-
-import com.aca.springboot.service.AwardService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
-import java.util.Map;
-
-@Controller
-public class AwardController {
-    @Autowired
-    AwardService awardService;
-
-    */
-/**
-     * 获取全部奖金类型
-     *//*
-
+    @PostMapping(value = "notice")
     @ResponseBody
-    @GetMapping(value = "/getAllAward")
-    public List getAllAward(){
-        return awardService.getAllAward();
-    }
-
-    @ResponseBody
-    @GetMapping(value = "/change_price")
-    public ModelAndView change(@RequestParam("changeprice_id") String changeprice_id,
-                               @RequestParam("teacher_price") String teacher_price,
-                               @RequestParam("student_price") String student_price,
-                               Map<String,Object> map){
-        ModelAndView mv = new ModelAndView("redirect:/admin/prize");
-        int result = awardService.change_price(teacher_price,student_price,changeprice_id);
-        if(result == 1){
-            map.put("msg","修改成功！");
-            System.out.println(result);
-            return mv;
-        }else {
-            map.put("msg","修改失败！");
-            System.out.println(result );
-*/
-/*            return "修改失败";*//*
-
+    public Message releaseNotice(@RequestParam(value = "title", required = false) String title,
+                                 @RequestParam(value = "content", required = false) String content,
+                                 @RequestParam(value = "attachments", required = false) String attachments,
+                                 HttpSession session){
+        Message noticeMessage=new Message();
+        Administrator administrator =(Administrator) session.getAttribute("loginUser");
+        //System.out.println(title+"---"+attachments);
+        Notice notice=new Notice();
+        notice.setFlag("0");
+        notice.setNoticeTitle(title);
+        notice.setNoticeContent(content);
+        notice.setUpdateTime(new Date());
+        notice.setUpdateUserid(administrator.getAdm_id());
+        commonService.addNotice(notice);
+        if(attachments!=null&&!attachments.isEmpty()){
+            String[] attachmentList=attachments.split(",");
+            List<NoticeAttachment> list=new ArrayList<>();
+            String nID=notice.getId();
+            System.out.println("返回ID:"+nID);
+            for(int i=0;i<attachmentList.length;i++){
+                NoticeAttachment noticeAttachment=new NoticeAttachment();
+                noticeAttachment.setNoticeId(nID);
+                noticeAttachment.setAttachmentId(attachmentList[i]);
+                list.add(noticeAttachment);
+            }
+            commonService.addNoticeAttachment(list);
         }
-        return mv;
+        noticeMessage.setCode(200);
+        noticeMessage.setMessage("发布成功！");
+        noticeMessage.setData(notice.getId());
+        return noticeMessage;
     }
+
+
 }
-*/
