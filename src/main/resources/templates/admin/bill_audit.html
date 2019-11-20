@@ -177,43 +177,42 @@
                 layer.confirm('请选择该条报销申请的审核结果：', {
                     btn: ['通过','不通过'] //按钮
                 }, function(){
-                    layer.msg('pass', {icon: 1});
-
-                    console.log(data.bid);
-                    $.ajax(
-                        {
-                            url: '/bill/accept?bid=' + data.bid,     // 请求地址,访问controller中的xxx方法, 就是你的控制器, 如 test.com/home/index/index
-                            type: 'POST',   // 请求方式
-                            success: function (result) {
-                                console.log(result); // 请求成功后的回调函数, result 为响应内容
-/*                                if(result.code == 0){
-                                    //layer.alert('审核成功！');
-                                }else {
-                                    // layer.alert('审核失败！');
-                                }*/
-                                bill_state.reload();   //表格重载
-                            },
-                            error: function () {
-                                console.log('Send Request Fail..'); // 请求失败时的回调函数
+                    layer.prompt({title: '对该备案作出说明', formType: 2}, function(text, index){
+                        layer.close(index);
+                        layer.msg('你通过了该备案：' +'<br>你最后写下了：'+text);
+                        $.ajax(
+                            {
+                                url: '/bill/accept?bid=' + data.bid+'&note='+text,
+                                type: 'POST',   // 请求方式
+                                success: function (result) {
+                                    console.log(result);
+                                    if(result.code == 200){
+                                        layer.msg("审核成功！你同意该备案。");
+                                    }else {
+                                        layer.msg("未知错误！");
+                                    }
+                                    bill_state.reload();   //表格重载
+                                },
+                                error: function () {
+                                    console.log('Send Request Fail..'); // 请求失败时的回调函数
+                                }
                             }
-                        }
-                    );
+                        );
+                    });
                 },function(){
                     layer.prompt({title: '请简述审核不通过的原因', formType: 2}, function(text, index){
                         layer.close(index);
                         layer.msg('审核完毕！未通过原因：' +'<br>您最后写下了：'+text);
-                        //oper="refuse";
-                        //console.log(oper+text);
                         $.ajax(
                             {
-                                url: '/bill/refuse?bid=' + data.bid+'&note='+text,     // 请求地址,访问controller中的ccc方法, 就是你的控制器, 如 test.com/home/index/index
+                                url: '/bill/refuse?bid=' + data.bid+'&note='+text,
                                 type: 'POST',   // 请求方式
                                 success: function (result) {
                                     console.log(result); // 请求成功后的回调函数, result 为响应内容
-                                    if(result.code == 0){
-                                        // layer.alert('审核成功！');
+                                    if(result.code == 200){
+                                        layer.msg("审核成功！你不同意该备案。");
                                     }else {
-                                        //  layer.alert('审核失败！');
+                                        layer.msg("未知错误！");
                                     }
                                     bill_state.reload();   //表格重载
                                 },
@@ -224,10 +223,6 @@
                         );
                     });
                 });
-                /*function(){
-                    /!*layer.msg('refuse',);*!/
-
-                });*/
             }
         });
         function setTableValue(data){

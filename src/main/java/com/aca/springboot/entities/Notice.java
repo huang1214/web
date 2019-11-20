@@ -13,7 +13,7 @@ public class Notice {
     private String id;
     private String noticeTitle;
     private String noticeContent;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateTime;
     private String updateUserid;
     private String flag;
