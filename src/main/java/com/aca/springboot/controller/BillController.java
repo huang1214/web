@@ -4,6 +4,7 @@ import com.aca.springboot.entities.*;
 import com.aca.springboot.service.BillService;
 import com.aca.springboot.service.CommonService;
 import com.aca.springboot.utils.TimeUtil;
+import com.aca.springboot.vo.NoticeVO;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -211,6 +212,18 @@ public class BillController {
         noticeMessage.setMessage("发布成功！");
         noticeMessage.setData(notice.getId());
         return noticeMessage;
+    }
+    //获取最新的公告
+    @GetMapping(value = "lnotice")
+    @ResponseBody
+    public Message getLastNotice(){
+        Message lastNoticeMessage=new Message();
+        NoticeVO noticeVO=commonService.getLastNotice();
+      //  System.out.println(noticeVO.getUpdateTime());
+        lastNoticeMessage.setCode(200);
+        lastNoticeMessage.setMessage("获取成功！");
+        lastNoticeMessage.setData(noticeVO);
+        return lastNoticeMessage;
     }
 
 

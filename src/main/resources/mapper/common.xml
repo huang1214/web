@@ -3,6 +3,24 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aca.springboot.mapper.CommonMapper">
+    <resultMap id="NVO" type="com.aca.springboot.vo.NoticeVO">
+        <id property="id" column="id"/>
+        <result property="noticeTitle" column="notice_title"/>
+        <result property="noticeContent" column="notice_content"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUserid" column="update_userid"/>
+        <result property="flag" column="flag"/>
+        <association property="administrator" javaType="com.aca.springboot.entities.Administrator">
+            <id property="adm_id" column="adm_id"/>
+            <result property="adm_name" column="adm_name"/>
+        </association>
+        <collection property="attachments" column="id" javaType="java.util.ArrayList" ofType="com.aca.springboot.entities.Attachment">
+            <id property="id" column="TID"/>
+            <result property="attachmentName" column="ATTACHMENT_NAME"/>
+            <result property="attachmentPath" column="attachment_path"/>
+            <result property="createTime" column="create_time"/>
+        </collection>
+    </resultMap>
     <!--插入附件-->
     <insert id="addNotice" parameterType="com.aca.springboot.entities.Attachment">
         <selectKey keyProperty="id" resultType="java.lang.String" order="AFTER">
@@ -29,5 +47,14 @@
         insert into bill_notice_attachment (id,notice_id,attachment_id)
         values (bill_notice_attachment_id_Seq.nextval,#{noticeId},#{attachmentId})
     </insert>
+
+    <select id="getBillNotice" resultMap="NVO">
+        SELECT N.ID,N.NOTICE_TITLE,N.NOTICE_CONTENT,N.UPDATE_TIME,N.UPDATE_USERID,N.FLAG,
+        A.ADM_ID,A.ADM_NAME,T.ID TID,T.ATTACHMENT_NAME,T.ATTACHMENT_PATH,T.CREATE_TIME
+        FROM BILL_NOTICE N JOIN ADMINISTRATOR A on N.UPDATE_USERID=A.ADM_ID
+        JOIN BILL_NOTICE_ATTACHMENT P ON P.NOTICE_ID=N.id JOIN
+        ATTACHMENT T on P.ATTACHMENT_ID=T.id where N.ID=(select ID from (select * from BILL_NOTICE ORDER BY UPDATE_TIME DESC) where rownum=1)
+    </select>
+
 
 </mapper>

@@ -4,6 +4,7 @@ import com.aca.springboot.entities.Attachment;
 import com.aca.springboot.entities.Notice;
 import com.aca.springboot.entities.NoticeAttachment;
 
+import com.aca.springboot.vo.NoticeVO;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
@@ -26,8 +27,8 @@ public interface CommonMapper {
      * @return  返回影响条数
      */
     public Integer noticeAttachment(NoticeAttachment noticeAttachment);
-
-
+    //获取公告
+    public NoticeVO getBillNotice();
 
 
 

@@ -4,6 +4,7 @@ import com.aca.springboot.entities.Attachment;
 import com.aca.springboot.entities.Notice;
 import com.aca.springboot.entities.NoticeAttachment;
 import com.aca.springboot.mapper.CommonMapper;
+import com.aca.springboot.vo.NoticeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +40,9 @@ public class CommonService {
             sum+=commonMapper.noticeAttachment(noticeAttachments.get(i));
         }
         return sum;
+    }
+    public NoticeVO getLastNotice(){
+        return commonMapper.getBillNotice();
     }
 
 }

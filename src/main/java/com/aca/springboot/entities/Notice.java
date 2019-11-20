@@ -1,5 +1,7 @@
 package com.aca.springboot.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 /**
@@ -11,6 +13,7 @@ public class Notice {
     private String id;
     private String noticeTitle;
     private String noticeContent;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
     private String updateUserid;
     private String flag;

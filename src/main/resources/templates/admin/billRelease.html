@@ -71,35 +71,47 @@
         }); //建立编辑器
         //监听事件
         $("#billNoticeBtn").click(function(){
-            var noticeTitle=$("#title").val();
-            var noticeContent=layedit.getContent(index);
-            console.log(noticeTitle+"-----"+noticeContent+"---"+attachmentList);
-            var params = {
-                "title":noticeTitle,
-                "content":noticeContent,
-                "attachments":attachmentList
-            }
-            $.ajax({
-                type: "POST",
-                //dataType: "json",//服务器返回的数据类型
-                //contentType: "application/json",//post请求的信息格式
-                url: "/bill/notice" ,
-                data: params,
-                dataType: 'json',
-                success: function (result) {
-                    console.log(result);//服务端返回的数据
-                    attachmentList="";
-                    if(result.code == 200){
-                        layer.msg(result.message);
-                    }else {
-                        layer.alert("未知错误！");
-                    }
-                },
-                error : function() {
-                    layer.msg("服务器错误！");
+            var tnoticeTitle=$("#title").val();
+            var tnoticeContent=layedit.getContent(index);
+            var noticeTitle=tnoticeTitle.trim();
+            var noticeContent=tnoticeContent.trim();
+            console.log(noticeTitle+"-----"+noticeContent.length+"---"+attachmentList+"111");
+            if(noticeTitle==null||noticeTitle==""){
+                layer.msg("标题不能为空！");
+            }else if(noticeContent==null||noticeContent==""){
+                layer.msg("内容不能为空！");
+            }else if(noticeContent.length>2000){
+                layer.msg("字数超出限制！");
+            } else if(attachmentList==null||attachmentList==""){
+                layer.msg("附件不能为空！");
+            }else {
+                console.log(noticeTitle+"-----"+noticeContent+"---"+attachmentList);
+                var params = {
+                    "title":noticeTitle,
+                    "content":noticeContent,
+                    "attachments":attachmentList
                 }
-            });
-
+                $.ajax({
+                    type: "POST",
+                    //dataType: "json",//服务器返回的数据类型
+                    //contentType: "application/json",//post请求的信息格式
+                    url: "/bill/notice" ,
+                    data: params,
+                    dataType: 'json',
+                    success: function (result) {
+                        console.log(result);//服务端返回的数据
+                        attachmentList="";
+                        if(result.code == 200){
+                            layer.msg(result.message);
+                        }else {
+                            layer.alert("未知错误！");
+                        }
+                    },
+                    error : function() {
+                        layer.msg("服务器错误！");
+                    }
+                });
+            }
         });
 
         var demoListView = $('#demoList')
