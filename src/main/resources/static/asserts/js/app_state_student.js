@@ -27,19 +27,19 @@ layui.use(['table','layer','form','jquery'], function(){
                 ,{field: 'teacherPrice', title: '老师奖金', minWidth: 50,templet: function(d){
                     return d.teacherPrice/100;}}
                 ,{field: 'awardDate', title: '申请时间', minWidth: 150, sort: true}
-                ,{field: 'status', title: '申请状态', minWidth: 135,templet: function(d){
-                    if (d.status==0) {  // 自定义内容
-                        return "未审核";
-                    } else if (d.status==1) {
-                        return "审核未通过";
-                    }
-                    else if (d.status==2) {
-                        return "审核通过";
-                    }
-                    else if (d.status==3) {
-                        return "项目组长已确认";
-                    }
-                }}
+                // ,{field: 'status', title: '申请状态', minWidth: 135,templet: function(d){
+                //     if (d.status==0) {  // 自定义内容
+                //         return "未审核";
+                //     } else if (d.status==1) {
+                //         return "审核未通过";
+                //     }
+                //     else if (d.status==2) {
+                //         return "审核通过";
+                //     }
+                //     else if (d.status==3) {
+                //         return "项目组长已确认";
+                //     }
+                // }}
                 ,{fixed: 'right', title:'操作', toolbar: '#bar',Width:100}
             ]
         ]
@@ -67,19 +67,19 @@ layui.use(['table','layer','form','jquery'], function(){
                     ,{field: 'teacherPrice', title: '老师奖金', minWidth: 50,templet: function(d){
                         return d.teacherPrice/100;}}
                     ,{field: 'awardDate', title: '申请时间', minWidth: 150, sort: true}
-                    ,{field: 'status', title: '申请状态', minWidth: 135,templet: function(d){
-                        if (d.status==0) {  // 自定义内容
-                            return "未审核";
-                        } else if (d.status==1) {
-                            return "审核未通过";
-                        }
-                        else if (d.status==2) {
-                            return "审核通过";
-                        }
-                        else if (d.status==3) {
-                            return "项目组长已确认";
-                        }
-                    }}
+                    // ,{field: 'status', title: '申请状态', minWidth: 135,templet: function(d){
+                    //     if (d.status==0) {  // 自定义内容
+                    //         return "未审核";
+                    //     } else if (d.status==1) {
+                    //         return "审核未通过";
+                    //     }
+                    //     else if (d.status==2) {
+                    //         return "审核通过";
+                    //     }
+                    //     else if (d.status==3) {
+                    //         return "项目组长已确认";
+                    //     }
+                    // }}
                     ,{fixed: 'right', title:'操作', toolbar: '#bar',Width:100}
                 ]
             ]
@@ -222,7 +222,6 @@ layui.use(['table','layer','form','jquery'], function(){
 
         if(result.data.status==0){
             rText += "<tr><td>当前状态</td><td>待指导老师确认</td>";
-            rText +="<tr><td>操作</td><td><button type='button' class='layui-btn' onclick="+"'comfirmBtn("+'"'+result.data.appid+'"'+")'>确认</button></td></tr>"
         }else if(result.data.status==1){
             rText += "<tr><td>当前状态</td><td>待审核</td>";
         }else if(result.data.status==2){
@@ -234,12 +233,18 @@ layui.use(['table','layer','form','jquery'], function(){
         }else if(result.data.status==3){
             rText += "<tr><td>当前状态</td><td>已通过</td>";
         }
+        if(result.data.res=="1"){
+            rText +="<tr><td>操作</td><td><button type='button' class='layui-btn layui-btn-danger' onclick="+"'delBtn("+'"'+result.data.appid+'"'+")'>删除</button></td></tr>"
+        }
 
         $("#application_detail_table").children("tbody").empty();
         $("#application_detail_table").children("tbody").append(rText);
     }
-    window.comfirmBtn=function(obj){
-        layer.msg(obj)
+    window.delBtn=function(obj){
+        // layer.msg(obj)
+        layer.confirm('确认删除?', {icon: 2, title:'提示'}, function(index){
+            layer.msg("h")
+        });
         $.ajax(
             {
                 url: '/app/change?appid=' + obj+'&operation=assure',     // 请求地址,访问controller中的ccc方法, 就是你的控制器, 如 test.com/home/index/index

@@ -174,7 +174,7 @@ public class ApplicationController {
                                 @RequestParam(value = "type",required = false,defaultValue = "1")int rtype,
                                 HttpSession session) {
         //首先检查权限
-        System.out.println("trype:"+rtype+"\npageNum:"+pageNum+"\nsize:"+pageSize);
+//        System.out.println("trype:"+rtype+"\npageNum:"+pageNum+"\nsize:"+pageSize);
         Object user = session.getAttribute("loginUser");
         Object type = session.getAttribute("type");
         String sno="";
@@ -240,9 +240,27 @@ public class ApplicationController {
      */
     @ResponseBody
     @RequestMapping("/detail")
-    public Message get_detail(@RequestParam(value = "appid", required = true, defaultValue = "1") String appid
+    public Message get_detail(@RequestParam(value = "appid", required = true, defaultValue = "1") String appid,HttpSession session
     ) {
-        return new Message(0, "成功", applicationService.get_detail(appid));
+        Object user = session.getAttribute("loginUser");
+        Object type = session.getAttribute("type");
+        String sno="";
+        if(null == user){
+            Message j=new Message();
+            j.setCode(-1);
+            j.setMessage("未登录");
+            return j;
+        }else if((int)type == 1){
+            sno=((Student)user).getSno();
+        }else if((int)type == 2){
+            sno =((Teacher)user).getTno();
+        }else{
+            Message j=new Message();
+            j.setCode(-2);
+            j.setMessage("未知错误，请重新登录");
+            return j;
+        }
+        return new Message(0, "成功", applicationService.get_detail(appid,sno));
     }
 
     @ResponseBody
@@ -269,7 +287,7 @@ public class ApplicationController {
                 j.setMessage("权限不足");
                 return j;
             }
-            re = applicationService.update_state(appid, 1, note);
+            re = applicationService.update_state(appid, 2, note);
         } else if ("pass".equals(op)) {
             if((int)type!=3){
                 Message j=new Message();
@@ -277,9 +295,15 @@ public class ApplicationController {
                 j.setMessage("权限不足");
                 return j;
             }
-            re = applicationService.update_state(appid, 2, note);
-        } else if ("assure".equals(op)) {
             re = applicationService.update_state(appid, 3, note);
+        } else if ("assure".equals(op)) {
+            if((int)type!=2){
+                Message j=new Message();
+                j.setCode(3);
+                j.setMessage("权限不足");
+                return j;
+            }
+            re = applicationService.update_state(appid, 1, note);
         }
 
         if (re)

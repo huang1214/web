@@ -14,8 +14,9 @@ public class AppComDetailVO extends Application {
     private Competition com;
     private Student appStu;
     private Award awar;
-    private List<Student> stus;
-    private List<Teacher> teas;
+    private int res;
+    private List<StudentAMVO> stus;
+    private List<TeacherAMVO> teas;
 
     public Award getAwar() {
         return awar;
@@ -41,19 +42,27 @@ public class AppComDetailVO extends Application {
         this.appStu = appStu;
     }
 
-    public List<Student> getStus() {
+    public List<StudentAMVO> getStus() {
         return stus;
     }
 
-    public void setStus(List<Student> stus) {
+    public void setStus(List<StudentAMVO> stus) {
         this.stus = stus;
     }
 
-    public List<Teacher> getTeas() {
+    public List<TeacherAMVO> getTeas() {
         return teas;
     }
 
-    public void setTeas(List<Teacher> teas) {
+    public void setTeas(List<TeacherAMVO> teas) {
         this.teas = teas;
+    }
+
+    public int getRes() {
+        return res;
+    }
+
+    public void setRes(int res) {
+        this.res = res;
     }
 }

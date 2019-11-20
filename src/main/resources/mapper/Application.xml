@@ -87,7 +87,7 @@
             <result property="teacher_price" column="teacher_price"/>
             <result property="student_price" column="student_price"/>
         </association>
-        <collection property="stus" ofType="com.aca.springboot.entities.Student">
+        <collection property="stus" ofType="com.aca.springboot.vo.StudentAMVO">
             <id property="sno" column="sno"/>
             <result property="sname" column="sname"/>
             <result property="ssex" column="ssex"/>
@@ -98,8 +98,11 @@
             <result property="stel" column="stel"/>
             <result property="state" column="state"/>
             <result property="card_num" column="card_num"/>
+            <result property="appOrder" column="APP_ORDER"/>
+            <result property="propertion" column="APP_PROPORTION"/>
+            <result property="money" column="APP_MONEY"/>
         </collection>
-        <collection property="teas" ofType="com.aca.springboot.entities.Teacher">
+        <collection property="teas" ofType="com.aca.springboot.vo.TeacherAMVO">
             <id property="tno" column="TNO"/>
             <result property="tname" column="TNAME"/>
             <result property="tsex" column="TSEX"/>
@@ -110,6 +113,9 @@
             <result property="tpwd" column="TPWD"/>
             <result property="tstate" column="TSTATE"/>
             <result property="card_num" column="TCARD_NUM"/>
+            <result property="appOrder" column="APP_ORDER"/>
+            <result property="propertion" column="APP_PROPORTION"/>
+            <result property="money" column="APP_MONEY"/>
         </collection>
 
     </resultMap>
@@ -211,12 +217,12 @@
       select
       *
       from
-			(select * from APPLICATION_MEMBER WHERE APP_ID=#{APPID} ) AM JOIN
-			(select * from application ) A ON AM.APP_ID=A.APPID JOIN
-			(select * from award_type) AT on AT.ATID = A.AWARDTYPEID JOIN
+			(select * from APPLICATION_MEMBER WHERE APP_ID=#{APPID} ) AM LEFT JOIN
+			(select * from application WHERE APPID=#{APPID}) A ON AM.APP_ID=A.APPID LEFT JOIN
+			(select * from award_type) AT on AT.ATID = A.AWARDTYPEID LEFT JOIN
             (select * from com_table ) C ON A.ctid=C.ctid LEFT JOIN
-            (select * from STUDENT) S ON S.SNO=AM.APP_TM_ID LEFT JOIN
-            (select TNO,TNAME,TSEX,TBIRTHDAY,DNO,TTEL,TTITLE,TPWD,TSTATE,CARD_NUM TCARD_NUM from TEACHER) T ON T.TNO=AM.APP_TM_ID
+            (select SNO,SNAME from STUDENT) S ON S.SNO=AM.APP_TM_ID LEFT JOIN
+            (select TNO,TNAME,TSEX from TEACHER) T ON T.TNO=AM.APP_TM_ID
     </select>
     <!--更新状态-->
     <parameterMap id="update_state_params" type="java.util.Map">
@@ -225,12 +231,12 @@
         update APPLICATION set status =#{status},NOTE=#{note} where APPID=#{appid}
     </update>
     <!--删除-->
-    <delete id="deleteApp" parameterType="java.lang.String">
-        delete from APPLICATION where APPID = #{appid}
-    </delete>
-    <delete id="deleteAppRes" parameterType="java.lang.String">
-        delete from APPLICATION_MEMBER where APP_ID =#{appid}
-    </delete>
+    <update id="deleteApp" parameterType="java.lang.String">
+        update APPLICATION set status=-1 where APPID = #{appid}
+    </update>
+    <update id="deleteAppRes" parameterType="java.lang.String">
+        update APPLICATION_MEMBER set APP_STATUS=-1 where APP_ID =#{appid}
+    </update>
     <!--查询以获得金额-->
     <parameterMap id="selectMoneyParam" type="java.util.Map"></parameterMap>
     <select id="selectMoney" parameterMap="selectMoneyParam" resultType="java.lang.Object">

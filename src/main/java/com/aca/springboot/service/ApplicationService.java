@@ -269,10 +269,12 @@ public class ApplicationService {
      * @param appid
      * @return
      */
-    public AppComDetailVO get_detail(String appid) {
+    public AppComDetailVO get_detail(String appid,String sno) {
         Map map = new HashMap<String, String>();
         map.put("APPID", appid);
         AppComDetailVO application_detail = applicationMapper.get_application_detail(map);
+        if(sno.equals(application_detail.getApplicantId()))
+            application_detail.setRes(1);
         return application_detail;
     }
 
