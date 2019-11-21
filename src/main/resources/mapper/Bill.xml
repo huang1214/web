@@ -54,17 +54,52 @@
         </collection>
     </resultMap>
     <resultMap id="BVO2" type="com.aca.springboot.vo.BillVO">
-        <collection property="teachers" ofType="com.aca.springboot.entities.Teacher">
-            <id property="tno" column="TNO"/>
-            <result property="tname" column="TNAME"/>
-            <result property="tsex" column="TSEX"/>
-            <result property="tbirthday" column="TBIRTHDAY"/>
-            <result property="dno" column="DNO"/>
-            <result property="ttel" column="TTEL"/>
-            <result property="ttitle" column="TTITLE"/>
-            <result property="tpwd" column="TPWD"/>
-            <result property="tstate" column="TSTATE"/>
-            <result property="card_num" column="CARD_NUM"/>
+        <id property="bid" column="BID"/>
+        <result property="ctid" column="CTID"/>
+        <result property="cyear" column="CYEAR"/>
+        <result property="clevel" column="CLEVEL"/>
+        <result property="cdesc" column="CDESC"/>
+        <result property="groupleader" column="GROUPLEADER"/>
+        <result property="groupname" column="GROUPNAME"/>
+        <result property="resultType" column="RESULT_TYPE"/>
+        <result property="workName" column="WORK_NAME"/>
+        <result property="preditfeedesc" column="PREDITFEEDESC"/>
+        <result property="predictfee" column="PREDICTFEE"/>
+        <result property="state" column="STATE"/>
+        <result property="attachfile" column="ATTACHFILE"/>
+        <result property="invitation" column="INVITATION"/>
+        <result property="note" column="NOTE"/>
+        <association property="competition" javaType="com.aca.springboot.entities.Competition">
+            <id property="ctid" column="C_CTID"/>
+            <result property="ctname" column="ctname"/>
+            <result property="host_unit" column="host_unit"/>
+            <result property="com_type" column="com_type"/>
+            <result property="result_type" column="C_RESULT_TYPE"/>
+            <result property="reference_paper" column="reference_paper"/>
+        </association>
+        <association property="student"  javaType="com.aca.springboot.entities.Student">
+            <id property="sno" column="S1_SNO"/>
+            <result property="sname" column="S1_SNAME"/>
+            <result property="ssex" column="S1_SSEX"/>
+            <result property="sbirthday" column="S1_SBIRTHDAY"/>
+            <result property="sdomitory" column="S1_SDOMITORY"/>
+            <result property="cno" column="S1_CNO"/>
+            <result property="spwd" column="S1_SPWD"/>
+            <result property="stel" column="S1_STEL"/>
+            <result property="state" column="S1_STATE"/>
+            <result property="card_num" column="S1_CARD_NUM"/>
+        </association>
+        <collection property="teachers" javaType="java.util.ArrayList" ofType="com.aca.springboot.entities.Teacher">
+            <id property="tno" column="T1_TNO"/>
+            <result property="tname" column="T1_TNAME"/>
+            <result property="tsex" column="T1_TSEX"/>
+            <result property="tbirthday" column="T1_TBIRTHDAY"/>
+            <result property="dno" column="T1_DNO"/>
+            <result property="ttel" column="T1_TTEL"/>
+            <result property="ttitle" column="T1_TTITLE"/>
+            <result property="tpwd" column="T1_TPWD"/>
+            <result property="tstate" column="T1_TSTATE"/>
+            <result property="card_num" column="T1_CARD_NUM"/>
         </collection>
     </resultMap>
 
@@ -107,11 +142,18 @@
     </select>
     <select id="get_bill_list2" parameterMap="get_bill_list_params" resultMap="BVO2">
         SELECT * FROM (SELECT ROWNUM rn, temp.* FROM (SELECT
-        T.*
+        B.BID, B.CTID, B.CYEAR, B.CLEVEL,B.CDESC, B.GROUPLEADER, B.GROUPNAME, B.RESULT_TYPE, B.WORK_NAME, B.PREDITFEEDESC, B.PREDICTFEE,B.STATE,B.ATTACHFILE,B.NOTE,B.INVITATION
+        ,C.CTID C_CTID,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE C_RESULT_TYPE,C.REFERENCE_PAPER
+        ,S1.SNO S1_SNO,S1.SNAME S1_SNAME,S1.SSEX S1_SSEX,S1.SBIRTHDAY S1_SBIRTHDAY,S1.SDOMITORY S1_SDOMITORY
+        ,S1.CNO S1_CNO,S1.SPWD S1_SPWD,S1.STEL S1_STEL,S1.STATE S1_STATE,S1.CARD_NUM S1_CARD_NUM
+        ,T.TNO T1_TNO,T.TNAME T1_TNAME,T.TSEX T1_TSEX,T.TBIRTHDAY T1_TBIRTHDAY,T.DNO T1_DNO
+        ,T.TTEL T1_TTEL,T.TTITLE T1_TTITLE,T.TPWD T1_TPWD,T.TSTATE T1_TSTATE,T.CARD_NUM T1_CARD_NUM
         from (select * from BILL
         where BID IN (SELECT BILL_ID FROM BILL_MEMBER WHERE BILL_TM_ID = #{SNO} ) ) B
         JOIN  BILL_MEMBER BM on BM.BILL_ID = B.BID
-        JOIN TEACHER T ON BM.BILL_TM_ID=T.TNO ) temp )
+        JOIN com_table  C ON B.ctid=C.ctid
+        JOIN TEACHER T ON BM.BILL_TM_ID=T.TNO
+        join STUDENT S1 on B.GROUPLEADER = S1.SNO) temp )
         WHERE rn>=#{LEFT} AND rn &lt;=#{RIGHT}
     </select>
 
@@ -132,12 +174,18 @@
         WHERE rn>=#{LEFT} AND rn &lt;=#{RIGHT}
     </select>
     <select id="get_all_bill_list2" parameterMap="get_bill_list_params" resultMap="BVO2">
-        SELECT * FROM (SELECT ROWNUM rn, b.* FROM (select
-        T.*
-        from  BILL B
-        JOIN BILL_MEMBER BM on BM.BILL_ID = B.BID
+        SELECT * FROM (SELECT ROWNUM rn, temp.* FROM (SELECT
+        B.BID, B.CTID, B.CYEAR, B.CLEVEL,B.CDESC, B.GROUPLEADER, B.GROUPNAME, B.RESULT_TYPE, B.WORK_NAME, B.PREDITFEEDESC, B.PREDICTFEE,B.STATE,B.ATTACHFILE,B.NOTE,B.INVITATION
+        ,C.CTID C_CTID,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE C_RESULT_TYPE,C.REFERENCE_PAPER
+        ,S1.SNO S1_SNO,S1.SNAME S1_SNAME,S1.SSEX S1_SSEX,S1.SBIRTHDAY S1_SBIRTHDAY,S1.SDOMITORY S1_SDOMITORY
+        ,S1.CNO S1_CNO,S1.SPWD S1_SPWD,S1.STEL S1_STEL,S1.STATE S1_STATE,S1.CARD_NUM S1_CARD_NUM
+        ,T.TNO T1_TNO,T.TNAME T1_TNAME,T.TSEX T1_TSEX,T.TBIRTHDAY T1_TBIRTHDAY,T.DNO T1_DNO
+        ,T.TTEL T1_TTEL,T.TTITLE T1_TTITLE,T.TPWD T1_TPWD,T.TSTATE T1_TSTATE,T.CARD_NUM T1_CARD_NUM
+        from BILL B
+        JOIN  BILL_MEMBER BM on BM.BILL_ID = B.BID
+        JOIN com_table  C ON B.ctid=C.ctid
         JOIN TEACHER T ON BM.BILL_TM_ID=T.TNO
-        ) b)
+        join STUDENT S1 on B.GROUPLEADER = S1.SNO) temp )
         WHERE rn>=#{LEFT} AND rn &lt;=#{RIGHT}
     </select>
 

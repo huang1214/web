@@ -9,6 +9,11 @@
         .layui-input:focus, .layui-textarea:focus{
             border-color:#5FB878!important
         }
+        .zhouQuanImg{
+            width: 120px;
+            height: 120px;
+            margin: 0 10px 10px 0;
+        }
         #layer_bill_detail{
             display: none;
         }
@@ -208,13 +213,13 @@
             var tempTeacher="";
             for(var i=0;i<data.students.length-1;i++)
             {
-               tempMember+=data.students[i].sname+",";
+               tempMember+=data.students[i].sname+"，";
             }
             tempMember+=data.students[data.students.length-1].sname;
             if(data.teachers!=null){
                 for(var i=0;i<data.teachers.length-1;i++)
                 {
-                    tempTeacher+=data.teachers[i].tname+",";
+                    tempTeacher+=data.teachers[i].tname+"，";
                 }
                 tempTeacher+=data.teachers[data.teachers.length-1].tname;
                 teacher.innerHTML=tempTeacher;

@@ -57,30 +57,22 @@ public class BillService {
     //返回该生报销记录,分页
     public JsonMessage queryAllBillWithPage(String sno,int pageNum,int pageSize){
         //设置从第几页查询N条
-        //System.out.println(pageNum+"---每页大小："+pageSize);
         Map map=new HashMap();
         int left=(pageNum-1)*pageSize+1;  //左边查询起始索引
         int right=pageNum*pageSize;   //查询到哪里截至索引
         map.put("SNO",sno);
         map.put("LEFT",left);
         map.put("RIGHT",right);
-     //   PageHelper.startPage(pageNum,pageSize);
         List listBill=billMapper.get_bill_list(map);
         List listBill2=billMapper.get_bill_list2(map);
+        System.out.println(listBill2.size());
         for(int i=0;i<listBill.size();i++){
             BillVO temp1=(BillVO) listBill.get(i);
             BillVO temp2=(BillVO) listBill2.get(i);
+            System.out.println(temp2);
             temp1.setTeachers(temp2.getTeachers());
         }
-       /* PageInfo<BillVO> pageInfo=new PageInfo(listBill);
-        System.out.println("总数量：" + pageInfo.getTotal());
-        System.out.println("当前页查询记录：" + pageInfo.getList().size());
-        System.out.println("当前页码：" + pageInfo.getPageNum());
-        System.out.println("每页显示数量：" + pageInfo.getPageSize());
-        System.out.println("总页：" + pageInfo.getPages());*/
-       // List list = pageInfo.getList();
         int count=billMapper.getBillCountNotState(map); //总条数
-        //System.out.println(count);
         JsonMessage jsonMessage=new JsonMessage();
         jsonMessage.setCode(0);
         jsonMessage.setMsg("查询成功");
@@ -95,7 +87,6 @@ public class BillService {
         int right=pageNum*pageSize;   //查询到哪里截至索引
         map.put("LEFT",left);
         map.put("RIGHT",right);
-        //PageHelper.startPage(pageNum,pageSize);
         List listBill=billMapper.get_all_bill_list(map);
         List listBill2=billMapper.get_all_bill_list2(map);
         for(int i=0;i<listBill.size();i++){
@@ -103,8 +94,6 @@ public class BillService {
             BillVO temp2=(BillVO) listBill2.get(i);
             temp1.setTeachers(temp2.getTeachers());
         }
-       // PageInfo<BillVO> pageInfo=new PageInfo(listBill);
-        //List list=pageInfo.getList();
         int count=billMapper.getBillCountAdminNotState(); //总条数
         System.out.println(count);
         JsonMessage jsonMessage=new JsonMessage();

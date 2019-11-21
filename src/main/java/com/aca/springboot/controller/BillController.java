@@ -57,7 +57,7 @@ public class BillController {
                             @RequestParam(value = "preditfeedesc", required = false) String preditfeedesc,
                             @RequestParam(value = "predictfee", required = false) String predictfee,
                             @RequestParam(value = "attachfile", required = false) String attachfile,
-                            @RequestParam(value = "invitation", required = false) String invitation,
+                            @RequestParam(value = "invitation", required = false,defaultValue = "") String invitation,
                             @RequestParam(value = "ts",required = false) String teachers,
                             @RequestParam(value = "tms",required = false) String students
                             ){
