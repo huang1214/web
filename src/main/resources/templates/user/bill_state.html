@@ -89,8 +89,12 @@
                 <td id="teacher"></td>
             </tr>
             <tr>
-                <td>上传凭证</td>
+                <td>入围名单</td>
                 <td id="evidence"></td>
+            </tr>
+            <tr>
+                <td>邀请函</td>
+                <td id="invitation"></td>
             </tr>
         <tr>
             <td>备注信息</td>
@@ -183,15 +187,22 @@
             var member=document.getElementById("member");
             var teacher=document.getElementById("teacher");
             var evidence=document.getElementById("evidence");
+            var invitation=document.getElementById("invitation");
             var memberCaptainName=document.getElementById("memberCaptainName");
             var memberCaptainNum=document.getElementById("memberCaptainNum");
             var describeCompetition=document.getElementById("describeCompetition");
             var note=document.getElementById("note");
-            var img_url = "http://localhost:8083/"+data.attachfile;
             if(data.attachfile!=null){
-                evidence.innerHTML="<img src='"+img_url+"'/>";
+                var img_url = "http://localhost:8083/"+data.attachfile;
+                evidence.innerHTML="<img class='zhouQuanImg' src='"+img_url+"'/>";
             }else {
-                evidence.innerHTML="未上传凭证"
+                evidence.innerHTML="未上传名单"
+            }
+            if(data.invitation!=null){
+                var img_url2 = "http://localhost:8083/"+data.invitation;
+                invitation.innerHTML="<img class='zhouQuanImg' src='"+img_url2+"'/>";
+            }else {
+                invitation.innerHTML="无邀请函"
             }
             var tempMember="";
             var tempTeacher="";

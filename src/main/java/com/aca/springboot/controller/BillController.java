@@ -57,10 +57,11 @@ public class BillController {
                             @RequestParam(value = "preditfeedesc", required = false) String preditfeedesc,
                             @RequestParam(value = "predictfee", required = false) String predictfee,
                             @RequestParam(value = "attachfile", required = false) String attachfile,
+                            @RequestParam(value = "invitation", required = false) String invitation,
                             @RequestParam(value = "ts",required = false) String teachers,
                             @RequestParam(value = "tms",required = false) String students
                             ){
-        System.out.println(ctid+"----"+attachfile+"--"+groupname+"--"+teachers);
+        System.out.println(ctid+"附件："+attachfile+"  邀请函："+invitation+"--"+teachers);
         Message addAwardMessage=new Message();
         Bill bill=new Bill();
         bill.setBid(TimeUtil.getBillNumber());  //获取报销编号
@@ -71,6 +72,7 @@ public class BillController {
         bill.setGroupleader(groupleader);
         bill.setGroupname(groupname);
         bill.setWorkName(workName);
+        bill.setInvitation(invitation);
         bill.setPreditfeedesc(preditfeedesc);
         bill.setState("0"); //初始状态都是未审核
         bill.setPredictfee(predictfee);

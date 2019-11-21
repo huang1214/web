@@ -18,6 +18,7 @@
         <result property="predictfee" column="PREDICTFEE"/>
         <result property="state" column="STATE"/>
         <result property="attachfile" column="ATTACHFILE"/>
+        <result property="invitation" column="INVITATION"/>
         <result property="note" column="NOTE"/>
         <association property="competition" javaType="com.aca.springboot.entities.Competition">
             <id property="ctid" column="C_CTID"/>
@@ -75,8 +76,8 @@
 
     <!--插入账单表-->
     <insert id="addBill" parameterType="com.aca.springboot.entities.Bill">
-        insert into BILL(bid, ctid, cyear, clevel, cdesc, groupleader, groupname,  WORK_NAME, preditfeedesc, predictfee, state, attachfile)
-        values (#{bid}, #{ctid}, #{cyear}, #{clevel}, #{cdesc}, #{groupleader}, #{groupname},  #{workName}, #{preditfeedesc}, #{predictfee}, #{state}, #{attachfile})
+        insert into BILL(bid, ctid, cyear, clevel, cdesc, groupleader, groupname,  WORK_NAME, preditfeedesc, predictfee, state, attachfile,invitation)
+        values (#{bid}, #{ctid}, #{cyear}, #{clevel}, #{cdesc}, #{groupleader}, #{groupname},  #{workName}, #{preditfeedesc}, #{predictfee}, #{state}, #{attachfile},#{invitation})
     </insert>
 
     <!--插入账单对应表-->
@@ -90,7 +91,7 @@
     </parameterMap>
     <select id="get_bill_list" parameterMap="get_bill_list_params" resultMap="BVO">
         SELECT * FROM (SELECT ROWNUM rn, temp.* FROM (SELECT
-        B.BID, B.CTID, B.CYEAR, B.CLEVEL,B.CDESC, B.GROUPLEADER, B.GROUPNAME, B.RESULT_TYPE, B.WORK_NAME, B.PREDITFEEDESC, B.PREDICTFEE,B.STATE,B.ATTACHFILE,B.NOTE
+        B.BID, B.CTID, B.CYEAR, B.CLEVEL,B.CDESC, B.GROUPLEADER, B.GROUPNAME, B.RESULT_TYPE, B.WORK_NAME, B.PREDITFEEDESC, B.PREDICTFEE,B.STATE,B.ATTACHFILE,B.NOTE,B.INVITATION
         ,C.CTID C_CTID,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE C_RESULT_TYPE,C.REFERENCE_PAPER
         ,S1.SNO S1_SNO,S1.SNAME S1_SNAME,S1.SSEX S1_SSEX,S1.SBIRTHDAY S1_SBIRTHDAY,S1.SDOMITORY S1_SDOMITORY
         ,S1.CNO S1_CNO,S1.SPWD S1_SPWD,S1.STEL S1_STEL,S1.STATE S1_STATE,S1.CARD_NUM S1_CARD_NUM
@@ -117,7 +118,7 @@
     <!--管理员获取全部的竞赛信息-->
     <select id="get_all_bill_list" parameterMap="get_bill_list_params" resultMap="BVO">
         SELECT * FROM (SELECT ROWNUM rn, b.* FROM (select
-        B.BID, B.CTID, B.CYEAR, B.CLEVEL,B.CDESC, B.GROUPLEADER, B.GROUPNAME, B.RESULT_TYPE, B.WORK_NAME, B.PREDITFEEDESC, B.PREDICTFEE,B.STATE,B.ATTACHFILE,B.NOTE
+        B.BID, B.CTID, B.CYEAR, B.CLEVEL,B.CDESC, B.GROUPLEADER, B.GROUPNAME, B.RESULT_TYPE, B.WORK_NAME, B.PREDITFEEDESC, B.PREDICTFEE,B.STATE,B.ATTACHFILE,B.NOTE,B.INVITATION
         ,C.CTID C_CTID,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE C_RESULT_TYPE,C.REFERENCE_PAPER
         ,S1.SNO S1_SNO,S1.SNAME S1_SNAME,S1.SSEX S1_SSEX,S1.SBIRTHDAY S1_SBIRTHDAY,S1.SDOMITORY S1_SDOMITORY
         ,S1.CNO S1_CNO,S1.SPWD S1_SPWD,S1.STEL S1_STEL,S1.STATE S1_STATE,S1.CARD_NUM S1_CARD_NUM

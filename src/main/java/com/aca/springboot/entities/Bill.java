@@ -19,7 +19,16 @@ public class Bill {
   private String state;
   private String attachfile;
   private String note;
+  private String invitation;
   private List<BillMember> billMembers;
+
+  public String getInvitation() {
+    return invitation;
+  }
+
+  public void setInvitation(String invitation) {
+    this.invitation = invitation;
+  }
 
   public List<BillMember> getBillMembers() {
     return billMembers;
