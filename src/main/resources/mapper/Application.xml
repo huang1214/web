@@ -198,7 +198,7 @@
       C.CTID c_ctid,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE,C.REFERENCE_PAPER,
       S1.SNO S1_SNO,S1.SNAME S1_SNAME,S2.SNO S2_SNO,S2.SNAME S2_SNAME
 
-      from (select * from application where STATUS=0 order by APPID desc) A LEFT JOIN
+      from (select * from application where STATUS=#{STATUS} order by APPID desc) A LEFT JOIN
          (select * from com_table ) C ON A.ctid=C.ctid LEFT JOIN
          (select * from STUDENT) S1 ON S1.SNO=A.APPLICANTID LEFT JOIN
          (select * from STUDENT) S2 ON S2.SNO=A.LEADER
@@ -208,7 +208,7 @@
     WHERE RN >=#{startIndex}
     </select>
     <select id="get_application_list_m_count" parameterMap="get_app_list_params_m" resultType="java.lang.Integer">
-        select count(*) from application where STATUS=#{status}
+        select count(*) from application where STATUS=#{STATUS}
     </select>
     <!--取得detail-->
     <parameterMap id="get_app_detail_params" type="java.util.Map">
@@ -229,6 +229,9 @@
     </parameterMap>
     <update id="update_state" parameterMap="update_state_params">
         update APPLICATION set status =#{status},NOTE=#{note} where APPID=#{appid}
+    </update>
+    <update id="update_am_state" parameterMap="update_state_params">
+        update APPLICATION_MEMBER set APP_STATUS =#{status} where APP_ID=#{appid}
     </update>
     <!--删除-->
     <update id="deleteApp" parameterType="java.lang.String">

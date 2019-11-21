@@ -93,7 +93,9 @@
                                class="site-active" data-type="tabAdd">申请须知</a></dd>
                         <dd><a href="javascript:;" data-url="user/application_form" data-id="7" data-title="申请信息"
                                class="site-active" data-type="tabAdd">申请信息</a></dd>
-                        <dd><a href="javascript:;" data-url="page/application_state_student" data-id="8" data-title="申请状态"
+                        <dd th:if="${session.type} eq '1'"><a href="javascript:;" data-url="page/application_state_student" data-id="8" data-title="申请状态"
+                               class="site-active" data-type="tabAdd">申请列表</a></dd>
+                        <dd th:if="${session.type} eq '2'"><a href="javascript:;" data-url="page/application_state_teacher" data-id="15" data-title="申请状态"
                                class="site-active" data-type="tabAdd">申请列表</a></dd>
                     </dl>
                 </li>
@@ -138,11 +140,6 @@
                                data-type="tabAdd">确认金额</a>
                         </dd>
                     </dl>
-                </li>
-                <!--test Teacher-->
-                <li th:if="${session.type} eq '2'" class="layui-nav-item">
-                    <a href="javascript:;" data-url="page/application_state_teacher" data-id="15" data-title="老师列表测试"
-                       class="site-active" data-type="tabAdd">老师列表测试</a>
                 </li>
             </ul>
         </div>

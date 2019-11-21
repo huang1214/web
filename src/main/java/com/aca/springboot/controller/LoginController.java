@@ -93,10 +93,10 @@ public class LoginController {
         int usertype = Integer.parseInt(String.valueOf(map.get("usertype")));
         if(returnvalue==4){
             if(usertype == 3){
-                System.out.println("selectBy_ADM_ID_ReturnObject之前这里执行了");
+//                System.out.println("selectBy_ADM_ID_ReturnObject之前这里执行了");
                 Administrator administrator=UserService.selectBy_ADM_ID_ReturnObject(username);
                 session.setAttribute("loginUser",administrator);
-                System.out.println("selectBy_ADM_ID_ReturnObject之后这里执行了");
+//                System.out.println("selectBy_ADM_ID_ReturnObject之后这里执行了");
                 session.setAttribute("type",3);   //3为管理员
             }
             j.setCode(0);

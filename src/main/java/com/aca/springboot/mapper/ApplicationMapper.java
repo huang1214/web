@@ -41,7 +41,7 @@ public interface ApplicationMapper {
     public List<AppComAppLeaderVO> get_application_list_m(Map map);
     int get_application_list_m_count(Map map);
     public int update_state(Map map);
-
+    int update_am_state(Map map);
     int deleteApp(String appid);
     int deleteAppRes(String appid);
     Object selectMoney(Map map);

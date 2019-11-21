@@ -27,19 +27,19 @@ layui.use(['table','layer','form','jquery'], function(){
                 ,{field: 'teacherPrice', title: '老师奖金', minWidth: 50,templet: function(d){
                     return d.teacherPrice/100;}}
                 ,{field: 'awardDate', title: '申请时间', minWidth: 150, sort: true}
-                ,{field: 'status', title: '申请状态', minWidth: 135,templet: function(d){
-                    if (d.status==0) {  // 自定义内容
-                        return "未审核";
-                    } else if (d.status==1) {
-                        return "审核未通过";
-                    }
-                    else if (d.status==2) {
-                        return "审核通过";
-                    }
-                    else if (d.status==3) {
-                        return "项目组长已确认";
-                    }
-                }}
+                // ,{field: 'status', title: '申请状态', minWidth: 135,templet: function(d){
+                //     if (d.status==0) {  // 自定义内容
+                //         return "未审核";
+                //     } else if (d.status==1) {
+                //         return "审核未通过";
+                //     }
+                //     else if (d.status==2) {
+                //         return "审核通过";
+                //     }
+                //     else if (d.status==3) {
+                //         return "项目组长已确认";
+                //     }
+                // }}
                 ,{fixed: 'right', title:'操作', toolbar: '#bar',Width:100}
             ]
         ]
@@ -67,19 +67,19 @@ layui.use(['table','layer','form','jquery'], function(){
                     ,{field: 'teacherPrice', title: '老师奖金', minWidth: 50,templet: function(d){
                         return d.teacherPrice/100;}}
                     ,{field: 'awardDate', title: '申请时间', minWidth: 150, sort: true}
-                    ,{field: 'status', title: '申请状态', minWidth: 135,templet: function(d){
-                        if (d.status==0) {  // 自定义内容
-                            return "未审核";
-                        } else if (d.status==1) {
-                            return "审核未通过";
-                        }
-                        else if (d.status==2) {
-                            return "审核通过";
-                        }
-                        else if (d.status==3) {
-                            return "项目组长已确认";
-                        }
-                    }}
+                    // ,{field: 'status', title: '申请状态', minWidth: 135,templet: function(d){
+                    //     if (d.status==0) {  // 自定义内容
+                    //         return "未审核";
+                    //     } else if (d.status==1) {
+                    //         return "审核未通过";
+                    //     }
+                    //     else if (d.status==2) {
+                    //         return "审核通过";
+                    //     }
+                    //     else if (d.status==3) {
+                    //         return "项目组长已确认";
+                    //     }
+                    // }}
                     ,{fixed: 'right', title:'操作', toolbar: '#bar',Width:100}
                 ]
             ]
@@ -239,20 +239,21 @@ layui.use(['table','layer','form','jquery'], function(){
         $("#application_detail_table").children("tbody").append(rText);
     }
     window.comfirmBtn=function(obj){
-        layer.msg(obj)
+        // layer.msg(obj)
         $.ajax(
             {
                 url: '/app/change?appid=' + obj+'&operation=assure',     // 请求地址,访问controller中的ccc方法, 就是你的控制器, 如 test.com/home/index/index
                 type: 'POST',   // 请求方式
                 success: function (result) {
-                    console.log('success...'); // 请求成功后的回调函数, result 为响应内容
+                    // console.log('success...'); // 请求成功后的回调函数, result 为响应内容
                     if(result.code == 0){
-                        layer.alert('确认成功！');
-                        layer.closeAll();
+                        layer.msg("确认成功",{time:1000},function () {
+                            listTable(type);
+                            layer.closeAll();
+                        });
                     }else {
                         layer.alert('确认失败！');
                     }
-                    table_app.reload();   //表格重载
                 },
                 error: function () {
                     console.log('Send Request Fail..'); // 请求失败时的回调函数

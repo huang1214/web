@@ -221,7 +221,7 @@ public class ApplicationService {
     public JsonMessage get_list_with_page_m(int status, int pageNum, int pageSize) {
 //        PageHelper.startPage(pageNum,pageSize);
         Map map = new HashMap<String, String>();
-        map.put("status", status);
+        map.put("STATUS", status);
         map.put("endIndex", pageNum * pageSize);
         map.put("startIndex", (pageNum - 1) * pageSize + 1);
         JsonMessage result = new JsonMessage();
@@ -283,14 +283,26 @@ public class ApplicationService {
         map.put("appid", appid);
         map.put("status", status);
         map.put("note", note);
-
         int i = applicationMapper.update_state(map);
         if (i == 1) {
             return true;
         }
         return false;
     }
-
+    public boolean update_state_pass(String appid, int status, String note) {
+        Map map = new HashMap();
+        map.put("appid", appid);
+        map.put("status", status);
+        map.put("note", note);
+        int i = applicationMapper.update_state(map);
+        if (i == 1) {
+            map.put("status", 2);
+            if(applicationMapper.update_am_state(map)!=0) {
+                return true;
+            }
+        }
+        return false;
+    }
     public int delete(String appid) {
         return applicationMapper.deleteApp(appid) + applicationMapper.deleteAppRes(appid);
     }

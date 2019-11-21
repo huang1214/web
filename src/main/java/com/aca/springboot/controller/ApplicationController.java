@@ -32,40 +32,40 @@ public class ApplicationController {
     @ResponseBody
     @RequestMapping(value = "/add")
     public Message add(@RequestParam(value = "ctId", required = false) String ctId,
-                            @RequestParam(value = "workName", required = false) String workName,
-                            @RequestParam(value = "awardDate", required = false) String awardDate,
-                            @RequestParam(value = "unit", required = false) String unit,
-                            @RequestParam(value = "level_type", required = false) String level_type,
-                            @RequestParam(value = "prize_type", required = false) String prize_type,
-                            @RequestParam(value = "applicantBankCard", required = false) String applicantBankCard,
-                            @RequestParam(value = "leader", required = false) String leader,
-                            @RequestParam(value = "workBriefIntro", required = false,defaultValue = "") String workBriefIntro,
-                            @RequestParam(value = "tms", required = false,defaultValue = "") String tms,
-                            @RequestParam(value = "ts", required = false,defaultValue = "") String ts,
-                            @RequestParam(value = "certificateImg", required = false) String certificateImg,
-                            @RequestParam(value = "getawardImg", required = false) String getawardImg,
-                            @RequestParam(value = "highLight", required = false) String highLight,
-                            HttpSession session) throws Exception {
+                       @RequestParam(value = "workName", required = false) String workName,
+                       @RequestParam(value = "awardDate", required = false) String awardDate,
+                       @RequestParam(value = "unit", required = false) String unit,
+                       @RequestParam(value = "level_type", required = false) String level_type,
+                       @RequestParam(value = "prize_type", required = false) String prize_type,
+                       @RequestParam(value = "applicantBankCard", required = false) String applicantBankCard,
+                       @RequestParam(value = "leader", required = false) String leader,
+                       @RequestParam(value = "workBriefIntro", required = false, defaultValue = "") String workBriefIntro,
+                       @RequestParam(value = "tms", required = false, defaultValue = "") String tms,
+                       @RequestParam(value = "ts", required = false, defaultValue = "") String ts,
+                       @RequestParam(value = "certificateImg", required = false) String certificateImg,
+                       @RequestParam(value = "getawardImg", required = false) String getawardImg,
+                       @RequestParam(value = "highLight", required = false) String highLight,
+                       HttpSession session) throws Exception {
 
 
         ModelAndView mv = new ModelAndView("redirect:/user/application_form");
         //首先检查权限
         Object user = session.getAttribute("loginUser");
         Object type = session.getAttribute("type");
-        String sno="";
-        Message m=new Message();
+        String sno = "";
+        Message m = new Message();
         Application app = new Application();
-        if(null == user){
+        if (null == user) {
             m.setCode(-1);
             m.setMessage("未登录");
             return m;
-        }else if((int)type==1){
-            sno=((Student)user).getSno();
+        } else if ((int) type == 1) {
+            sno = ((Student) user).getSno();
             app.setStatus("0");
-        }else if((int)type==2){
-            sno=((Teacher)user).getTno();
+        } else if ((int) type == 2) {
+            sno = ((Teacher) user).getTno();
             app.setStatus("1");
-        }else{
+        } else {
             m.setCode(3);
             m.setMessage("当前用户无权限！");
             return m;
@@ -77,33 +77,33 @@ public class ApplicationController {
         String teacherPrice = applicationService.get_price(awardTypeId).get("TEACHER_PRICE").toString();
 
         String appid = StrUtils.timeStamp();
-        if(null==tms||"".equals(tms)){
-            tms=sno+":100";
+        if (null == tms || "".equals(tms)) {
+            tms = sno + ":100";
         }
-        try{
+        try {
 //            System.out.println("tms:"+tms+"\nts:"+ts);
             //插入相关学生
-            applicationService.addMultMember(tms,ts,Integer.parseInt(studentPrice)*100,Integer.parseInt(teacherPrice)*100,awardDate,appid);
+            applicationService.addMultMember(tms, ts, Integer.parseInt(studentPrice) * 100, Integer.parseInt(teacherPrice) * 100, awardDate, appid);
 //            System.out.println(tms);
-        }catch (Exception e){
+        } catch (Exception e) {
             m.setCode(5);
             m.setMessage(e.getMessage());
             e.printStackTrace();
             return m;
         }
-        if(null!=tms&&tms.length()>=1){
+        if (null != tms && tms.length() >= 1) {
             String[] split = tms.split(",");
-            for(String t:split){
-                if(t.length()>0){
-                    leader=t.split(":")[0];
+            for (String t : split) {
+                if (t.length() > 0) {
+                    leader = t.split(":")[0];
                     break;
                 }
             }
-        }else{
-            leader=sno;
+        } else {
+            leader = sno;
         }
-        if(leader.length()<=0){
-            leader=sno;
+        if (leader.length() <= 0) {
+            leader = sno;
         }
         try {
             app.setAppid(appid);
@@ -169,31 +169,31 @@ public class ApplicationController {
 
     @ResponseBody
     @RequestMapping("/list")
-    public JsonMessage get_list(@RequestParam(value = "page", required = false,defaultValue = "1") int pageNum,
-                                @RequestParam(value = "limit", required = false,defaultValue = "10") int pageSize,
-                                @RequestParam(value = "type",required = false,defaultValue = "1")int rtype,
+    public JsonMessage get_list(@RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
+                                @RequestParam(value = "limit", required = false, defaultValue = "10") int pageSize,
+                                @RequestParam(value = "type", required = false, defaultValue = "1") int rtype,
                                 HttpSession session) {
         //首先检查权限
 //        System.out.println("trype:"+rtype+"\npageNum:"+pageNum+"\nsize:"+pageSize);
         Object user = session.getAttribute("loginUser");
         Object type = session.getAttribute("type");
-        String sno="";
-        if(null == user){
-            JsonMessage j=new JsonMessage();
+        String sno = "";
+        if (null == user) {
+            JsonMessage j = new JsonMessage();
             j.setCode(-1);
             j.setMsg("未登录");
             return j;
-        }else if((int)type == 1){
-            sno=((Student)user).getSno();
-        }else if((int)type == 2){
-            sno =((Teacher)user).getTno();
-        }else{
-            JsonMessage j=new JsonMessage();
+        } else if ((int) type == 1) {
+            sno = ((Student) user).getSno();
+        } else if ((int) type == 2) {
+            sno = ((Teacher) user).getTno();
+        } else {
+            JsonMessage j = new JsonMessage();
             j.setCode(-2);
             j.setMsg("位置错误，请重新登录");
             return j;
         }
-        return applicationService.get_list_json(sno, pageNum, pageSize,rtype);
+        return applicationService.get_list_json(sno, pageNum, pageSize, rtype);
     }
 
 
@@ -215,14 +215,14 @@ public class ApplicationController {
         //首先检查权限
         Object user = session.getAttribute("loginUser");
         Object type1 = session.getAttribute("type");
-        String sno="";
-        if(null == user){
-            JsonMessage j=new JsonMessage();
+        String sno = "";
+        if (null == user) {
+            JsonMessage j = new JsonMessage();
             j.setCode(-1);
             j.setMsg("未登录");
             return j;
-        }else if((int)type1 == 1||(int)type1 == 2){
-            JsonMessage j=new JsonMessage();
+        } else if ((int) type1 == 1 || (int) type1 == 2) {
+            JsonMessage j = new JsonMessage();
             j.setCode(3);
             j.setMsg("权限不足");
             return j;
@@ -240,27 +240,29 @@ public class ApplicationController {
      */
     @ResponseBody
     @RequestMapping("/detail")
-    public Message get_detail(@RequestParam(value = "appid", required = true, defaultValue = "1") String appid,HttpSession session
+    public Message get_detail(@RequestParam(value = "appid", required = true, defaultValue = "1") String appid, HttpSession session
     ) {
         Object user = session.getAttribute("loginUser");
         Object type = session.getAttribute("type");
-        String sno="";
-        if(null == user){
-            Message j=new Message();
+        String sno = "";
+        if (null == user) {
+            Message j = new Message();
             j.setCode(-1);
             j.setMessage("未登录");
             return j;
-        }else if((int)type == 1){
-            sno=((Student)user).getSno();
-        }else if((int)type == 2){
-            sno =((Teacher)user).getTno();
-        }else{
-            Message j=new Message();
+        } else if ((int) type == 1) {
+            sno = ((Student) user).getSno();
+        } else if ((int) type == 2) {
+            sno = ((Teacher) user).getTno();
+        } else if ((int) type == 3) {
+            sno = ((Administrator) user).getAdm_id();
+        } else {
+            Message j = new Message();
             j.setCode(-2);
             j.setMessage("未知错误，请重新登录");
             return j;
         }
-        return new Message(0, "成功", applicationService.get_detail(appid,sno));
+        return new Message(0, "成功", applicationService.get_detail(appid, sno));
     }
 
     @ResponseBody
@@ -273,66 +275,76 @@ public class ApplicationController {
         //首先检查权限
         Object user = session.getAttribute("loginUser");
         Object type = session.getAttribute("type");
-        String sno="";
-        if(null == user){
-            Message j=new Message();
+        String sno = "";
+        if (null == user) {
+            Message j = new Message();
             j.setCode(-1);
             j.setMessage("未登录");
             return j;
         }
         if ("refuse".equals(op)) {
-            if((int)type!=3){
-                Message j=new Message();
+            if ((int) type != 3) {
+                Message j = new Message();
                 j.setCode(3);
                 j.setMessage("权限不足");
                 return j;
             }
             re = applicationService.update_state(appid, 2, note);
         } else if ("pass".equals(op)) {
-            if((int)type!=3){
-                Message j=new Message();
+            if ((int) type != 3) {
+                Message j = new Message();
                 j.setCode(3);
                 j.setMessage("权限不足");
                 return j;
             }
-            re = applicationService.update_state(appid, 3, note);
+            re = applicationService.update_state_pass(appid, 3, note);
         } else if ("assure".equals(op)) {
-            if((int)type!=2){
-                Message j=new Message();
+            if ((int) type != 2) {
+                Message j = new Message();
                 j.setCode(3);
                 j.setMessage("权限不足");
                 return j;
             }
             re = applicationService.update_state(appid, 1, note);
+        }else if("refresh".equals(op)){
+            Message j = new Message();
+            if ((int) type != 3) {
+                j.setCode(3);
+                j.setMessage("权限不足");
+                return j;
+            }
+            j.setCode(-1);
+            j.setMessage("待开放");
+            return j;
         }
 
         if (re)
             return new Message(0, "成功", null);
-        return new Message(-1, "error", null);
+        return new Message(-1, "请重试！", null);
     }
 
     @ResponseBody
     @PostMapping("/delete")
-    public Message de(@RequestParam(value = "appid",required = true)String appid,
-                      HttpSession session){
+    public Message de(@RequestParam(value = "appid", required = true) String appid,
+                      HttpSession session) {
         //首先检查权限
         Object user = session.getAttribute("loginUser");
         Object type = session.getAttribute("type");
-        Message m=new Message();
-        if(null == user){
+        Message m = new Message();
+        if (null == user) {
             m.setCode(-1);
             m.setMessage("未登录");
             return m;
-        }else if((int)type!=3){
+        } else if ((int) type != 3) {
             m.setCode(3);
             m.setMessage("权限不足");
             return m;
         }
-        try{
+        try {
             m.setData(applicationService.delete(appid));
             m.setCode(0);
             m.setMessage("成功");
-        }catch (Exception e){
+        } catch (Exception e) {
             m.setCode(-1);
             m.setMessage("失败");
             e.printStackTrace();
