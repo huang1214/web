@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>老师管理</title>
-    <link rel="stylesheet" href="asserts/js/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="https://www.layuicdn.com/layui/css/layui.css">
+    <script src="https://www.layuicdn.com/layui/layui.js"></script>
     <script type="text/javascript" src="./asserts/js/jquery-3.2.1.slim.min.js"></script>
-
     <style>
         #teacher_edit{
             display: none;
@@ -46,6 +46,7 @@
                 </div>
             </div>
         </div>
+<!--        TODO 可能是接口的原因，这里无法模糊查询了-->
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">所属部门：</label>
@@ -86,8 +87,6 @@
     <button class="layui-btn layui-btn-danger layui-btn-xs layui-btn-disabled" lay-event="dele" name="dele_dept">删除</button>
 </script>
 
-<script src="asserts/js/jquery-1.12.4.js"></script>
-<script src="asserts/js/layui/layui.all.js"></script>
 
 <script>
     layui.define(['table','layer','form'], function(){
@@ -181,9 +180,10 @@
             reload: function () {
                 var tname = $('#tname').val();
                 var tsex = $ ('#tsex').val();
-                var dname = $('#dname').val();
-                var dcollege = $('#dcollege').val();
-                var ttitle = $('#ttitle').val();
+                var dname = $('#dept_name option:selected') .val();
+                var dcollege = $('#college option:selected') .val();
+                var ttitle = $('#all_Ttitle option:selected') .val();
+                //console.log(ttitle);
                 //执行重载
                 console.log(tsex);
                 table.reload('tea', {   //demo2为表格的id名
