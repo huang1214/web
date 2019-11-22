@@ -123,16 +123,16 @@
                 teacher.tname like '%'||#{tname}||'%'
             </if>
             <if test="tsex.length()!=0">
-                teacher.tsex like '%'||#{tsex}||'%'
+                and teacher.tsex like '%'||#{tsex}||'%'
             </if>
             <if test="dname.length()!=0">
-                dept.dname like '%'||#{dname}||'%'
+                and dept.dname like '%'||#{dname}||'%'
             </if>
             <if test="dcollege.length()!=0">
-                dept.dcollege like '%'||#{dcollege}||'%'
+                and dept.dcollege like '%'||#{dcollege}||'%'
             </if>
             <if test="ttitle.length()!=0">
-                teacher.ttitle like '%'||#{ttitle}||'%'
+                and teacher.ttitle like '%'||#{ttitle}||'%'
             </if>
         </where>
     </select>
