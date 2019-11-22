@@ -183,6 +183,13 @@ layui.use(['table','layer','form','jquery'], function(){
                 success: function (result) {
                     if(result.code==0){
                         console.log(result)
+                        var elt = document.createElement('a');
+                        elt.setAttribute('href', result.data[0].url);
+                        elt.setAttribute('download',result.data[0].fileName);
+                        elt.style.display = 'none';
+                        document.body.appendChild(elt);
+                        elt.click();
+                        document.body.removeChild(elt);
                     }else{
                         layer.msg(result.message);
                     }

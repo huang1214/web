@@ -258,7 +258,8 @@ public class ApplicationService {
         result.setCount(1);
         List list=new ArrayList();
         Map map1=new HashMap();
-        map1.put("fileName","随便什么文件啦");
+        String pacFileName=year+(type==1?"证书":(type==2?"参赛报告":"花絮"))+".zip";
+        map1.put("fileName",pacFileName);
         result.setData(new JSONArray(list));
         if("count".equals(op)){
             map1.put("fileCount",applicationMapper.get_application_file_count());
@@ -266,7 +267,6 @@ public class ApplicationService {
             String url="";
             List<AppComAppLeaderVO> application_list_m = applicationMapper.get_application_file();
             //TODO 获得打包文件下载地址 url
-            String pacFileName=year+(type==1?"证书":(type==2?"参赛报告":"花絮"))+".zip";
             List<FileNameVO> files=new ArrayList<>();
             String path="";
             String realName="";
@@ -316,7 +316,7 @@ public class ApplicationService {
                 }
                 out.close();
                 System.out.println("压缩完成.");
-                map1.put("url",path+pacFileName);
+                map1.put("url","/2019-2/"+(type==1?"cert":(type==2?"doc":"package"))+"/"+pacFileName);
             } catch (Exception e) {
                 e.printStackTrace();
                 result.setCode(-1);
