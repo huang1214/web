@@ -1,6 +1,7 @@
 package com.aca.springboot.service;
 
 import com.aca.springboot.utils.StrUtils;
+import com.aca.springboot.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,12 +15,8 @@ import java.io.File;
  */
 @Service
 public class CommenService {
-    @Value("${web.certFilePath}")
-    private String certPath; //文件路径
-    @Value("${web.docFilePath}")
-    private String docPath; //文件路径
-    @Value("${web.packageFilePath}")
-    private String packagePath; //文件路径
+    @Value("${web.basePath}")
+    private String basePath; //文件路径
 
     public String upoad(MultipartFile file, int type) throws Exception {
         //重命名
@@ -27,6 +24,9 @@ public class CommenService {
         String suffixName = filename.substring(filename.lastIndexOf("."));
         String rename = StrUtils.timeStamp() + StrUtils.randomNum(true, 3) + suffixName;
         String serverPath = "";
+        String certPath= basePath+"/"+TimeUtil.getFormatYYYY()+"/cert/";
+        String docPath=basePath+"/"+TimeUtil.getFormatYYYY()+"/doc/";
+        String packagePath=basePath+"/"+TimeUtil.getFormatYYYY()+"/package/";
         switch (type) {
             case 1:
                 serverPath = certPath + rename;

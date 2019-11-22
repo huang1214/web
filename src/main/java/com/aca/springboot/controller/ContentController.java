@@ -19,7 +19,6 @@ public class ContentController {
     public String state_t(){
         return "user/application_state_teacher";
     }
-
     @RequestMapping("/appFileManage")
     public String aaaa(){
         return "admin/appFileManage";

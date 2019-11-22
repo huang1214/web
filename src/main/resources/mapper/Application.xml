@@ -5,7 +5,6 @@
 <!--        add(comName,applicantId,teacher1Id,teacher2Id,unit,leader,teamNum,team,studentPrice,teacherPrice,
         awardTypeId,awardDate,applicantBankCard,workName,workBriefIntro)-->
 <mapper namespace="com.aca.springboot.mapper.ApplicationMapper">
-
     <!--简写了-->
     <resultMap id="ACALVO" type="com.aca.springboot.vo.AppComAppLeaderVO">
         <id property="appid" column="APPID"></id>
@@ -73,6 +72,9 @@
         <result property="workBriefIntro" column="WORKBRIEFINTRO"></result>
         <result property="status" column="STATUS"></result>
         <result property="note" column="NOTE"></result>
+        <result property="certificateImg" column="CERTIFICATEIMG"></result>
+        <result property="getawardImg" column="GETAWARDIMG"></result>
+        <result property="highLight" column="HIGHLIGHT"></result>
         <association property="com" javaType="com.aca.springboot.entities.Competition">
             <id property="ctid" column="c_ctid"/>
             <result property="ctname" column="ctname"/>
@@ -167,7 +169,7 @@
         select
         A.Appid,A.CTID,A.APPLICANTID,
         A.UNIT,A.LEADER,A.STUDENTPRICE,A.TEACHERPRICE,A.AWARDTYPEID,
-        A.AWARDDATE,A.WORKNAME,A.WORKBRIEFINTRO,A.STATUS,A.NOTE,
+        A.AWARDDATE,A.WORKNAME,A.WORKBRIEFINTRO,A.STATUS,A.NOTE,A.CERTIFICATEIMG,A.GETAWARDIMG,A.HIGHLIGHT,
         C.CTID c_ctid,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE,C.REFERENCE_PAPER,
         S1.SNO S1_SNO,S1.SNAME S1_SNAME,S2.SNO S2_SNO,S2.SNAME S2_SNAME
 
@@ -197,7 +199,7 @@
     select
       A.Appid,A.CTID,A.APPLICANTID,
       A.UNIT,A.LEADER,A.STUDENTPRICE,A.TEACHERPRICE,A.AWARDTYPEID,
-      A.AWARDDATE,A.WORKNAME,A.WORKBRIEFINTRO,A.STATUS,A.NOTE,
+      A.AWARDDATE,A.WORKNAME,A.WORKBRIEFINTRO,A.STATUS,A.NOTE,A.CERTIFICATEIMG,A.GETAWARDIMG,A.HIGHLIGHT,
       C.CTID c_ctid,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE,C.REFERENCE_PAPER,
       S1.SNO S1_SNO,S1.SNAME S1_SNAME,S2.SNO S2_SNO,S2.SNAME S2_SNAME
 
@@ -215,8 +217,8 @@
     </select>
 
     <!--wf文件-->
-    <!--<parameterMap id="get_app_file" type="java.util.Map">-->
-    <!--</parameterMap>-->
+    <parameterMap id="get_app_file" type="java.util.Map">
+    </parameterMap>
     <select id="get_application_file"  resultMap="ACALVO">
     select
       A.Appid,A.CTID,A.APPLICANTID,
@@ -227,8 +229,8 @@
       from (select * from application where STATUS=3 order by APPID desc) A LEFT JOIN
          (select * from com_table ) C ON A.ctid=C.ctid
     </select>
-    <select id="get_application_file_count" resultType="java.lang.Integer">
-        select count(*) from application where STATUS=3
+    <select id="get_application_file_count" parameterMap="get_app_file" resultType="java.lang.Integer">
+        select count(*) from application where STATUS=3 and APPID>#{start} and APPID&lt;#{end}
     </select>
 
   <!--取得detail-->

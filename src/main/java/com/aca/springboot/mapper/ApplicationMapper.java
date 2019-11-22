@@ -40,7 +40,7 @@ public interface ApplicationMapper {
     List<AppComAppLeaderVO> get_application_list_m(Map map);
     List<AppComAppLeaderVO> get_application_file();
     int get_application_list_m_count(Map map);
-    int get_application_file_count();
+    int get_application_file_count(Map map);
     int update_state(Map map);
     int update_am_state(Map map);
     int deleteApp(String appid);

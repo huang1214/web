@@ -44,6 +44,12 @@ public class TimeUtil {
         return format;
     }
 
+    public static String getFormatYYYY(){
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy");
+        String format = sdf.format(new Date());
+        return format;
+    }
+
     public static String getFormatyMd(Date date){
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         String format = sdf.format(date);

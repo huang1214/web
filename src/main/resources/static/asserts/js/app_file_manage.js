@@ -1,44 +1,40 @@
-var type=1;
+var type=1,year=2019,years;
 layui.use(['table','layer','form','jquery'], function(){
     var table = layui.table;
     var layer = layui.layer;
     var form = layui.form;
     var $ = layui.jquery;
     //显示表单状态基本信息
-    table.render({
-        elem: '#application_state'
-        ,height: 380
-        ,url: '/app/list_file'//数据接口
-        ,toolbar:'#toolbar_topOp'
-        ,page: true //开启分页
-        ,where:{'type':1}
-        ,loading: true
-        ,cols: [
-            [
-                {field: 'fileDes', title: '文件描述', width:170, sort: true,fixed: 'left'}
-                ,{field: 'fileCount', title: '文件数量', minWidth:200,templet: '<div>{{d.fileCount}}</div>'}
-                ,{field: 'fileName', title: '文件数量', minWidth:200,templet: '<div>{{d.fileName}}</div>'}
-                ,{fixed: 'right', title:'操作', toolbar: '#bar'}
-            ]
-        ]
-    });
-    listTable=function(op){
+    listTable=function(){
+        console.log(type,year);
         table.render({
             elem: '#application_state'
             ,height: 380
             ,url: '/app/list_file'//数据接口
             ,toolbar:'#toolbar_topOp'
             ,page: true //开启分页
-            ,where:{'type':op}
+            ,where:{'type':type,'year':year}
             ,loading: true
             ,cols: [
                 [
                     {field: 'fileDes', title: '文件描述', width:170, sort: true,fixed: 'left'}
                     ,{field: 'fileCount', title: '文件数量', minWidth:200,templet: '<div>{{d.fileCount}}</div>'}
-                    ,{field: 'fileName', title: '文件数量', minWidth:200,templet: '<div>{{d.fileName}}</div>'}
+                    ,{field: 'fileName', title: '文件名', minWidth:200,templet: '<div>{{d.fileName}}</div>'}
                     ,{fixed: 'right', title:'操作', toolbar: '#bar'}
                 ]
             ]
+            ,done:function (res, curr, count) {
+                var tText='';
+                for(var a=0;a<years.length;a++){
+                    tText+= "<option value='"+years[a]+"'>"+years[a]+"</option>"
+                }
+                $("#chooseYearBtn").empty();
+                $("#chooseYearBtn").append(tText);
+                form.val('formTest',{
+                    chooseYearBox:year
+                });
+                form.render();
+            }
         });
     }
     //表格：“表单状态基本信息” 实例的监听工具条
@@ -48,6 +44,8 @@ layui.use(['table','layer','form','jquery'], function(){
         // console.log(obj)
         if(layEvent == 'download'){
             downloadB();
+        }else if(layEvent=='clean'){
+            cleanB();
         }
     });
     window.setTableValue=function(result){
@@ -172,17 +170,15 @@ layui.use(['table','layer','form','jquery'], function(){
     }
     window.downloadB=function(){
         layer.load(1, {time: 2*1000});
-        var year=$("#chooseYearBtn").val();
-        var type=$("#chooseTypeBtn").val();
-        console.log(year,type)
-
         $.ajax(
             {
                 url: '/app/list_file?op=download&type=' + type+'&year='+year,
                 type: 'POST',
                 success: function (result) {
+                    console.log(result)
+                    layer.closeAll();
                     if(result.code==0){
-                        console.log(result)
+                        // console.log(result)
                         var elt = document.createElement('a');
                         elt.setAttribute('href', result.data[0].url);
                         elt.setAttribute('download',result.data[0].fileName);
@@ -191,7 +187,27 @@ layui.use(['table','layer','form','jquery'], function(){
                         elt.click();
                         document.body.removeChild(elt);
                     }else{
-                        layer.msg(result.message);
+                        layer.alert(result.msg);
+                    }
+                },
+                error: function () {
+                    layer.msg("服务器出了点问题，请稍后重试");
+                }
+            }
+        );
+    }
+    window.cleanB=function(){
+        layer.load(1, {time: 5*1000});
+        $.ajax(
+            {
+                url: '/app/list_file?op=delete&type=' + type+'&year='+year,
+                type: 'POST',
+                success: function (result) {
+                    if(result.code==0){
+                        layer.closeAll();
+                        layer.msg("该文件夹已清空！")
+                    }else{
+                        layer.msg(result.msg);
                     }
                 },
                 error: function () {
@@ -202,10 +218,48 @@ layui.use(['table','layer','form','jquery'], function(){
     }
     form.on('select(myselect)', function (data) {
         type=data.value;
-        listTable(type);
+        listTable();
         form.val('formTest',{
             chooseBox:type
         })
     })
-    form.render();
+    form.on('select(myselectyear)', function (data) {
+        year=data.value;
+        listTable();
+        form.val('formTest',{
+            chooseYearBox:year
+        })
+    })
+    window.setVal=function(d){
+        year=d.data[0];
+        years=d.data;
+        listTable();
+        // var tText='';
+        // for(var a=0;a<d.data.length;a++){
+        //     tText+= "<option value='"+d.data[a]+"'>"+d.data[a]+"</option>"
+        // }
+        // $("#chooseYearBtn").empty();
+        // $("#chooseYearBtn").append(tText);
+        form.render();
+    };
+    var index = layer.load(2, {time: 10*1000});
+    {
+        $.ajax(
+            {
+                url: '/app/list_file_dir',
+                type: 'POST',
+                success: function (result) {
+                    if(result.code==0){
+                        layer.closeAll();
+                        setVal(result);
+                    }else{
+                        layer.msg(result.message);
+                    }
+                },
+                error: function () {
+                    layer.msg("服务器出了点问题，请稍后重试");
+                }
+            }
+        );
+    }
 });

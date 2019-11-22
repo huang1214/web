@@ -231,7 +231,6 @@ public class ApplicationController {
     }
     /*这以上是机智的我写的*/
 
-    /*这以下是机智的我写的*/
     @ResponseBody
     @RequestMapping("/list_file")
     public JsonMessage get_list_file(@RequestParam(value = "type", required = false, defaultValue = "1") int type,
@@ -239,24 +238,31 @@ public class ApplicationController {
                                      @RequestParam(value = "op",required = false,defaultValue = "count")String op,
                                      HttpSession session) {
         //首先检查权限
-//        Object user = session.getAttribute("loginUser");
-//        Object type1 = session.getAttribute("type");
-//        String sno = "";
-//        if (null == user) {
-//            JsonMessage j = new JsonMessage();
-//            j.setCode(-1);
-//            j.setMsg("未登录");
-//            return j;
-//        } else if ((int) type1 == 1 || (int) type1 == 2) {
-//            JsonMessage j = new JsonMessage();
-//            j.setCode(3);
-//            j.setMsg("权限不足");
-//            return j;
-//        }
+        Object user = session.getAttribute("loginUser");
+        Object type1 = session.getAttribute("type");
+        String sno = "";
+        if (null == user) {
+            JsonMessage j = new JsonMessage();
+            j.setCode(-1);
+            j.setMsg("未登录");
+            return j;
+        } else if ((int) type1 == 1 || (int) type1 == 2) {
+            JsonMessage j = new JsonMessage();
+            j.setCode(3);
+            j.setMsg("权限不足");
+            return j;
+        }
+        if("delete".equals(op)){
+            return applicationService.clear_file_dir(type,year);
+        }
         return applicationService.get_list_file(type,year,op);
     }
-    /*这以上是机智的我写的*/
 
+    @ResponseBody
+    @RequestMapping("/list_file_dir")
+    public Message get_list_file_dir() {
+        return applicationService.get_file_dir();
+    }
 
     /**
      * 获取app详情

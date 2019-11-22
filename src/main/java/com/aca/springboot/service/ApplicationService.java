@@ -3,6 +3,7 @@ package com.aca.springboot.service;
 import com.aca.springboot.entities.Application;
 import com.aca.springboot.entities.ApplicationMember;
 import com.aca.springboot.entities.JsonMessage;
+import com.aca.springboot.entities.Message;
 import com.aca.springboot.mapper.ApplicationMapper;
 import com.aca.springboot.vo.AppComAppLeaderVO;
 import com.aca.springboot.vo.AppComDetailVO;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.util.*;
@@ -28,12 +30,8 @@ import java.util.zip.ZipOutputStream;
 public class ApplicationService {
     @Resource
     ApplicationMapper applicationMapper;
-    @Value("${web.certFilePath}")
-    private String certPath; //文件路径
-    @Value("${web.docFilePath}")
-    private String docPath; //文件路径
-    @Value("${web.packageFilePath}")
-    private String packagePath; //文件路径
+    @Value("${web.basePath}")
+    private String basePath; //文件路径
     /**
      * 插入申请表数据
      */
@@ -129,7 +127,8 @@ public class ApplicationService {
             if (temp != 100)
                 throw new Exception("学生奖金占比总和须为100");
         }
-        temp = 0;isEmpty=true;
+        temp = 0;
+        isEmpty = true;
         split = ts.split(",");
         for (int i = 0; i < split.length; i++) {
             if (split[i].length() > 0) {
@@ -143,7 +142,7 @@ public class ApplicationService {
                 }
                 list1.add(new ApplicationMember(appid, id, "2", i + 1 + "", proportion, nowMount));
                 temp += proportion;
-                isEmpty=false;
+                isEmpty = false;
             }
         }
         if (!isEmpty) {
@@ -250,73 +249,87 @@ public class ApplicationService {
     }
     /*这以上是机智的我写的*/
 
-    public JsonMessage get_list_file(int type,String year,String op) {
+    public JsonMessage get_list_file(int type, String year, String op) {
         Map map = new HashMap<String, String>();
         JsonMessage result = new JsonMessage();
         result.setCode(0);
         result.setMsg("成功");
         result.setCount(1);
-        List list=new ArrayList();
-        Map map1=new HashMap();
-        String pacFileName=year+(type==1?"证书":(type==2?"参赛报告":"花絮"))+".zip";
-        map1.put("fileName",pacFileName);
+        List list = new ArrayList();
+        Map map1 = new HashMap();
+        String pacFileName = year + (type == 1 ? "证书" : (type == 2 ? "参赛报告" : "花絮")) + ".zip";
+        map1.put("fileName", pacFileName);
         result.setData(new JSONArray(list));
-        if("count".equals(op)){
-            map1.put("fileCount",applicationMapper.get_application_file_count());
-        }else{
-            String url="";
+        String certPath= basePath+"/"+year+"/cert/";
+        String docPath=basePath+"/"+year+"/doc/";
+        String packagePath=basePath+"/"+year+"/package/";
+        if ("count".equals(op)) {
+            map.put("start",year);
+            map.put("end",(Integer.parseInt(year)+1)+"");
+            map1.put("fileCount", applicationMapper.get_application_file_count(map));
+        } else {
+            String url = "";
             List<AppComAppLeaderVO> application_list_m = applicationMapper.get_application_file();
             //TODO 获得打包文件下载地址 url
-            List<FileNameVO> files=new ArrayList<>();
-            String path="";
-            String realName="";
-            String pacName="";
-            if(type==1){
-                path=certPath;
-                for(AppComAppLeaderVO acal:application_list_m){
-                    realName=acal.getCertificateImg();
-                    FileNameVO temp=new FileNameVO(path+realName);
-                    pacName=acal.getCompetion().getCtname()+"-"+acal.getWorkName()+"-"+acal.getAppid()+"."+realName.substring(realName.lastIndexOf(".")+1);
+            List<FileNameVO> files = new ArrayList<>();
+            String path = "";
+            String realName = "";
+            String pacName = "";
+            if (type == 1) {
+                path = certPath;
+//                File testFile=new File(path);
+//                if(testFile.list().length==0){
+//                    result.setCode(-1);
+//                    result.setMsg("该文件夹已被清空");
+//                    return result;
+//                }
+                for (AppComAppLeaderVO acal : application_list_m) {
+                    realName = acal.getCertificateImg();
+                    FileNameVO temp = new FileNameVO(path + realName);
+                    pacName = acal.getCompetion().getCtname() + "-" + acal.getWorkName() + "-" + acal.getAppid() + "." + realName.substring(realName.lastIndexOf(".") + 1);
                     temp.setNewName(pacName);
                     files.add(temp);
                 }
-            }else if(type==2){
-                path=docPath;
-                for(AppComAppLeaderVO acal:application_list_m){
-                    realName=acal.getGetawardImg();
-                    FileNameVO temp=new FileNameVO(path+realName);
-                    pacName=acal.getCompetion().getCtname()+"-"+acal.getWorkName()+"-"+acal.getAppid()+"."+realName.substring(realName.lastIndexOf(".")+1);
+            } else if (type == 2) {
+                path = docPath;
+                for (AppComAppLeaderVO acal : application_list_m) {
+                    realName = acal.getGetawardImg();
+                    FileNameVO temp = new FileNameVO(path + realName);
+                    pacName = acal.getCompetion().getCtname() + "-" + acal.getWorkName() + "-" + acal.getAppid() + "." + realName.substring(realName.lastIndexOf(".") + 1);
                     temp.setNewName(pacName);
                     files.add(temp);
                 }
-            }else{
-                path=packagePath;
-                for(AppComAppLeaderVO acal:application_list_m){
-                    realName=acal.getHighLight();
-                    FileNameVO temp=new FileNameVO(path+realName);
-                    pacName=acal.getCompetion().getCtname()+"-"+acal.getWorkName()+"-"+acal.getAppid()+"."+realName.substring(realName.lastIndexOf(".")+1);
+            } else {
+                path = packagePath;
+                for (AppComAppLeaderVO acal : application_list_m) {
+                    realName = acal.getHighLight();
+                    FileNameVO temp = new FileNameVO(path + realName);
+                    pacName = acal.getCompetion().getCtname() + "-" + acal.getWorkName() + "-" + acal.getAppid() + "." + realName.substring(realName.lastIndexOf(".") + 1);
                     temp.setNewName(pacName);
                     files.add(temp);
                 }
             }
-            File pacFile=new File(path+pacFileName);
-            byte[] buf=new byte[1024];
+            File pacFile = new File(path + pacFileName);
+            byte[] buf = new byte[1024];
             try {
-                ZipOutputStream out=new ZipOutputStream(new FileOutputStream(pacFile));
-                for(int i=0;i<files.size();i++){
-                    FileInputStream in=new FileInputStream(files.get(i));
+                ZipOutputStream out = new ZipOutputStream(new FileOutputStream(pacFile));
+                for (int i = 0; i < files.size(); i++) {
+                    FileInputStream in = new FileInputStream(files.get(i));
                     out.putNextEntry(new ZipEntry(files.get(i).getNewName()));
                     System.out.println(files.get(i).getNewName());
                     int len;
-                    while((len=in.read(buf))>0){
-                        out.write(buf,0,len);
+                    while ((len = in.read(buf)) > 0) {
+                        out.write(buf, 0, len);
                     }
                     out.closeEntry();
                     in.close();
                 }
                 out.close();
                 System.out.println("压缩完成.");
-                map1.put("url","/2019-2/"+(type==1?"cert":(type==2?"doc":"package"))+"/"+pacFileName);
+                map1.put("url", "/" + year + "/" + (type == 1 ? "cert" : (type == 2 ? "doc" : "package")) + "/" + pacFileName);
+            }catch (FileNotFoundException fileNotFoundException) {
+                result.setCode(-1);
+                result.setMsg("该文件夹已被清空！");
             } catch (Exception e) {
                 e.printStackTrace();
                 result.setCode(-1);
@@ -328,19 +341,56 @@ public class ApplicationService {
         return result;
     }
 
-
+    public Message get_file_dir() {
+        Message message=new Message();
+        File dir=new File(basePath);
+        String[] list = dir.list();
+        message.setMessage("成功");
+        message.setCode(0);
+        message.setData(list);
+        return message;
+    }
+    public JsonMessage clear_file_dir(int type, String year) {
+        JsonMessage message=new JsonMessage();
+        String dirPath=basePath+"/"+year+(type==1?"/cert/":(type==2?"/doc/":"/package/"));
+        File dir=new File(dirPath);
+        try {
+            if(!dir.exists()){
+                message.setMsg("该文件夹不存在");
+                message.setCode(-1);
+            }else if(!dir.isDirectory()){
+                message.setMsg("此路径非文件夹");
+                message.setCode(-1);
+            }else{
+                String[] tempList = dir.list();
+                File temp;
+                for (int i = 0; i < tempList.length; i++) {
+                    temp = new File(dirPath+tempList[i]);
+                    if (temp.isFile()) {
+                        temp.delete();
+                    }
+                }
+                message.setMsg("成功");
+                message.setCode(0);
+            }
+        }catch (Exception e){
+            message.setMsg("文件操作出现错误，请重试");
+            message.setCode(-1);
+        }
+        return message;
+    }
     /**
      * 获取申请列表
      *
      * @return
      */
-    public JsonMessage get_list_json(String sno, int pageNum, int pageSize,int type) {
+    public JsonMessage get_list_json(String sno, int pageNum, int pageSize, int type) {
         PageHelper.startPage(pageNum, pageSize);
         Map map = new HashMap<String, String>();
         map.put("SNO", sno);
         map.put("endIndex", pageNum * pageSize);
         map.put("startIndex", (pageNum - 1) * pageSize + 1);
-        map.put("TEMPSTATUS",type);
+        map.put("TEMPSTATUS", type);
         JsonMessage result = new JsonMessage();
         List<AppComAppLeaderVO> application_list = applicationMapper.get_application_list(map);
         for (int i = 0; i < application_list.size(); i++) {
@@ -361,11 +411,11 @@ public class ApplicationService {
      * @param appid
      * @return
      */
-    public AppComDetailVO get_detail(String appid,String sno) {
+    public AppComDetailVO get_detail(String appid, String sno) {
         Map map = new HashMap<String, String>();
         map.put("APPID", appid);
         AppComDetailVO application_detail = applicationMapper.get_application_detail(map);
-        if(sno.equals(application_detail.getApplicantId()))
+        if (sno.equals(application_detail.getApplicantId()))
             application_detail.setRes(1);
         return application_detail;
     }
@@ -381,6 +431,7 @@ public class ApplicationService {
         }
         return false;
     }
+
     public boolean update_state_pass(String appid, int status, String note) {
         Map map = new HashMap();
         map.put("appid", appid);
@@ -389,12 +440,13 @@ public class ApplicationService {
         int i = applicationMapper.update_state(map);
         if (i == 1) {
             map.put("status", 2);
-            if(applicationMapper.update_am_state(map)!=0) {
+            if (applicationMapper.update_am_state(map) != 0) {
                 return true;
             }
         }
         return false;
     }
+
     public int delete(String appid) {
         return applicationMapper.deleteApp(appid) + applicationMapper.deleteAppRes(appid);
     }
