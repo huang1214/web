@@ -6,7 +6,7 @@
     <link rel="stylesheet" th:href="@{/asserts/js/layui/css/layui.css}" media="all">
     <script th:src="@{/asserts/js/jquery-1.12.4.js}"></script>
     <script th:src="@{/asserts/js/layui/layui.js}"></script>
-    <script th:src="@{/asserts/js/app_state_teacher.js}"></script>
+    <script th:src="@{/asserts/js/app_file_manage.js}"></script>
     <style>
         .layui-input:focus, .layui-textarea:focus {
             border-color: #5FB878 !important
@@ -20,30 +20,29 @@
 <body>
 <div class="form-data">
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
-        <legend>申请状态表</legend>
+        <legend>文件管理</legend>
     </fieldset>
     <table class="layui-hide" id="application_state" lay-filter="application_operate"></table>
-    <table class="layui-hide" id="application_state_detail" lay-filter="application_state_detail"></table>
-</div>
-<div id="layer_application_detail">
-    <table class="layui-table" id="application_detail_table" lay-filter="application_detail" lay-skin="line">
-        <tbody>
-
-        </tbody>
-    </table>
 </div>
 <script type="text/html" id="toolbar_topOp">
     <div class="layui-input-inline layui-form" lay-filter="formTest">
-        <select name="chooseBox" id="chooseTypeBtn" lay-filter="myselect">
-            <option value="0">待确认</option>
-            <option value="1">待审核</option>
-            <option value="2">未通过</option>
-            <option value="3">已通过</option>
-        </select>
+        <div style="display: inline-block">
+            <select name="chooseYearBox" id="chooseYearBtn" lay-filter="myselectyear">
+                <option value="2019" selected>2019</option>
+            </select>
+        </div>
+        <div style="display: inline-block">
+            <select name="chooseBox" id="chooseTypeBtn" lay-filter="myselect">
+                <option value="1">获奖证书</option>
+                <option value="2">参赛报告</option>
+                <option value="3">花絮</option>
+            </select>
+        </div>
+
     </div>
 </script>
 <script type="text/html" id="bar">
-    <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="detail" id="btn_detail" name="btn_detail">查看详情
+    <button class="layui-btn layui-btn-xs" lay-event="download" id="btn_download" name="btn_download">下载
     </button>
 </script>
 

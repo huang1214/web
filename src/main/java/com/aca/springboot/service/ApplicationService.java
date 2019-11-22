@@ -6,21 +6,34 @@ import com.aca.springboot.entities.JsonMessage;
 import com.aca.springboot.mapper.ApplicationMapper;
 import com.aca.springboot.vo.AppComAppLeaderVO;
 import com.aca.springboot.vo.AppComDetailVO;
+import com.aca.springboot.vo.FileNameVO;
 import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import jdk.nashorn.internal.runtime.linker.LinkerCallSite;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Service
 public class ApplicationService {
     @Resource
     ApplicationMapper applicationMapper;
-
+    @Value("${web.certFilePath}")
+    private String certPath; //文件路径
+    @Value("${web.docFilePath}")
+    private String docPath; //文件路径
+    @Value("${web.packageFilePath}")
+    private String packagePath; //文件路径
     /**
      * 插入申请表数据
      */
@@ -236,6 +249,85 @@ public class ApplicationService {
         return result;
     }
     /*这以上是机智的我写的*/
+
+    public JsonMessage get_list_file(int type,String year,String op) {
+        Map map = new HashMap<String, String>();
+        JsonMessage result = new JsonMessage();
+        result.setCode(0);
+        result.setMsg("成功");
+        result.setCount(1);
+        List list=new ArrayList();
+        Map map1=new HashMap();
+        map1.put("fileName","随便什么文件啦");
+        result.setData(new JSONArray(list));
+        if("count".equals(op)){
+            map1.put("fileCount",applicationMapper.get_application_file_count());
+        }else{
+            String url="";
+            List<AppComAppLeaderVO> application_list_m = applicationMapper.get_application_file();
+            //TODO 获得打包文件下载地址 url
+            String pacFileName=year+(type==1?"证书":(type==2?"参赛报告":"花絮"))+".zip";
+            List<FileNameVO> files=new ArrayList<>();
+            String path="";
+            String realName="";
+            String pacName="";
+            if(type==1){
+                path=certPath;
+                for(AppComAppLeaderVO acal:application_list_m){
+                    realName=acal.getCertificateImg();
+                    FileNameVO temp=new FileNameVO(path+realName);
+                    pacName=acal.getCompetion().getCtname()+"-"+acal.getWorkName()+"-"+acal.getAppid()+"."+realName.substring(realName.lastIndexOf(".")+1);
+                    temp.setNewName(pacName);
+                    files.add(temp);
+                }
+            }else if(type==2){
+                path=docPath;
+                for(AppComAppLeaderVO acal:application_list_m){
+                    realName=acal.getGetawardImg();
+                    FileNameVO temp=new FileNameVO(path+realName);
+                    pacName=acal.getCompetion().getCtname()+"-"+acal.getWorkName()+"-"+acal.getAppid()+"."+realName.substring(realName.lastIndexOf(".")+1);
+                    temp.setNewName(pacName);
+                    files.add(temp);
+                }
+            }else{
+                path=packagePath;
+                for(AppComAppLeaderVO acal:application_list_m){
+                    realName=acal.getHighLight();
+                    FileNameVO temp=new FileNameVO(path+realName);
+                    pacName=acal.getCompetion().getCtname()+"-"+acal.getWorkName()+"-"+acal.getAppid()+"."+realName.substring(realName.lastIndexOf(".")+1);
+                    temp.setNewName(pacName);
+                    files.add(temp);
+                }
+            }
+            File pacFile=new File(path+pacFileName);
+            byte[] buf=new byte[1024];
+            try {
+                ZipOutputStream out=new ZipOutputStream(new FileOutputStream(pacFile));
+                for(int i=0;i<files.size();i++){
+                    FileInputStream in=new FileInputStream(files.get(i));
+                    out.putNextEntry(new ZipEntry(files.get(i).getNewName()));
+                    System.out.println(files.get(i).getNewName());
+                    int len;
+                    while((len=in.read(buf))>0){
+                        out.write(buf,0,len);
+                    }
+                    out.closeEntry();
+                    in.close();
+                }
+                out.close();
+                System.out.println("压缩完成.");
+                map1.put("url",path+pacFileName);
+            } catch (Exception e) {
+                e.printStackTrace();
+                result.setCode(-1);
+                result.setMsg("打包文件出错，请重试");
+            }
+        }
+        list.add(map1);
+        result.setData(new JSONArray(list));
+        return result;
+    }
+
 
     /**
      * 获取申请列表

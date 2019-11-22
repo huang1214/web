@@ -22,6 +22,9 @@
         <result property="workBriefIntro" column="WORKBRIEFINTRO"></result>
         <result property="status" column="STATUS"></result>
         <result property="note" column="NOTE"></result>
+        <result property="certificateImg" column="CERTIFICATEIMG"></result>
+        <result property="getawardImg" column="GETAWARDIMG"></result>
+        <result property="highLight" column="HIGHLIGHT"></result>
         <association property="competion" javaType="com.aca.springboot.entities.Competition">
             <id property="ctid" column="c_ctid"/>
             <result property="ctname" column="ctname"/>
@@ -210,7 +213,25 @@
     <select id="get_application_list_m_count" parameterMap="get_app_list_params_m" resultType="java.lang.Integer">
         select count(*) from application where STATUS=#{STATUS}
     </select>
-    <!--取得detail-->
+
+    <!--wf文件-->
+    <!--<parameterMap id="get_app_file" type="java.util.Map">-->
+    <!--</parameterMap>-->
+    <select id="get_application_file"  resultMap="ACALVO">
+    select
+      A.Appid,A.CTID,A.APPLICANTID,
+      A.UNIT,A.LEADER,A.STUDENTPRICE,A.TEACHERPRICE,A.AWARDTYPEID,
+      A.AWARDDATE,A.WORKNAME,A.WORKBRIEFINTRO,A.STATUS,A.NOTE,A.CERTIFICATEIMG,A.GETAWARDIMG,A.HIGHLIGHT,
+      C.CTID c_ctid,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE,C.REFERENCE_PAPER
+
+      from (select * from application where STATUS=3 order by APPID desc) A LEFT JOIN
+         (select * from com_table ) C ON A.ctid=C.ctid
+    </select>
+    <select id="get_application_file_count" resultType="java.lang.Integer">
+        select count(*) from application where STATUS=3
+    </select>
+
+  <!--取得detail-->
     <parameterMap id="get_app_detail_params" type="java.util.Map">
     </parameterMap>
     <select id="get_application_detail" parameterMap="get_app_detail_params" resultMap="ACDVO">
