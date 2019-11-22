@@ -3,7 +3,7 @@ server:
   tomcat:
     uri-encoding: utf-8
 web:
-  upload-path: D:/localServeResource/XKJSPicture/
+  upload-path: D:/XKJS/2019/billfile/
   certFilePath: D:/XKJS/2019/cert/
   docFilePath: D:/XKJS/2019/doc/
   packageFilePath: D:/XKJS/2019/package/

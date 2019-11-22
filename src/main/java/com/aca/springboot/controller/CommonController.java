@@ -7,7 +7,6 @@ import com.aca.springboot.service.CommonService;
 import com.aca.springboot.utils.TimeUtil;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,9 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author: 周全
@@ -29,30 +32,40 @@ import java.util.Date;
 @Api("公共控制器")
 @RequestMapping(value = "/common")
 public class CommonController {
-    @Value("${web.upload-path}")
-    private String path; //文件路径
-
-    @Autowired
-    private CommonService commonService;
-    @Autowired
-    private CommenService commenService;
-
+   /* @Value("${web.upload-path}")
+    private String base; //文件基础路径*/
+    private final CommonService commonService;
+    private final CommenService commenService;
+   @Autowired
+    public CommonController(CommonService commonService,CommenService commenService){
+        this.commonService=commonService;
+        this.commenService=commenService;
+    }
     //文件上传
     @PostMapping(value = "/upload")
     @ResponseBody
     public Message pictureUp(@RequestParam(value = "file") MultipartFile picture){
         Message addFileMessage=new Message();
-        //System.out.println(picture.getOriginalFilename());
+        Map<String,String> map=new HashMap<>();
         String fileName=picture.getOriginalFilename();
         String extend=fileName.substring(fileName.lastIndexOf("."));
         String newName= TimeUtil.getFileID()+extend;
-        //System.out.println(newName);
+        Calendar calendar=Calendar.getInstance() ;//获取Calendar实例
+        int year=calendar.get(Calendar.YEAR); //获取年份
+        String path="D:\\XKJS\\"+year+"\\billfile\\";//保存路径
+        File file=new File(path);
+        if(!file.exists()){
+            System.out.println("执行");
+            file.mkdirs();
+        }
+        map.put("year",year+"");
+        map.put("name",newName);
         try {
             FileOutputStream outputStream=new FileOutputStream(path+newName);
             FileCopyUtils.copy(picture.getInputStream(),outputStream);
             addFileMessage.setCode(200);
             addFileMessage.setMessage("文件上传成功！");
-            addFileMessage.setData(newName);
+            addFileMessage.setData(map);
         } catch (IOException e) {
             e.printStackTrace();
             addFileMessage.setCode(202);
@@ -82,17 +95,25 @@ public class CommonController {
     public Message attachmentUpload(@RequestParam(value = "file") MultipartFile attachment){
         Message addAttachmentMessage=new Message();
         Attachment pojo=new Attachment();
-        System.out.println(attachment.getOriginalFilename());
+       // System.out.println(attachment.getOriginalFilename());
         String fileName=attachment.getOriginalFilename();
         String extend=fileName.substring(fileName.lastIndexOf("."));
         String newName= TimeUtil.getFileID()+extend;
-        System.out.println(newName);
+       // System.out.println(newName);
         pojo.setAttachmentName(fileName);
         pojo.setAttachmentPath(newName);
         pojo.setCreateTime(new Date());
         pojo.setFlag("0");
         commonService.addBillNotice(pojo);
         String id=pojo.getId();
+        Calendar calendar=Calendar.getInstance() ;//获取Calendar实例
+        int year=calendar.get(Calendar.YEAR); //获取年份
+        String path="D:\\XKJS\\"+year+"\\billnote\\";//保存路径
+        File file=new File(path);
+        if(!file.exists()){
+            System.out.println("执行");
+            file.mkdirs();
+        }
         try {
             FileOutputStream outputStream=new FileOutputStream(path+newName);
             FileCopyUtils.copy(attachment.getInputStream(),outputStream);

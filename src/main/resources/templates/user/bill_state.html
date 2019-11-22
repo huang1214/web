@@ -131,7 +131,7 @@
             ,page: true //开启分页
             ,cols: [
                 [ //表头
-                    {field: 'bid', title: '备案编号', width:170, sort: true, fixed: 'left',align: 'center'}
+                    {field: 'bid', title: '备案编号', width:180, sort: true, fixed: 'left',align: 'center'}
                     ,{field: 'ctname', title: '竞赛名称', minWidth:200,align:'center',templet: '<div>{{d.competition.ctname}}</div>'}
                     ,{field: 'workName', title: '参赛作品名',align:'center', width:140}
                     ,{field: 'groupleader', title: '项目负责人',align: 'center', width:110}
@@ -197,14 +197,17 @@
             var memberCaptainNum=document.getElementById("memberCaptainNum");
             var describeCompetition=document.getElementById("describeCompetition");
             var note=document.getElementById("note");
+            var str1=data.bid;
+            var strYear=str1.substring(1,5);
+            console.log(strYear);
             if(data.attachfile!=null){
-                var img_url = "http://localhost:8083/"+data.attachfile;
+                var img_url = "http://localhost:8083/"+strYear+"/billfile/"+data.attachfile;
                 evidence.innerHTML="<img class='zhouQuanImg' src='"+img_url+"'/>";
             }else {
                 evidence.innerHTML="未上传名单"
             }
             if(data.invitation!=null){
-                var img_url2 = "http://localhost:8083/"+data.invitation;
+                var img_url2 = "http://localhost:8083/"+strYear+"/billfile/"+data.invitation;
                 invitation.innerHTML="<img class='zhouQuanImg' src='"+img_url2+"'/>";
             }else {
                 invitation.innerHTML="无邀请函"

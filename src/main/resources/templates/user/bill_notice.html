@@ -32,12 +32,16 @@
                 if(result.code == 200){
                     $("#noticeTitle").text(result.data.noticeTitle);
                     $("#noticeTime").text(result.data.updateTime);
+                    console.log(result.data.updateTime);
+                    var str1=result.data.updateTime;
+                    var strYear=str1.substring(0,4);
+                    console.log(strYear);
                     $("#noticeAuthor").text(result.data.administrator.adm_name);
                     var content=document.getElementById("noticeContent");
                     content.innerHTML=result.data.noticeContent;
                     var arrayNotice=result.data.attachments;
                     for(var i=0;i<arrayNotice.length;i++){
-                        var url = "http://localhost:8083/"+arrayNotice[i].attachmentPath;
+                        var url = "http://localhost:8083/"+strYear+"/billnote/"+arrayNotice[i].attachmentPath;
                         var temp=i+1;
                         $("<li>"+"附件"+temp+"【"+"<a style='color: #0000FF' href="+url+" download="+"'"+arrayNotice[i].attachmentName+"'"+">"+arrayNotice[i].attachmentName+"</a>"+"】"+"</li>").appendTo("#attach");
                     }
