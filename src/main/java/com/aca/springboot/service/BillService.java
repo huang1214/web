@@ -65,11 +65,9 @@ public class BillService {
         map.put("RIGHT",right);
         List listBill=billMapper.get_bill_list(map);
         List listBill2=billMapper.get_bill_list2(map);
-        System.out.println(listBill2.size());
         for(int i=0;i<listBill.size();i++){
             BillVO temp1=(BillVO) listBill.get(i);
             BillVO temp2=(BillVO) listBill2.get(i);
-            System.out.println(temp2);
             temp1.setTeachers(temp2.getTeachers());
         }
         int count=billMapper.getBillCountNotState(map); //总条数

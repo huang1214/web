@@ -60,7 +60,7 @@ public class TimeUtil {
         return sdf.format(d);
     }
     public static String getBillNumber(){
-        SimpleDateFormat time=new SimpleDateFormat("yyyMMddHHmmsss");
+        SimpleDateFormat time=new SimpleDateFormat("yyyyMMddHHmmssSSS");
         String result="B"+time.format(new Date());
         return result;
     }

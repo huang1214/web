@@ -105,7 +105,7 @@
             <td id="invitation"></td>
         </tr>
         <tr>
-            <td>备注信息</td>
+            <td>审核信息</td>
             <td id="note"></td>
         </tr>
         </tbody>
@@ -164,7 +164,6 @@
         table.on('tool(bill_operate)', function(obj){ //注：tool 是工具条事件名，application_state 是 table 原始容器的属性 lay-filter="对应的值"
             var data = obj.data; //获得当前行数据
             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-
             if(layEvent === 'detail'){ //查看详情
                 //do something
                 layer.open({
@@ -319,7 +318,7 @@
              {
                  note.innerHTML=data.note;
              }else {
-                 note.innerHTML="暂无备注";
+                 note.innerHTML="等待审核";
              }
             if(data.cdesc!= null)
             {
