@@ -197,16 +197,15 @@ public class LoginController {
                           @RequestParam("dadmin") String dadmin){
         int page = Integer.parseInt(request.getParameter("page"));   //获取第几页
         int limit = Integer.parseInt(request.getParameter("limit")); //获取每页的最大条数
-
         return testService.list_tset_search(page,limit,dname,dadmin);
-
     }
 
     @ResponseBody
-    @GetMapping("/getInfo")
+    @PostMapping("/getInfo")
     public Message getInfo(@RequestParam(value = "StartTime",defaultValue = "20190901",required = false)String ST,
                            @RequestParam(value = "EndTime",defaultValue = "20200630",required = false)String ET,
-                           @RequestParam(value = "PersonNum",defaultValue = "5",required = false)int num,
+                           @RequestParam(value = "StartNum",defaultValue = "1",required = false)int start,
+                           @RequestParam(value = "EndNum",defaultValue = "10",required = false)int end,
                            HttpSession session){
         Message m=new Message();
         int type= (int) session.getAttribute("type");
@@ -215,10 +214,10 @@ public class LoginController {
         Map map=new HashMap();
         if(type==1){
             String sno=((Student)session.getAttribute("loginUser")).getSno();
-            map.put("unReadApp",testService.getApplicationCount(sno,0));
-            map.put("refusedApp",testService.getApplicationCount(sno,1));
-            map.put("passedApp",testService.getApplicationCount(sno,2));
-            map.put("finishedApp",testService.getApplicationCount(sno,3));
+            map.put("unReadApp",testService.getApplicationCount(sno,1));
+//            map.put("refusedApp",testService.getApplicationCount(sno,1));
+//            map.put("passedApp",testService.getApplicationCount(sno,2));
+//            map.put("finishedApp",testService.getApplicationCount(sno,3));
             map.put("unReadBill",billService.getBillCount(sno,0));
             map.put("passedBill",billService.getBillCount(sno,2));
             map.put("refusedBill",billService.getBillCount(sno,1));
@@ -226,20 +225,21 @@ public class LoginController {
         }else if(type==2){
             String tno=((Teacher)session.getAttribute("loginUser")).getTno();
             map.put("unReadApp",testService.getApplicationCount(tno,0));
-            map.put("refusedApp",testService.getApplicationCount(tno,1));
-            map.put("passedApp",testService.getApplicationCount(tno,2));
-            map.put("finishedApp",testService.getApplicationCount(tno,3));
+//            map.put("refusedApp",testService.getApplicationCount(tno,1));
+//            map.put("passedApp",testService.getApplicationCount(tno,2));
+//            map.put("finishedApp",testService.getApplicationCount(tno,3));
             map.put("role","2");
         }else if(type==3){
             String tno="%";
-            map.put("unReadApp",testService.getApplicationCount(tno,0));
-            map.put("finishedApp",testService.getApplicationCount(tno,3)+testService.getApplicationCount(tno,1));
+            map.put("unReadApp",testService.getApplicationCount(tno,1));
+//            map.put("finishedApp",testService.getApplicationCount(tno,3)+testService.getApplicationCount(tno,1));
             map.put("unReadBill",billService.getBillCountAdmin(0));
             map.put("passedBill",billService.getBillCountAdmin(2));
             map.put("refusedBill",billService.getBillCountAdmin(1));
-            map.put("AppPrizeInfo",testService.getAppPrizeInfo());
-            map.put("StudentCount",testService.getTopStudent(num,ST,ET));
-            map.put("TeacherCount",testService.getTopTeacher(num,ST,ET));
+            map.put("StudentCount",testService.getTopStudent(ST,ET,start,end));
+            map.put("TeacherCount",testService.getTopTeacher(ST,ET,start,end));
+            map.put("StudentMoneyCount",testService.getTopStudentMoney(ST,ET,start,end));
+            map.put("TeacherMoneyCount",testService.getTopTeacherMoney(ST,ET,start,end));
             map.put("role","3");
         }else{
             m.setCode(-1);

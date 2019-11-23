@@ -120,22 +120,43 @@ public class testService {
     }
 
     //TODO 这里是可以根据传过来的时间来动态查询的，暂时不做
-    public List<StudentCountVO> getTopStudent(int num,String ST,String ET){
+    public List<StudentCountVO> getTopStudent(String ST,String ET,int start,int end){
         Map map=new HashMap<String,String>();
-        map.put("STATUS",0);
+        map.put("STATUS",2);
         map.put("ST",ST);
         map.put("ET",ET);
-        map.put("NUM",num);
+        map.put("END",end);
+        map.put("START",start);
         return consoleDataMapper.getTopStudent(map);
+    }
+    public List<StudentCountVO> getTopStudentMoney(String ST,String ET,int start,int end){
+        Map map=new HashMap<String,String>();
+        map.put("STATUS",2);
+        map.put("ST",ST);
+        map.put("ET",ET);
+        map.put("END",end);
+        map.put("START",start);
+        return consoleDataMapper.getTopStudentMoney(map);
     }
 
     //TODO 这里是可以根据传过来的时间来动态查询的，暂时不做
-    public List<TeacherCountVO> getTopTeacher(int num, String ST, String ET){
+    public List<TeacherCountVO> getTopTeacher(String ST,String ET,int start,int end){
         Map map=new HashMap<String,String>();
-        map.put("STATUS",0);
+        map.put("STATUS",2);
         map.put("ST",ST);
         map.put("ET",ET);
-        map.put("NUM",num);
+        map.put("END",end);
+        map.put("START",start);
         return consoleDataMapper.getTopTeacher(map);
+    }
+
+    public List<TeacherCountVO> getTopTeacherMoney(String ST,String ET,int start,int end){
+        Map map=new HashMap<String,String>();
+        map.put("STATUS",2);
+        map.put("ST",ST);
+        map.put("ET",ET);
+        map.put("END",end);
+        map.put("START",start);
+        return consoleDataMapper.getTopTeacherMoney(map);
     }
 }

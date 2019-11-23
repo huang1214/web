@@ -27,6 +27,8 @@ public interface ConsoleDataMapper {
 
     int selectAppPrize(Map map);
 
+    List<StudentCountVO> getTopStudentMoney(Map map);
+    List<TeacherCountVO> getTopTeacherMoney(Map map);
     List<StudentCountVO> getTopStudent(Map map);
     List<TeacherCountVO> getTopTeacher(Map map);
 }

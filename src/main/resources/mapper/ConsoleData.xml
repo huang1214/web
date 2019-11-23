@@ -13,12 +13,12 @@
     <resultMap id="SCVO" type="com.aca.springboot.vo.StudentCountVO">
         <result property="sno" column="SNO" />
         <result property="sname" column="SNAME" />
-        <result property="count" column="PCOUNT" />
+        <result property="count" column="RESULTNUM" />
     </resultMap>
     <resultMap id="TCVO" type="com.aca.springboot.vo.TeacherCountVO">
         <result property="tno" column="TNO" />
         <result property="tname" column="TNAME" />
-        <result property="count" column="PCOUNT" />
+        <result property="count" column="RESULTNUM" />
     </resultMap>
 
     <select id = "dept_All" resultMap="test_result">
@@ -75,19 +75,73 @@
 
     <parameterMap id="StudentCountParams" type="java.util.Map"></parameterMap>
     <select id="getTopStudent" parameterMap="StudentCountParams" resultMap="SCVO">
-        select * from (select s.sno,s.SNAME,res.pcount from STUDENT s join (select count(*) pcount,AM.APP_TM_ID id from
-        ((select APPID from APPLICATION where APPID >= #{ST} and APPID &lt;= #{ET} and STATUS =#{STATUS} ) AID join
-        (select * from APPLICATION_MEMBER where APP_TYPE = 1) AM
-        ON AID.APPID= AM.APP_ID)
-        GROUP BY AM.APP_TM_ID ORDER BY pcount DESC) res on s.SNO=res.id) where ROWNUM &lt;=#{NUM} order by pcount desc,ROWNUM
+        SELECT * FROM
+        (
+
+        SELECT temp.*, ROWNUM RN
+        FROM (SELECT * FROM (
+        select s.sno , s.SNAME ,R1.RESULTNUM FROM
+        (SELECT count(*) RESULTNUM,APP_TM_ID from APPLICATION_MEMBER
+        where APP_STATUS=#{STATUS} and APP_TYPE= 1 and APP_ID>=#{ST} and APP_ID &lt;=#{ET}
+        GROUP BY APP_TM_ID
+        ORDER BY RESULTNUM desc) R1 left join STUDENT S on R1.APP_TM_ID = S.sno
+
+        )) temp
+        WHERE ROWNUM &lt;=#{END}
+        )
+        WHERE RN >=#{START}
+    </select>
+    <select id="getTopStudentMoney" parameterMap="StudentCountParams" resultMap="SCVO">
+        SELECT * FROM
+        (
+
+        SELECT temp.*, ROWNUM RN
+        FROM (SELECT * FROM (
+        select s.sno , s.SNAME ,R1.RESULTNUM FROM
+        (SELECT SUM(APP_MONEY) RESULTNUM,APP_TM_ID from APPLICATION_MEMBER
+        where APP_STATUS=#{STATUS} and APP_TYPE= 1 and APP_ID>=#{ST} and APP_ID &lt;=#{ET}
+        GROUP BY APP_TM_ID
+        ORDER BY RESULTNUM desc) R1 left join STUDENT S on R1.APP_TM_ID = S.sno
+
+        )) temp
+        WHERE ROWNUM &lt;=#{END}
+        )
+        WHERE RN >=#{START}
     </select>
 
     <parameterMap id="TeacherCountParams" type="java.util.Map"></parameterMap>
     <select id="getTopTeacher" parameterMap="TeacherCountParams" resultMap="TCVO">
-        select * from (select t.TNO,T.TNAME,res.pcount from TEACHER t join (select count(*) pcount,AM.APP_TM_ID id from
-        ((select APPID from APPLICATION where APPID >= #{ST} and APPID &lt;= #{ET} and STATUS =#{STATUS}) AID join
-        (select * from APPLICATION_MEMBER where APP_TYPE = 2) AM
-        ON AID.APPID= AM.APP_ID)
-        GROUP BY AM.APP_TM_ID ORDER BY pcount DESC) res on t.TNO=res.id) where ROWNUM &lt;=#{NUM} order by pcount desc,ROWNUM
+        SELECT * FROM
+        (
+        SELECT temp.*, ROWNUM RN
+        FROM (SELECT * FROM (
+        select T.TNO ,T.TNAME ,R1.RESULTNUM FROM
+        (SELECT count(*) RESULTNUM,APP_TM_ID from APPLICATION_MEMBER
+        where APP_STATUS=#{STATUS} and APP_TYPE= 2 and APP_ID>=#{ST} and APP_ID&lt;=#{ET}
+        GROUP BY APP_TM_ID
+        ORDER BY RESULTNUM desc) R1 left join TEACHER T on R1.APP_TM_ID = T.TNO
+
+
+        )) temp
+        WHERE ROWNUM &lt;=#{END}
+        )
+        WHERE RN >=#{START}
+    </select>
+    <select id="getTopTeacherMoney" parameterMap="TeacherCountParams" resultMap="TCVO">
+        SELECT * FROM
+        (
+        SELECT temp.*, ROWNUM RN
+        FROM (SELECT * FROM (
+        select T.TNO ,T.TNAME ,R1.RESULTNUM FROM
+        (SELECT SUM(APP_MONEY) RESULTNUM,APP_TM_ID from APPLICATION_MEMBER
+        where APP_STATUS=#{STATUS} and APP_TYPE= 2 and APP_ID>=#{ST} and APP_ID&lt;=#{ET}
+        GROUP BY APP_TM_ID
+        ORDER BY RESULTNUM desc) R1 left join TEACHER T on R1.APP_TM_ID = T.TNO
+
+
+        )) temp
+        WHERE ROWNUM &lt;=#{END}
+        )
+        WHERE RN >=#{START}
     </select>
 </mapper>

@@ -4,10 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>普通用户界面</title>
-    <link rel="stylesheet" href="https://www.layuicdn.com/layui/css/layui.css">
-    <script src="https://www.layuicdn.com/layui/layui.js"></script>
     <link href="https://cdn.bootcss.com/font-awesome/5.10.2/css/all.min.css" rel="stylesheet">
-    <script src="asserts/js/jquery-3.2.1.slim.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" th:href="@{/asserts/js/layui/css/layui.css}" media="all">
+    <script th:src="@{/asserts/js/layui/layui.js}"></script>
+    <!--<script src="asserts/js/jquery-3.2.1.slim.min.js" charset="utf-8"></script>-->
+    <!--<script th:src="@{/asserts/js/jquery-3.2.1.slim.min.js}"></script>-->
+    <script th:src="@{/asserts/js/jquery-1.12.4.js}"></script>
     <style>
         .layui-footer {
             text-align: center;
@@ -86,26 +88,26 @@
                 <li th:if="${session.type} eq '2' or ${session.type} eq '1'" class="layui-nav-item">
                     <a class="nav-item-side" href="javascript:;"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i>成果管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" data-url="user/application_notice" data-id="6" data-title="申请须知"
+                        <dd><a href="javascript:;" data-url="user/application_notice" data-id="5" data-title="申请须知"
                                class="site-active" data-type="tabAdd">申请须知</a></dd>
-                        <dd><a href="javascript:;" data-url="user/application_form" data-id="7" data-title="申请信息"
+                        <dd><a href="javascript:;" data-url="user/application_form" data-id="6" data-title="申请信息"
                                class="site-active" data-type="tabAdd">申请信息</a></dd>
-                        <dd th:if="${session.type} eq '1'"><a href="javascript:;" data-url="page/application_state_student" data-id="8" data-title="申请状态"
-                               class="site-active" data-type="tabAdd">申请列表</a></dd>
-                        <dd th:if="${session.type} eq '2'"><a href="javascript:;" data-url="page/application_state_teacher" data-id="15" data-title="申请状态"
-                               class="site-active" data-type="tabAdd">申请列表</a></dd>
+                        <dd th:if="${session.type} eq '1'"><a href="javascript:;" data-url="page/application_state_student" data-id="7" data-title="申请状态"
+                                                              class="site-active" data-type="tabAdd">申请列表</a></dd>
+                        <dd th:if="${session.type} eq '2'"><a href="javascript:;" data-url="page/application_state_teacher" data-id="8" data-title="申请状态"
+                                                              class="site-active" data-type="tabAdd">申请列表</a></dd>
                     </dl>
                 </li>
                 <!--查询教师-->
                 <li th:if="${session.type} eq '3' " class="layui-nav-item">
-                    <a class="nav-item-side site-active" data-url="admin/teacher" data-id="10"
+                    <a class="nav-item-side site-active" data-url="admin/teacher" data-id="9"
                        data-title="教育科研" data-type="tabAdd">
                         <i class="fa fa-flask fa-fw" aria-hidden="true"></i>教育科研
                     </a>
                 </li>
                 <!--竞赛查询-->
                 <li class="layui-nav-item">
-                    <a class="nav-item-side site-active" data-url="admin/com_search" data-id="11"
+                    <a class="nav-item-side site-active" data-url="admin/com_search" data-id="10"
                        data-title="竞赛查询" data-type="tabAdd">
                         <i class="fa fa-search fa-fw" aria-hidden="true"></i>竞赛查询
                     </a>
@@ -114,17 +116,18 @@
                 <li th:if="${session.type} eq '3' " class="layui-nav-item">
                     <a class="nav-item-side site-active" data-url="admin/audit" data-id="11"
                        data-title="奖金审核" data-type="tabAdd"><i class="layui-icon">&#xe65e;</i>奖金审核
+                        <span id="AppTips" style="position: relative; top: 0px; left: 0px;color:red"></span>
                     </a>
                 </li>
                 <!--文件管理-->
                 <li th:if="${session.type} eq '3' " class="layui-nav-item">
-                    <a class="nav-item-side site-active" data-url="page/appFileManage" data-id="15"
+                    <a class="nav-item-side site-active" data-url="page/appFileManage" data-id="12"
                        data-title="文件管理" data-type="tabAdd"><i class="layui-icon">&#xe63c;</i>文件管理
                     </a>
                 </li>
                 <!--报销审核-->
                 <li th:if="${session.type} eq '3' " class="layui-nav-item">
-                    <a class="nav-item-side site-active" data-url="admin/bill_audit" data-id="12"
+                    <a class="nav-item-side site-active" data-url="admin/bill_audit" data-id="13"
                        data-title="备案审核" data-type="tabAdd">
                         <i class="layui-icon">&#xe655;</i>备案审核
                     </a>
@@ -135,11 +138,11 @@
                         <i class="fa fa-comment" aria-hidden="true"></i>消息管理
                     </a>
                     <dl class="layui-nav-child">
-                        <dd><a data-id="13" data-title="发布备案公告" class="nav-item-side site-active"
+                        <dd><a data-id="14" data-title="发布备案公告" class="nav-item-side site-active"
                                data-type="tabAdd" data-url="admin/billRelease">
                             <i class="layui-icon">&#xe645;</i>更新备案公告</a>
                         </dd>
-                        <dd><a data-id="14" data-title="确认金额" class="site-active"
+                        <dd><a data-id="15" data-title="确认金额" class="site-active"
                                data-type="tabAdd">确认金额</a>
                         </dd>
                     </dl>
@@ -152,13 +155,13 @@
         <!-- 内容主体区域 -->
         <div class="layui-tab layui-tab-brief" lay-filter="tab" lay-allowClose="true">
             <ul class="layui-tab-title">
-                <li lay-id="1" class="layui-this">仪表盘</li>
+                <!--<li lay-id="1" class="layui-this">仪表盘</li>-->
             </ul>
             <div class="layui-tab-content">
-                <div class="layui-tab-item layui-show">
-                    <iframe data-frameid="1" scrolling="auto" frameborder="0" src="user/dashboard"
-                            style="width: 100%; height: 100%; min-height: 500px;"></iframe>
-                </div>
+                <!--<div class="layui-tab-item layui-show">-->
+                    <!--&lt;!&ndash;<iframe data-frameid="" scrolling="auto" frameborder="0" src=""&ndash;&gt;-->
+                            <!--&lt;!&ndash;style="width: 100%; height: 100%; min-height: 500px;"></iframe>&ndash;&gt;-->
+                <!--</div>-->
             </div>
         </div>
     </div>
@@ -168,13 +171,14 @@
         © 学科竞赛管理系统
     </div>
 </div>
-<script src="asserts/js/layui/layui.js"></script>
 
 <script>
     //JavaScript代码区域
-    layui.use('element', function () {
+    layui.use(['element','layer'], function () {
         var element = layui.element;
+        var layer = layui.layer;
         //触发事件
+        layer.load(2);
         var active = {
             //在这里给active绑定几项事件，后面可通过active调用这些事件
             tabAdd: function (url, id, name) {
@@ -185,7 +189,6 @@
                     content: '<iframe data-frameid="' + id + '" scrolling="auto" frameborder="0" src="' + url + '" style="width:100%;height:99%;"></iframe>',
                     id: id //规定好的id
                 })
-
                 FrameWH();  //计算ifram层的大小
             },
             tabChange: function (id) {
@@ -201,19 +204,20 @@
                 })
             }
         };
-
-
         //当点击有site-active属性的标签时，即左侧菜单栏中内容 ，触发点击事件
         $('.site-active').on('click', function () {
             var dataid = $(this);
+            console.log(dataid.attr("data-id"))
+            if(dataid.attr("data-id")==11){
 
+                $("#AppTips").text("");
+            }
             //这时会判断右侧.layui-tab-title属性下的有lay-id属性的li的数目，即已经打开的tab项数目
             if ($(".layui-tab-title li[lay-id]").length <= 0) {
                 //如果比零小，则直接打开新的tab项
                 active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.attr("data-title"));
             } else {
                 //否则判断该tab项是否以及存在
-
                 var isData = false; //初始化一个标志，为false说明未打开该tab项 为true则说明已有
                 $.each($(".layui-tab-title li[lay-id]"), function () {
                     //如果点击左侧菜单栏所传入的id 在右侧tab项中的lay-id属性可以找到，则说明该tab项已经打开
@@ -229,15 +233,33 @@
             //最后不管是否新增tab，最后都转到要打开的选项页面上
             active.tabChange(dataid.attr("data-id"));
         });
-
         function FrameWH() {
             var h = $(window).height() - 41 - 10 - 60 - 10 - 44 - 10;
             $("iframe").css("height", h + "px");
         }
-
         $(window).resize(function () {
             FrameWH();
         })
+        $.ajax(
+            {
+                url: "/user/getInfo",
+                type: "POST",
+                cache:false,
+                success: function(data){
+                    console.log(data)
+                    layer.closeAll()
+                    if(data.code==0){
+                        if(data.data.unReadApp>0)
+                        $("#AppTips").text(data.data.unReadApp+"待审");
+                    }else{
+                        layer.msg(data.message);
+                    }
+                },
+                error:function () {
+                    // alert(1)
+                }
+            }
+        )
     });
 </script>
 </body>
