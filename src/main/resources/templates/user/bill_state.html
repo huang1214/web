@@ -21,10 +21,16 @@
 </head>
 <body>
 <div class="form-data">
-    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
-        <legend>申请状态表</legend>
-    </fieldset>
-    <table class="layui-hide" id="bill_state" lay-filter="bill_operate"></table>
+    <div style="margin-top: 10px">
+        <fieldset class="layui-elem-field layui-field-title" >
+            <legend>我的备案列表</legend>
+        </fieldset>
+    </div>
+    <div style="margin-top: 40px">
+        <table class="layui-hide" id="bill_state" lay-filter="bill_operate">
+        </table>
+    </div>
+
 </div>
 <div id="layer_bill_detail">
     <table class="layui-table" id="bill_detail_table" lay-filter="bill_detail" lay-size="lg">
@@ -111,24 +117,37 @@
 
 <script src="../asserts/js/jquery-1.12.4.js"></script>
 <script src="../asserts/js/layui/layui.all.js"></script>
-
 <script type="text/html" id="bar">
     <button class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detail" id="btn_detail" name="btn_detail">查看详情</button>
     <!--    {{#  if(d.status == 2 && d.res == 1){ }}
         <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="ensure" id="btn_ensure" name="btn_ensure">确认</button>
         {{#  } }}-->
 </script>
+<script type="text/html" id="toolbar_billState">
+    <div class="layui-input-inline layui-form" lay-filter="selectForm">
+        <select name="chooseBox" id="chooseTypeBtn" lay-filter="stateSelect">
+            <option value="3">全部备案</option>
+            <option value="0">待审核</option>
+            <option value="1">未通过</option>
+            <option value="2">已通过</option>
+        </select>
+    </div>
+</script>
 <script>
-    layui.use(['table','layer'], function(){
+    layui.use(['table','layer','form'], function(){
         var table = layui.table;
         var layer = layui.layer;
+        var form = layui.form;
         var $ = layui.jquery;
         //显示表单状态基本信息
         var table_app=table.render({
             elem: '#bill_state'
-            ,height: 380
+            ,height: 480
             ,url: ' /bill/queryAll'//数据接口
             ,page: true //开启分页
+            ,toolbar:"#toolbar_billState"
+            ,where:{'type':"3"}
+            ,loading: true
             ,cols: [
                 [ //表头
                     {field: 'bid', title: '备案编号', width:180, sort: true, fixed: 'left',align: 'center'}
@@ -156,7 +175,6 @@
             var data = obj.data; //获得当前行数据
             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
             if(layEvent === 'detail'){ //查看详情
-                //do something
                 layer.open({
                     type: 1
                     ,title: '查看详细信息'  //弹出层标题
@@ -168,17 +186,28 @@
                         layer.closeAll();
                     }
                     ,end:function(){
-                       // location.reload();
                         table.reload('bill_detail_table');
-
                     }
                 });
                 setTableValue(data);//动态向表格赋值
             }
         });
-        function setTableValue(data){
-            // console.log(data.appid+"这里执行了应该显示的申请号");
-            /*比赛信息*/
+        form.on('select(stateSelect)', function(data){
+            console.log(data.value); //得到被选中的值
+            table_app.reload({
+                where: { //设定异步数据接口的额外参数，任意设
+                    type: data.value
+                }
+                ,page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+            form.val('selectForm',{
+                chooseBox:data.value
+            });
+        });
+        form.render();
+        function setTableValue(data){//参数为该列的数据
             console.log(data);
             var bid=document.getElementById('bid');
             var ctname=document.getElementById('ctname');
@@ -243,8 +272,7 @@
             memberCaptainName.innerHTML=data.student.sname;
             memberCaptainNum.innerHTML=data.student.sno;
             var str_1=data.competition.com_type;
-            var competitionType = str_1.replace(/\s*/g,"");
-            console.log("长度"+competitionType+"---"+competitionType.length);
+            var competitionType = str_1.replace(/\s*/g,"");//去除空格，Oracle中char类型不满长度补空格
             if(competitionType.length==2){
                 var str2=competitionType.substr(1,1);
                 com_type.innerHTML="重点竞赛"+str2+"类";
@@ -273,12 +301,6 @@
             {
                 state.innerHTML="已通过";
             }
-           /* if(data.note!= null)
-            {
-                $("<tr></tr>").append("<td>"+"备注信息"+"</td>")
-                    .append("<td>"+data.note+"</td>")
-                    .appendTo("#bill_detail_table");
-            }*/
             if(data.note!= null)
             {
                 note.innerHTML=data.note;
@@ -287,9 +309,6 @@
             }
             if(data.cdesc!= null)
             {
-                /*$("<tr></tr>").append("<td>"+"竞赛描述"+"</td>")
-                    .append("<td>"+data.cdesc+"</td>")
-                    .appendTo("#bill_detail_table");*/
                 describeCompetition.innerHTML=data.cdesc;
             }else {
                 describeCompetition.innerHTML="暂无描述";

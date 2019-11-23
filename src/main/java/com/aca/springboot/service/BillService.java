@@ -78,6 +78,31 @@ public class BillService {
         jsonMessage.setData(new JSONArray(listBill));
         return jsonMessage;
     }
+    //返回该生报销记录,分页带状态
+    public JsonMessage queryAllBillWithPageState(String sno,int pageNum,int pageSize,String state){
+        //设置从第几页查询N条
+        Map map=new HashMap();
+        int left=(pageNum-1)*pageSize+1;  //左边查询起始索引
+        int right=pageNum*pageSize;   //查询到哪里截至索引
+        map.put("SNO",sno);
+        map.put("LEFT",left);
+        map.put("RIGHT",right);
+        map.put("STATE",state);
+        List listBill=billMapper.getBillListByState(map);
+        List listBill2=billMapper.getBillListByState2(map);
+        for(int i=0;i<listBill.size();i++){
+            BillVO temp1=(BillVO) listBill.get(i);
+            BillVO temp2=(BillVO) listBill2.get(i);
+            temp1.setTeachers(temp2.getTeachers());
+        }
+        int count=billMapper.getBillCountNotState(map); //总条数
+        JsonMessage jsonMessage=new JsonMessage();
+        jsonMessage.setCode(0);
+        jsonMessage.setMsg("查询成功");
+        jsonMessage.setCount(count);
+        jsonMessage.setData(new JSONArray(listBill));
+        return jsonMessage;
+    }
     //返回所有的报销记录,分页
     public JsonMessage queryAllBill(int pageNum,int pageSize){
         Map map=new HashMap();
@@ -87,6 +112,30 @@ public class BillService {
         map.put("RIGHT",right);
         List listBill=billMapper.get_all_bill_list(map);
         List listBill2=billMapper.get_all_bill_list2(map);
+        for(int i=0;i<listBill.size();i++){
+            BillVO temp1=(BillVO) listBill.get(i);
+            BillVO temp2=(BillVO) listBill2.get(i);
+            temp1.setTeachers(temp2.getTeachers());
+        }
+        int count=billMapper.getBillCountAdminNotState(); //总条数
+        System.out.println(count);
+        JsonMessage jsonMessage=new JsonMessage();
+        jsonMessage.setCode(0);
+        jsonMessage.setMsg("查询成功");
+        jsonMessage.setCount(count);
+        jsonMessage.setData(new JSONArray(listBill));
+        return jsonMessage;
+    }
+    //返回所有的报销记录,分页，带状态
+    public JsonMessage queryAllBillState(int pageNum,int pageSize,String state){
+        Map map=new HashMap();
+        int left=(pageNum-1)*pageSize+1;  //左边查询起始索引
+        int right=pageNum*pageSize;   //查询到哪里截至索引
+        map.put("LEFT",left);
+        map.put("RIGHT",right);
+        map.put("STATE",state);
+        List listBill=billMapper.getAllBillListState(map);
+        List listBill2=billMapper.getAllBillListState2(map);
         for(int i=0;i<listBill.size();i++){
             BillVO temp1=(BillVO) listBill.get(i);
             BillVO temp2=(BillVO) listBill2.get(i);

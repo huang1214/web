@@ -115,12 +115,18 @@ public class BillController {
     @ResponseBody
     public JsonMessage getAllBillByID(@RequestParam(value = "limit",required = false,defaultValue = "10")int pageSize,
                                       @RequestParam(value = "page",required = false,defaultValue = "1")int pageNum,
+                                      @RequestParam(value = "type", required = false, defaultValue = "3") String state,
                                       HttpSession session){
-//        Message billListMessage=new Message();
        Student student =(Student) session.getAttribute("loginUser");
-        String sno=student.getSno();
-       System.out.println(sno);
-        return billService.queryAllBillWithPage(sno,pageNum,pageSize);
+       String sno=student.getSno();
+       System.out.println(sno+"--类型："+state);
+       if(state.equals("3")){
+           System.out.println("执行1");
+           return billService.queryAllBillWithPage(sno,pageNum,pageSize);
+       }else {
+           System.out.println("执行2");
+           return billService.queryAllBillWithPageState(sno,pageNum,pageSize,state);
+       }
     }
     //获取该登录学生的所有报销记录,分页
 //    @GetMapping(value = "query/{sno}/{currPage}")
@@ -142,8 +148,17 @@ public class BillController {
     @GetMapping(value = "query")
     @ResponseBody
     public JsonMessage getAllBill(@RequestParam(value = "limit",required = false,defaultValue = "1")int pageSize,
-                              @RequestParam(value = "page",required = false,defaultValue = "1")int pageNum){
-        JsonMessage billListAdminMessage=billService.queryAllBill(pageNum,pageSize);
+                              @RequestParam(value = "page",required = false,defaultValue = "1")int pageNum,
+                              @RequestParam(value = "type", required = false, defaultValue = "3") String state){
+        System.out.println(state);
+        JsonMessage billListAdminMessage;
+        if(state.equals("3")){
+            System.out.println("执行10");
+            billListAdminMessage=billService.queryAllBill(pageNum,pageSize);
+        }else {
+            System.out.println("执行20");
+            billListAdminMessage=billService.queryAllBillState(pageNum,pageSize,state);
+        }
         return billListAdminMessage;
     }
     //通过报销审核

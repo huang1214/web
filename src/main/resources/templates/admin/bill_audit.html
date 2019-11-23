@@ -23,7 +23,7 @@
 <body>
 <div class="form-data">
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
-        <legend>报销审核表</legend>
+        <legend>备案审核表</legend>
     </fieldset>
     <table class="layui-hide" id="bill_state" lay-filter="bill_operate"></table>
     <!-- <table class="layui-hide" id="bill_state_detail" lay-filter="application_state_detail"></table>-->
@@ -121,20 +121,33 @@
     <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="admin_audit" id="btn_admin_audit" name="btn_admin_audit">审核</button>
     {{#  } }}
 </script>
-
+<script type="text/html" id="toolbar_billState">
+    <div class="layui-input-inline layui-form" lay-filter="selectForm">
+        <select name="chooseBox" id="chooseTypeBtn" lay-filter="stateSelect">
+            <option value="3">全部备案</option>
+            <option value="0">待审核</option>
+            <option value="1">未通过</option>
+            <option value="2">已通过</option>
+        </select>
+    </div>
+</script>
 
 <script>
-    layui.use(['table','layer'], function(){
+    layui.use(['table','layer','form'], function(){
         var table = layui.table;
         var layer = layui.layer;
         var $ = layui.jquery;
+        var form = layui.form;
 
         //显示表单状态基本信息
         var bill_state=table.render({
             elem: '#bill_state'
-            ,height: 380
+            ,height: 480
             ,url: ' /bill/query'//数据接口
             ,page: true //开启分页
+            ,toolbar:"#toolbar_billState"
+            ,where:{'type':"3"}
+            ,loading: true
             ,cols: [
                 [ //表头
                     {field: 'bid', title: '备案编号', width:180, align: 'center',sort: true, fixed: 'left'}
@@ -158,8 +171,6 @@
                 ]
             ]
         });
-
-
         //表格：“表单状态基本信息” 实例的监听工具条
         table.on('tool(bill_operate)', function(obj){ //注：tool 是工具条事件名，application_state 是 table 原始容器的属性 lay-filter="对应的值"
             var data = obj.data; //获得当前行数据
@@ -233,6 +244,21 @@
                 });
             }
         });
+        form.on('select(stateSelect)', function(data){
+            console.log(data.value); //得到被选中的值
+            bill_state.reload({
+                where: { //设定异步数据接口的额外参数，任意设
+                    type: data.value
+                }
+                ,page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+            form.val('selectForm',{
+                chooseBox:data.value
+            });
+        });
+        form.render();
         function setTableValue(data){
             /*比赛信息*/
             console.log(data);
