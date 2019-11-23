@@ -21,6 +21,11 @@
        body .priorityTips .layui-layer-title{
             color:#FF0000;
         }
+        body .buttonStyle .layui-layer-btn0{
+            border-color: #FF0000;
+            background-color: #FF5722;
+            color: #FFFFFF;
+        }
         body .priorityTips{
             color:#FFB800;
         }
@@ -182,23 +187,39 @@
             var data = obj.data; //获得当前行数据
             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
             if(layEvent === 'detail'){ //查看详情
-                //do something
-                layer.open({
-                    type: 1
-                    ,title: '查看详细信息'  //弹出层标题
-                    ,area: ['800px', '400px']   //设置弹出层大小[宽，高]
-                    ,offset: 'auto'   //设置弹出层位置 //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
-                    ,content:$("#layer_bill_detail")
-                    ,shade: 0 //不显示遮罩
-                    ,yes: function () {  //确定按钮回调方法， 需要手动关闭弹出层
-                        layer.closeAll();
-                    }
-                    ,end:function(){
-                    }
-                });
+                if(data.state==0){
+                    layer.open({
+                        type: 1
+                        ,title: '查看详细信息'  //弹出层标题
+                        ,area: ['800px', '400px']   //设置弹出层大小[宽，高]
+                        ,offset: 'auto'   //设置弹出层位置 //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+                        ,content:$("#layer_bill_detail")
+                        ,shade: 0 //不显示遮罩
+                        ,skin: 'buttonStyle'
+                        ,btn:['审核']
+                        ,yes: function () {  //确定按钮回调方法， 需要手动关闭弹出层
+                            layer.closeAll();
+                            review(data.bid);
+                        }
+                        ,end:function(){
+                        }
+                    });
+                }else {
+                    layer.open({
+                        type: 1
+                        ,title: '查看详细信息'  //弹出层标题
+                        ,area: ['800px', '400px']   //设置弹出层大小[宽，高]
+                        ,offset: 'auto'   //设置弹出层位置 //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+                        ,content:$("#layer_bill_detail")
+                        ,shade: 0 //不显示遮罩
+                        ,btn:['确认']
+                        ,yes: function () {  //确定按钮回调方法， 需要手动关闭弹出层
+                            layer.closeAll();
+                        }
+                    });
+                }
                 setTableValue(data);//动态向表格赋值
             }else if(layEvent === 'admin_audit'){ //确定该条申请结果
-                //询问框
                 layer.confirm('你是否通过该条备案申请？', {
                     btn: ['通过','不通过'],title:'重要步骤',skin:'priorityTips',icon:7
                 }, function(){
@@ -250,6 +271,58 @@
                 });
             }
         });
+        function review(bid){
+            console.log(bid);
+            layer.confirm('你是否通过该条备案申请？', {
+                btn: ['通过','不通过'],title:'重要步骤',skin:'priorityTips',icon:7
+            }, function(){
+                layer.prompt({title: '你需要做出相关说明', formType: 2}, function(text, index){
+                    layer.close(index);
+                    layer.msg('你通过了该备案：' +'<br>你最后写下了：'+text);
+                    $.ajax(
+                        {
+                            url: '/bill/accept?bid=' +bid+'&note='+text,
+                            type: 'POST',   // 请求方式
+                            success: function (result) {
+                                console.log(result);
+                                if(result.code == 200){
+                                    layer.msg("审核成功！你同意该备案。");
+                                }else {
+                                    layer.msg("未知错误！");
+                                }
+                                bill_state.reload();   //表格重载
+                            },
+                            error: function () {
+                                console.log('Send Request Fail..'); // 请求失败时的回调函数
+                            }
+                        }
+                    );
+                });
+            },function(){
+                layer.prompt({title: '请简述审核不通过的原因', formType: 2}, function(text, index){
+                    layer.close(index);
+                    layer.msg('审核完毕！未通过原因：' +'<br>您最后写下了：'+text);
+                    $.ajax(
+                        {
+                            url: '/bill/refuse?bid=' +bid+'&note='+text,
+                            type: 'POST',   // 请求方式
+                            success: function (result) {
+                                console.log(result); // 请求成功后的回调函数, result 为响应内容
+                                if(result.code == 200){
+                                    layer.msg("审核成功！你不同意该备案。");
+                                }else {
+                                    layer.msg("未知错误！");
+                                }
+                                bill_state.reload();   //表格重载
+                            },
+                            error: function () {
+                                console.log('Send Request Fail..'); // 请求失败时的回调函数
+                            }
+                        }
+                    );
+                });
+            });
+        }
         form.on('select(stateSelect)', function(data){
             console.log(data.value); //得到被选中的值
             bill_state.reload({
