@@ -119,12 +119,9 @@ public class BillController {
                                       HttpSession session){
        Student student =(Student) session.getAttribute("loginUser");
        String sno=student.getSno();
-       System.out.println(sno+"--类型："+state);
        if(state.equals("3")){
-           System.out.println("执行1");
            return billService.queryAllBillWithPage(sno,pageNum,pageSize);
        }else {
-           System.out.println("执行2");
            return billService.queryAllBillWithPageState(sno,pageNum,pageSize,state);
        }
     }
@@ -153,10 +150,8 @@ public class BillController {
         System.out.println(state);
         JsonMessage billListAdminMessage;
         if(state.equals("3")){
-            System.out.println("执行10");
             billListAdminMessage=billService.queryAllBill(pageNum,pageSize);
         }else {
-            System.out.println("执行20");
             billListAdminMessage=billService.queryAllBillState(pageNum,pageSize,state);
         }
         return billListAdminMessage;
@@ -236,7 +231,6 @@ public class BillController {
     public Message getLastNotice(){
         Message lastNoticeMessage=new Message();
         NoticeVO noticeVO=commonService.getLastNotice();
-      //  System.out.println(noticeVO.getUpdateTime());
         lastNoticeMessage.setCode(200);
         lastNoticeMessage.setMessage("获取成功！");
         lastNoticeMessage.setData(noticeVO);

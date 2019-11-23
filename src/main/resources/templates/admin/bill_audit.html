@@ -18,6 +18,12 @@
             height: 120px;
             margin: 0 10px 10px 0;
         }
+       body .priorityTips .layui-layer-title{
+            color:#FF0000;
+        }
+        body .priorityTips{
+            color:#FFB800;
+        }
     </style>
 </head>
 <body>
@@ -193,8 +199,8 @@
                 setTableValue(data);//动态向表格赋值
             }else if(layEvent === 'admin_audit'){ //确定该条申请结果
                 //询问框
-                layer.confirm('请选择该条报销申请的审核结果：', {
-                    btn: ['通过','不通过'] //按钮
+                layer.confirm('你是否通过该条备案申请？', {
+                    btn: ['通过','不通过'],title:'重要步骤',skin:'priorityTips',icon:7
                 }, function(){
                     layer.prompt({title: '你需要做出相关说明', formType: 2}, function(text, index){
                         layer.close(index);

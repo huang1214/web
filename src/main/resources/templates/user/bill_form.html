@@ -859,7 +859,9 @@
 
         form.on('submit(bill_form_submit)', function(data){
             console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
-            if(upload_bill==null||upload_bill==""){
+            if(data.field.ts==null||data.field.ts==""){
+                layer.msg("指导老师不能为空！");
+            }else if(upload_bill==null||upload_bill==""){
                 layer.msg("入围名单不能为空！");
             }else {
                 var params = {
