@@ -255,9 +255,14 @@
             var note=document.getElementById("note");
             var str1=data.bid;
             var strYear=str1.substring(1,5);
-            if(data.attachfile!=null){
-                var img_url = "http://localhost:8083/"+strYear+"/billfile/"+data.attachfile;
-                evidence.innerHTML="<img class='zhouQuanImg' src='"+img_url+"'/>&emsp;&emsp;<a style='color: #0000FF' href='"+img_url+" ' download='"+data.student.sname+data.cyear+data.competition.ctname+'入围名单'+"'>下载</a>";
+            var strSuffix=data.attachfile;
+            if(strSuffix!=null){
+                var img_url = "http://localhost:8083/"+strYear+"/billfile/"+strSuffix;
+                if(strSuffix.endsWith("pdf")){
+                    evidence.innerHTML="<a style='color: #0000FF' target='_blank' href='"+img_url+"'>点击查看</a>&emsp;&emsp;<a style='color: #0000FF' href='"+img_url+" ' download='"+data.student.sname+data.cyear+data.competition.ctname+'入围名单'+"'>下载</a>";
+                }else {
+                    evidence.innerHTML="<img class='zhouQuanImg' src='"+img_url+"'/>&emsp;&emsp;<a style='color: #0000FF' href='"+img_url+" ' download='"+data.student.sname+data.cyear+data.competition.ctname+'入围名单'+"'>下载</a>";
+                }
             }else {
                 evidence.innerHTML="未上传名单"
             }
