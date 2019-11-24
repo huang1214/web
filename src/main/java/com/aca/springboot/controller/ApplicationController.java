@@ -89,20 +89,6 @@ public class ApplicationController {
             e.printStackTrace();
             return m;
         }
-//        if (null != tms && tms.length() >= 1) {
-//            String[] split = tms.split(",");
-//            for (String t : split) {
-//                if (t.length() > 0) {
-//                    leader = t.split(":")[0];
-//                    break;
-//                }
-//            }
-//        } else {
-//            leader = sno;
-//        }
-//        if (leader.length() <= 0) {
-//            leader = sno;
-//        }
         app.setStatus("1");
         if(applicationMembers!=null&&applicationMembers.size()>0){
             leader=applicationMembers.get(0).getAppTmId();

@@ -199,7 +199,6 @@ layui.use(['table','layer','form','jquery'], function(){
             rText += "<a  href='" + docUrl + "' download='" + result.data.appid + "-" + doc + "'>" + doc + "</a><br>";
         if (result.data.highLight != null && result.data.highLight != '')
             rText += "<a  href='" + packageUrl + "' download='" + result.data.appid + "-" + pac + "'>" + pac + "</a>";
-
         rText += "</td><tr></tr>";
 
         if(result.data.status==0){
