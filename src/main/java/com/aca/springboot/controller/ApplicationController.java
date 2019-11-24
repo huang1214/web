@@ -130,7 +130,6 @@ public class ApplicationController {
             e.printStackTrace();
             return m;
         }
-
         m.setCode(0);
         m.setMessage("插入成功");
         return m;

@@ -201,6 +201,7 @@ layui.use(['table','layer','form','jquery'], function(){
             rText += "<a  href='" + packageUrl + "' download='" + result.data.appid + "-" + pac + "'>" + pac + "</a>";
         rText += "</td><tr></tr>";
 
+
         if(result.data.status==0){
             rText += "<tr><td>当前状态</td><td>待指导老师确认</td>";
         }else if(result.data.status==1){
