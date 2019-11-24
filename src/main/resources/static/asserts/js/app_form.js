@@ -663,7 +663,6 @@ layui.use(['laydate', 'upload', 'table', 'layer', 'form','element'], function ()
             "getawardImg": data.field.getawardImg,
             "highLight": data.field.highLight
         };
-
         $.ajax({
             type: "POST",
             //contentType: "application/json",//post请求的信息格式

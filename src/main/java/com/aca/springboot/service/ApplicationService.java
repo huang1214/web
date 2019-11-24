@@ -154,7 +154,6 @@ public class ApplicationService {
         addMoreApplicationMember(list1);
         return list1;
     }
-
     public List com_name() {
         return applicationMapper.com_name();
     }
