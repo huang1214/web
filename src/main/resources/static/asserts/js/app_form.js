@@ -243,6 +243,7 @@ layui.use(['laydate', 'upload', 'table', 'layer', 'form','element'], function ()
         , text: '暂无数据'
         , title: '指导老师'
         , loading: false
+        , text:'无'
         , cols: [
             [ //表头
                 {field: 'tid', title: '教师编号', width: 103,align:'center'}
@@ -673,8 +674,26 @@ layui.use(['laydate', 'upload', 'table', 'layer', 'form','element'], function ()
                 if (result.code == 0) {
                     layer.msg(result.message);
                     document.getElementById("form_application").reset();
+                    $("input[type='hidden']").val("");
+                    var newData=[];
+                    table.reload("teacherListTable",{data:newData});
+                    // $("#stuListTable").empty();
+                    table.reload("stuListTable",{data:newData});
+                    var ths=$("#upload_cer").parent('th').parent('tr').children('th');
+                    ths[1].innerHTML="";
+                    ths[2].innerHTML="";
+                    ths[3].innerHTML="未上传";
+                    ths=$("#upload_doc").parent('th').parent('tr').children('th');
+                    ths[1].innerHTML="";
+                    ths[2].innerHTML="";
+                    ths[3].innerHTML="未上传";
+                    ths=$("#upload_pac").parent('th').parent('tr').children('th');
+                    ths[1].innerHTML="";
+                    ths[2].innerHTML="";
+                    ths[3].innerHTML="未上传";
                     $("#application_form_btn").removeClass("layui-btn-disabled");
                     $("#application_form_btn").addClass("layui-btn-normal");
+
                 } else {
                     layer.msg(result.message);
                     $("#application_form_btn").removeClass("layui-btn-disabled");

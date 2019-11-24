@@ -61,10 +61,8 @@ public class ApplicationController {
             return m;
         } else if ((int) type == 1) {
             sno = ((Student) user).getSno();
-            app.setStatus("0");
         } else if ((int) type == 2) {
             sno = ((Teacher) user).getTno();
-            app.setStatus("1");
         } else {
             m.setCode(3);
             m.setMessage("当前用户无权限！");
@@ -79,11 +77,11 @@ public class ApplicationController {
         String appid = StrUtils.timeStamp();
         if (null == tms || "".equals(tms)) {
             tms = sno + ":100";
-        }
+        }List<ApplicationMember> applicationMembers=null;
         try {
 //            System.out.println("tms:"+tms+"\nts:"+ts);
             //插入相关学生
-            applicationService.addMultMember(tms, ts, Integer.parseInt(studentPrice) * 100, Integer.parseInt(teacherPrice) * 100, awardDate, appid);
+            applicationMembers = applicationService.addMultMember(tms, ts, Integer.parseInt(studentPrice) * 100, Integer.parseInt(teacherPrice) * 100, awardDate, appid);
 //            System.out.println(tms);
         } catch (Exception e) {
             m.setCode(5);
@@ -91,19 +89,36 @@ public class ApplicationController {
             e.printStackTrace();
             return m;
         }
-        if (null != tms && tms.length() >= 1) {
-            String[] split = tms.split(",");
-            for (String t : split) {
-                if (t.length() > 0) {
-                    leader = t.split(":")[0];
-                    break;
+//        if (null != tms && tms.length() >= 1) {
+//            String[] split = tms.split(",");
+//            for (String t : split) {
+//                if (t.length() > 0) {
+//                    leader = t.split(":")[0];
+//                    break;
+//                }
+//            }
+//        } else {
+//            leader = sno;
+//        }
+//        if (leader.length() <= 0) {
+//            leader = sno;
+//        }
+        app.setStatus("1");
+        if(applicationMembers!=null&&applicationMembers.size()>0){
+            leader=applicationMembers.get(0).getAppTmId();
+            //查看是否有指导老师
+            if((int)type==1){
+                for(ApplicationMember am:applicationMembers){
+                    if(am.getAppType().equals("2")){
+                        app.setStatus("0");
+                        break;
+                    }
                 }
             }
-        } else {
-            leader = sno;
-        }
-        if (leader.length() <= 0) {
-            leader = sno;
+        }else{
+            m.setCode(-1);
+            m.setMessage("参赛人员不足");
+            return m;
         }
         try {
             app.setAppid(appid);
