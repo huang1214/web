@@ -186,17 +186,21 @@ layui.use(['table','layer','form','jquery'], function(){
         if(teachers.length!=0)
             rText += "<tr><td>指导老师</td><td>"+teachers+"</td>";
 
-        var cert=result.data.com.ctname+"-"+level_type+"-"+prize_type+"-获奖证书";
-        var doc=result.data.com.ctname+"-"+level_type+"-"+prize_type+"-参赛报告";
-        var pac=result.data.com.ctname+"-"+level_type+"-"+prize_type+"-花絮";
-        var certUrl="/"+(result.data.appid).substring(0,4)+"/cert/"+result.data.certificateImg;
-        var docUrl="/"+(result.data.appid).substring(0,4)+"/doc/"+result.data.getawardImg;
-        var packageUrl="/"+(result.data.appid).substring(0,4)+"/package/"+result.data.highLight;
-        rText +="<tr><td>文件</td><td>" +
-            "<a  href='"+certUrl+"' download='"+result.data.appid+"-"+cert+"'>"+cert+"</a><br>" +
-            "<a  href='"+docUrl+"' download='"+result.data.appid+"-"+doc+"'>"+doc+"</a><br>" +
-            "<a  href='"+packageUrl+"' download='"+result.data.appid+"-"+pac+"'>"+pac+"</a>" +
-            "</td><tr></tr>"
+        var cert = result.data.com.ctname + "-" + level_type + "-" + prize_type + "-获奖证书";
+        var doc = result.data.com.ctname + "-" + level_type + "-" + prize_type + "-参赛报告";
+        var pac = result.data.com.ctname + "-" + level_type + "-" + prize_type + "-花絮";
+        var certUrl = "/" + (result.data.appid).substring(0, 4) + "/cert/" + result.data.certificateImg;
+        var docUrl = "/" + (result.data.appid).substring(0, 4) + "/doc/" + result.data.getawardImg;
+        var packageUrl = "/" + (result.data.appid).substring(0, 4) + "/package/" + result.data.highLight;
+        rText += "<tr><td>文件</td><td>";
+        if (result.data.certificateImg != null && result.data.certificateImg != '')
+            rText += "<a  href='" + certUrl + "' download='" + result.data.appid + "-" + cert + "'>" + cert + "</a><br>";
+        if (result.data.getawardImg != null && result.data.getawardImg != '')
+            rText += "<a  href='" + docUrl + "' download='" + result.data.appid + "-" + doc + "'>" + doc + "</a><br>";
+        if (result.data.highLight != null && result.data.highLight != '')
+            rText += "<a  href='" + packageUrl + "' download='" + result.data.appid + "-" + pac + "'>" + pac + "</a>";
+        rText += "</td><tr></tr>";
+
 
         if(result.data.status==0){
             rText += "<tr><td>当前状态</td><td>待指导老师确认</td>";
