@@ -41,32 +41,16 @@ public class MyMvcConfig extends WebMvcConfigurerAdapter {
                 registry.addViewController("ConsoleDataMapper.html").setViewName("/ConsoleDataMapper"); //显示部门的表格
 
                 /* 4.普通用户*/
-                registry.addViewController("user/dashboard").setViewName("/user/dashboard"); //仪表盘
-                registry.addViewController("user/user_info.html").setViewName("/user/user_info"); //用户个人信息界面
+               // registry.addViewController("user/dashboard").setViewName("/user/dashboard"); //仪表盘
+               // registry.addViewController("user/user_info.html").setViewName("/user/user_info"); //用户个人信息界面
 
-                /* 4.1预算备案*/
-                registry.addViewController("user/bill_notice").setViewName("/user/bill_notice"); //备案须知
-                registry.addViewController("user/bill_form").setViewName("/user/bill_form"); //备案申报
-                registry.addViewController("user/bill_state").setViewName("/user/bill_state"); //备案状态
-                registry.addViewController("user/bill_history").setViewName("/user/bill_history"); //预算备案：历史信息
-                /* 4.2成果管理*/
-                registry.addViewController("user/application_notice").setViewName("/user/application_notice"); //申请须知
-                registry.addViewController("user/application_form").setViewName("/user/application_form"); //申请信息
-                registry.addViewController("user/application_state").setViewName("/user/application_state"); //申请状态
-                registry.addViewController("user/application_history").setViewName("/user/application_history"); //成果管理：历史信息
-
-
-                /* 教师的管理*/
                 registry.addViewController("admin/teacher").setViewName("/admin/teacher"); //显示部门的表格
                 registry.addViewController("admin/teacher_form").setViewName("/admin/teacher_form"); //显示部门的表格
 
-                /**
-                 * 竞赛信息的查询
-                 */
-                registry.addViewController("admin/com_search").setViewName("/admin/com_search");
+               /* registry.addViewController("admin/com_search").setViewName("/admin/com_search");
                 registry.addViewController("admin/audit").setViewName("/admin/audit");
                 registry.addViewController("admin/bill_audit").setViewName("/admin/bill_audit");
-                registry.addViewController("admin/billRelease").setViewName("/admin/billRelease");
+                registry.addViewController("admin/billRelease").setViewName("/admin/billRelease");*/
 
             }
             //注册拦截器

@@ -23,5 +23,53 @@ public class ContentController {
     public String aaaa(){
         return "admin/appFileManage";
     }
+    @RequestMapping("/applicationForm")
+    public String applicationForm(){
+        return "user/application_form";
+    }
+    @RequestMapping("/applicationNotice")
+    public String applicationNotice(){
+        return "user/application_notice";
+    }
+    @RequestMapping("/billNotice")
+    public String billNotice(){
+        return "user/bill_notice";
+    }
+    @RequestMapping("/billForm")
+    public String billForm(){
+        return "user/bill_form";
+    }
+    @RequestMapping("/billState")
+    public String billState(){
+        return "user/bill_state";
+    }
+    @RequestMapping("/dashboard")
+    public String dashboard(){
+        return "user/dashboard";
+    }
+    @RequestMapping("/teacher")
+    public String teacher(){
+        return "admin/teacher";
+    }
+    @RequestMapping("/comSearch")
+    public String comSearch(){
+        return "admin/com_search";
+    }
+    @RequestMapping("/audit")
+    public String audit(){
+        return "admin/audit";
+    }
+    @RequestMapping("/billAudit")
+    public String billAudit(){
+        return "admin/bill_audit";
+    }
+    @RequestMapping("/billRelease")
+    public String billRelease(){
+        return "admin/billRelease";
+    }
+    @RequestMapping("/userInfo")
+    public String userInfo(){
+        return "user/user_info";
+    }
 }
 

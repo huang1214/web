@@ -46,7 +46,7 @@
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="javascript:;" data-id="15" data-title="基本资料"
-                           class="site-active" data-type="tabAdd" data-url="user/user_info.html">基本资料</a></dd>
+                           class="site-active" data-type="tabAdd" data-url="page/userInfo">基本资料</a></dd>
                     <dd><a href="">安全设置</a></dd>
                 </dl>
             </li>
@@ -69,18 +69,18 @@
             <ul class="layui-nav layui-nav-tree" lay-filter="leftnav">
                 <!--仪表盘-->
                 <li class="layui-nav-item layui-this">
-                    <a class="nav-item-side site-active" href="javascript:;" data-url="user/dashboard" data-id="1"
-                       data-title="仪表盘" data-type="tabAdd"><i class="fa fa-home fa-fw"></i>首页</a>
+                    <a class="nav-item-side site-active" href="javascript:;" data-url="page/dashboard" data-id="1"
+                       data-title="首页" data-type="tabAdd"><i class="fa fa-home fa-fw"></i>首页</a>
                 </li>
                 <!--报销-->
                 <li th:if="${session.type} eq '1'" class="layui-nav-item ">
                     <a class="nav-item-side" href="javascript:;"><i class="fa fa-id-card fa-fw" aria-hidden="true"></i>预算备案</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" data-url="user/bill_notice" data-id="2" data-title="备案须知"
+                        <dd><a href="javascript:;" data-url="page/billNotice" data-id="2" data-title="备案须知"
                                class="site-active" data-type="tabAdd">备案须知</a></dd>
-                        <dd><a href="javascript:;" data-url="user/bill_form" data-id="3" data-title="备案申报"
+                        <dd><a href="javascript:;" data-url="page/billForm" data-id="3" data-title="备案申报"
                                class="site-active" data-type="tabAdd">备案申报</a></dd>
-                        <dd><a href="javascript:;" data-url="user/bill_state" data-id="4" data-title="我的备案"
+                        <dd><a href="javascript:;" data-url="page/billState" data-id="4" data-title="我的备案"
                                class="site-active" data-type="tabAdd">我的备案</a></dd>
                     </dl>
                 </li>
@@ -88,9 +88,9 @@
                 <li th:if="${session.type} eq '2' or ${session.type} eq '1'" class="layui-nav-item">
                     <a class="nav-item-side" href="javascript:;"><i class="fa fa-cogs fa-fw" aria-hidden="true"></i>成果管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" data-url="user/application_notice" data-id="5" data-title="申请须知"
+                        <dd><a href="javascript:;" data-url="page/applicationNotice" data-id="5" data-title="申请须知"
                                class="site-active" data-type="tabAdd">申请须知</a></dd>
-                        <dd><a href="javascript:;" data-url="user/application_form" data-id="6" data-title="申请信息"
+                        <dd><a href="javascript:;" data-url="page/applicationForm" data-id="6" data-title="申请信息"
                                class="site-active" data-type="tabAdd">申请信息</a></dd>
                         <dd th:if="${session.type} eq '1'"><a href="javascript:;" data-url="page/application_state_student" data-id="7" data-title="申请状态"
                                                               class="site-active" data-type="tabAdd">申请列表</a></dd>
@@ -100,21 +100,21 @@
                 </li>
                 <!--查询教师-->
                 <li th:if="${session.type} eq '3' " class="layui-nav-item">
-                    <a class="nav-item-side site-active" data-url="admin/teacher" data-id="9"
+                    <a class="nav-item-side site-active" data-url="page/teacher" data-id="9"
                        data-title="教育科研" data-type="tabAdd">
                         <i class="fa fa-flask fa-fw" aria-hidden="true"></i>教育科研
                     </a>
                 </li>
                 <!--竞赛查询-->
                 <li class="layui-nav-item">
-                    <a class="nav-item-side site-active" data-url="admin/com_search" data-id="10"
+                    <a class="nav-item-side site-active" data-url="page/comSearch" data-id="10"
                        data-title="竞赛查询" data-type="tabAdd">
                         <i class="fa fa-search fa-fw" aria-hidden="true"></i>竞赛查询
                     </a>
                 </li>
                 <!--激励审核-->
                 <li th:if="${session.type} eq '3' " class="layui-nav-item">
-                    <a class="nav-item-side site-active" data-url="admin/audit" data-id="11"
+                    <a class="nav-item-side site-active" data-url="page/audit" data-id="11"
                        data-title="奖金审核" data-type="tabAdd"><i class="layui-icon">&#xe65e;</i>奖金审核
                         <span id="AppTips" style="position: relative; top: 0px; left: 0px;color:red"></span>
                     </a>
@@ -127,7 +127,7 @@
                 </li>
                 <!--报销审核-->
                 <li th:if="${session.type} eq '3' " class="layui-nav-item">
-                    <a class="nav-item-side site-active" data-url="admin/bill_audit" data-id="13"
+                    <a class="nav-item-side site-active" data-url="page/billAudit" data-id="13"
                        data-title="备案审核" data-type="tabAdd">
                         <i class="layui-icon">&#xe655;</i>备案审核
                     </a>
@@ -139,7 +139,7 @@
                     </a>
                     <dl class="layui-nav-child">
                         <dd><a data-id="14" data-title="发布备案公告" class="nav-item-side site-active"
-                               data-type="tabAdd" data-url="admin/billRelease">
+                               data-type="tabAdd" data-url="page/billRelease">
                             <i class="layui-icon">&#xe645;</i>更新备案公告</a>
                         </dd>
                         <dd><a data-id="15" data-title="确认金额" class="site-active"
@@ -155,11 +155,11 @@
         <!-- 内容主体区域 -->
         <div class="layui-tab layui-tab-brief" lay-filter="tab" lay-allowClose="true">
             <ul class="layui-tab-title">
-                <li lay-id="1" class="layui-this">仪表盘</li>
+                <li lay-id="1" class="layui-this">首页</li>
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
-                    <iframe data-frameid="" scrolling="auto" frameborder="0" src="user/dashboard"
+                    <iframe data-frameid="" scrolling="auto" frameborder="0" src="page/dashboard"
                             style="width: 100%; height: 100%; min-height: 500px;"></iframe>
                 </div>
             </div>
