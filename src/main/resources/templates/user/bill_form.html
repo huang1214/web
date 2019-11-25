@@ -219,7 +219,7 @@
         <!-- 类别型号编号（0省赛，1国赛 -->
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">类别型号<span style="color: red">*</span></label>
+                <label class="layui-form-label">竞赛等级<span style="color: red">*</span></label>
                 <div class="layui-input-block">
                     <select name="clevel" lay-search lay-verify="required" >
                         <option value="" selected>请选择</option>
@@ -229,7 +229,17 @@
                 </div>
             </div>
         </div>
-        <!-- 竞赛描述 -->
+        <div class="layui-collapse">
+            <div class="layui-colla-item">
+                <h2 class="layui-colla-title">竞赛描述填写须知</h2>
+                <div class="layui-colla-content">
+                    ① 你需要对此次参赛的<sapn style="color: #FF0000">行程</sapn>和<span style="color: #FF0000">赛程</span>做一个详细描述<br>
+                    ② 具体包括时间、人员、地点<br>
+                    ③ 这一栏你不需要对产生的费用进行描述<br>
+                    ④ 字数在300字以内
+                </div>
+            </div>
+        </div>
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">竞赛描述</label>
             <div class="layui-input-block">
@@ -274,18 +284,30 @@
                        placeholder="请输入参赛作品名称" class="layui-input" lay-verify="required" >
             </div>
         </div>
-        <!-- 预算金额：必写 -->
+        <div class="layui-collapse">
+            <div class="layui-colla-item">
+                <h2 class="layui-colla-title">预算填写须知</h2>
+                <div class="layui-colla-content">
+                    ① “预算金额”和“预算描述”为必填<br>
+                    ② 你需要把将会产生的费用总额计算出来，并填写至“预算金额”一栏中<br>
+                    ③ 你需要对将会产生的费用进行详细描述，并填写至“预算描述”一栏中<br>
+                    ④ 你要确保你在描述中的每一项的费用之和与“预算金额”的数值相等<br>
+                    ⑤ 最终的报销额度以管理员审核为准，请留心审核进度<br>
+                    ⑥ 字数在400字以内
+                </div>
+            </div>
+        </div>
         <div class="layui-form-item">
             <label class="layui-form-label">预算金额<span style="color: red">*</span></label>
             <div class="layui-input-block">
-                <input type="text" name="predictfee" lay-verify="required|number" autocomplete="off" class="layui-input">
+                <input type="text" name="predictfee" lay-verify="required|number"
+                       placeholder="填写前请先查看填写须知" autocomplete="off" class="layui-input">
             </div>
         </div>
-        <!-- 预算描述:必写 -->
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">预算描述<span style="color: red">*</span></label>
             <div class="layui-input-block">
-                <textarea name="preditfeedesc" placeholder="请输入内容" lay-verify="required"
+                <textarea name="preditfeedesc" placeholder="填写前请先查看填写须知" lay-verify="required"
                           class="layui-textarea"></textarea>
             </div>
         </div>

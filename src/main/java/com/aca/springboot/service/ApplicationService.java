@@ -151,6 +151,7 @@ public class ApplicationService {
                     throw new Exception("老师奖金占比总和须为100");
             }
         }
+
         addMoreApplicationMember(list1);
         return list1;
     }

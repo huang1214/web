@@ -36,6 +36,18 @@
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
         <legend>备案审核表</legend>
     </fieldset>
+    <div class="layui-collapse">
+        <div class="layui-colla-item">
+            <h2 class="layui-colla-title">预算填写须知</h2>
+            <div class="layui-colla-content">
+                ① 你在审核时对于不满足备案条件的申报应当给予“不通过”并给出原因<br>
+                ② 对于符合备案条件的申报，你应当给予“通过”。同时你可以对每项预算进行调整。
+                如：“2张南昌至北京高铁二等座1200元”，你可以写下：“2张南昌至北京车票600元”<br>
+                ③ 最后报销金额以你写下的为准<br>
+                ④ 字数在400字以内
+            </div>
+        </div>
+    </div>
     <table class="layui-hide" id="bill_state" lay-filter="bill_operate"></table>
     <!-- <table class="layui-hide" id="bill_state_detail" lay-filter="application_state_detail"></table>-->
 </div>
@@ -153,7 +165,7 @@
         //显示表单状态基本信息
         var bill_state=table.render({
             elem: '#bill_state'
-            ,height: 480
+            ,height: 410
             ,url: ' /bill/query'//数据接口
             ,page: true //开启分页
             ,toolbar:"#toolbar_billState"

@@ -233,6 +233,7 @@ layui.use(['table','layer','form','jquery'], function(){
             rText += "<a  href='" + packageUrl + "' download='" + result.data.appid + "-" + pac + "'>" + pac + "</a>";
         rText += "</td><tr></tr>";
 
+
         if(result.data.status==0){
             rText += "<tr><td>当前状态</td><td>待指导老师确认</td>";
             rText +="<tr><td>操作</td><td><button type='button' class='layui-btn' onclick="+"'comfirmBtn("+'"'+result.data.appid+'"'+")'>确认</button></td></tr>"

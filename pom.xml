@@ -4,9 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.aca</groupId>
-    <artifactId>spring-boot-04-web-restfulcrud</artifactId>
+    <artifactId>XKJSBACK</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <name>spring-boot-04-zweb-restfulcrud</name>
     <description>Demo project for Spring Boot</description>
@@ -29,25 +29,12 @@
     </properties>
 
     <dependencies>
-        <!--		<dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-data-jpa</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-jdbc</artifactId>
-                </dependency>-->
         <!-- 引入web模块 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!--引入其他的Servlet容器-->
-        <!--<dependency>
-            <artifactId>spring-boot-starter-undertow</artifactId>
-            <groupId>org.springframework.boot</groupId>
-        </dependency>-->
 
         <!-- thymeleaf -->
         <dependency>
