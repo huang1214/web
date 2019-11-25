@@ -7,6 +7,7 @@ import com.aca.springboot.service.CommonService;
 import com.aca.springboot.utils.TimeUtil;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,8 +33,8 @@ import java.util.Map;
 @Api("公共控制器")
 @RequestMapping(value = "/common")
 public class CommonController {
-   /* @Value("${web.upload-path}")
-    private String base; //文件基础路径*/
+    @Value("${web.basePath}")
+    private String base; //文件基础路径
     private final CommonService commonService;
     private final CommenService commenService;
    @Autowired
@@ -52,7 +53,7 @@ public class CommonController {
         String newName= TimeUtil.getFileID()+extend;
         Calendar calendar=Calendar.getInstance() ;//获取Calendar实例
         int year=calendar.get(Calendar.YEAR); //获取年份
-        String path="D:\\XKJS\\"+year+"\\billfile\\";//保存路径
+        String path=base+year+"/billfile/";//保存路径
         File file=new File(path);
         if(!file.exists()){
             System.out.println("执行");
@@ -108,7 +109,7 @@ public class CommonController {
         String id=pojo.getId();
         Calendar calendar=Calendar.getInstance() ;//获取Calendar实例
         int year=calendar.get(Calendar.YEAR); //获取年份
-        String path="D:\\XKJS\\"+year+"\\billnote\\";//保存路径
+        String path=base+year+"/billnote/";//保存路径
         File file=new File(path);
         if(!file.exists()){
             System.out.println("执行");

@@ -869,7 +869,7 @@
             ,size:"1024"          //设置文件最大可允许上传的大小，单位 KB。不支持ie8/9
             ,done: function(res){
                 //上传完毕回调
-                img_bill_url = "http://localhost:8083/"+res.data.year+"/billfile/"+res.data.name;
+                img_bill_url = "/" +res.data.year+"/billfile/"+res.data.name;
                 imgInvitationPath=res.data.name;
                 console.log(imgInvitationPath);
                 document.getElementById("imgInvitation").src = img_bill_url;

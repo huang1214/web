@@ -41,7 +41,7 @@
                     content.innerHTML=result.data.noticeContent;
                     var arrayNotice=result.data.attachments;
                     for(var i=0;i<arrayNotice.length;i++){
-                        var url = "http://localhost:8083/"+strYear+"/billnote/"+arrayNotice[i].attachmentPath;
+                        var url = "/" +strYear+"/billnote/"+arrayNotice[i].attachmentPath;
                         var temp=i+1;
                         $("<li>"+"附件"+temp+"【"+"<a style='color: #0000FF' href="+url+" download="+"'"+arrayNotice[i].attachmentName+"'"+">"+arrayNotice[i].attachmentName+"</a>"+"】"+"</li>").appendTo("#attach");
                     }

@@ -131,7 +131,7 @@ public class ApplicationController {
             return m;
         }
         m.setCode(0);
-        m.setMessage("插入成功");
+        m.setMessage("申请成功！");
         return m;
     }
 

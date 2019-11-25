@@ -374,7 +374,7 @@
             var strYear=str1.substring(1,5);
             var strSuffix=data.attachfile;
             if(strSuffix!=null){
-                var img_url = "http://localhost:8083/"+strYear+"/billfile/"+strSuffix;
+                var img_url = "/" +strYear+"/billfile/"+strSuffix;
                 if(strSuffix.endsWith("pdf")){
                     evidence.innerHTML="<a style='color: #0000FF' target='_blank' href='"+img_url+"'>点击查看</a>&emsp;&emsp;<a style='color: #0000FF' href='"+img_url+" ' download='"+data.student.sname+data.cyear+data.competition.ctname+'入围名单'+"'>下载</a>";
                 }else {
@@ -384,7 +384,7 @@
                 evidence.innerHTML="未上传名单"
             }
             if(data.invitation!=null){
-                var img_url2 = "http://localhost:8083/"+strYear+"/billfile/"+data.invitation;
+                var img_url2 = "/" +strYear+"/billfile/"+data.invitation;
                 invitation.innerHTML="<img class='zhouQuanImg'  src='"+img_url2+"'/>&emsp;&emsp;<a style='color: #0000FF' href='"+img_url2+" ' download='"+data.student.sname+data.cyear+data.competition.ctname+'邀请函'+"'>下载</a>";
             }else {
                 invitation.innerHTML="无邀请函"
