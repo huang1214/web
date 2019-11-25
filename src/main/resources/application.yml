@@ -1,9 +1,11 @@
 server:
   context-path: /
+  port: 8083
   tomcat:
     uri-encoding: utf-8
 web:
   basePath: D:/XKJS/
+
 
 spring:
   mvc:
