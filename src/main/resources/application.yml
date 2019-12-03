@@ -4,7 +4,7 @@ server:
   tomcat:
     uri-encoding: utf-8
 web:
-  basePath: E:/XKJS/
+  basePath: D:/XKJS/
 
 
 spring:

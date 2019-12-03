@@ -212,7 +212,7 @@
                         class="layui-input" placeholder="yyyy-MM-dd~yyyy-MM-dd">
             </div>
             <div class="layui-inline">
-                <span style="color: red">(提示：备案需要在比赛之前，详情查看备案须知)</span>
+                <span style="color: red">(提示：出发去参加比赛的那天和返程的那天)</span>
             </div>
         </div>
 
@@ -231,19 +231,20 @@
         </div>
         <div class="layui-collapse">
             <div class="layui-colla-item">
-                <h2 class="layui-colla-title">竞赛描述填写须知</h2>
+                <h2 class="layui-colla-title">行程描述填写须知</h2>
                 <div class="layui-colla-content">
-                    ① 你需要对此次参赛的<sapn style="color: #FF0000">行程</sapn>和<span style="color: #FF0000">赛程</span>做一个详细描述<br>
-                    ② 具体包括时间、人员、地点<br>
-                    ③ 这一栏你不需要对产生的费用进行描述<br>
-                    ④ 字数在300字以内
+                    ① 请按照下面格式填写<br>
+                    ② 我们是南昌大学软件学院XX班XX（姓名，学号），XX班XX，XX班XX（按需增减）
+                    ，将于X年X月X日 到 X年X月X日参加在XX（地点）举办的XXXXXXXXXXXXXXXXXX
+                    （比赛全称），为期X天，特此申请备案。<br>
+                    ③ 字数在300字以内
                 </div>
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">竞赛描述</label>
+            <label class="layui-form-label">行程描述</label>
             <div class="layui-input-block">
-                <textarea name="cdesc" placeholder="请输入内容" class="layui-textarea"></textarea>
+                <textarea name="cdesc" placeholder="请先查看填写须知" class="layui-textarea"></textarea>
             </div>
         </div>
 
@@ -288,12 +289,12 @@
             <div class="layui-colla-item">
                 <h2 class="layui-colla-title">预算填写须知</h2>
                 <div class="layui-colla-content">
-                    ① “预算金额”和“预算描述”为必填<br>
-                    ② 你需要把将会产生的费用总额计算出来，并填写至“预算金额”一栏中<br>
-                    ③ 你需要对将会产生的费用进行详细描述，并填写至“预算描述”一栏中<br>
-                    ④ 你要确保你在描述中的每一项的费用之和与“预算金额”的数值相等<br>
-                    ⑤ 最终的报销额度以管理员审核为准，请留心审核进度<br>
-                    ⑥ 字数在400字以内
+                    ① 你需要把将会产生的费用总额计算出来，并填写至“预算金额”一栏中<br>
+                    ② 你需要详细描述每一项费用，如下面所示：<br>
+                    ③ 每位同学的费用为报名费XX元+硬座火车票XX元*2+XX酒店几晚间房XX元*X，带队老师报名费
+                    XX元,共X人，合计XXX元。<br>
+                    ④ 最终的报销额度可能会有出入，以最终到账为准<br>
+                    ⑤ 字数在300字以内<br>
                 </div>
             </div>
         </div>
@@ -318,7 +319,7 @@
                     ① 入围名单为必填选项<br>
                     ② 文件大小不超过 1024KB<br>
                     ③ 支持格式：jpg、png、jpeg、pdf<br>
-                    ④ 如果传错了，只须重传覆盖即可
+                    ④ 支持重传
                 </div>
             </div>
             <div class="layui-colla-item">
@@ -477,7 +478,7 @@
         // 设置按钮悬停显示tips
         var tip_index = 0;
         $(document).on('mouseenter', '#addStudent', function(){
-            tip_index = layer.tips('即使是个人赛，也需指定负责人', '#addStudent', {time: 0});
+            tip_index = layer.tips('即使是个人赛，也需指定项目组长', '#addStudent', {time: 0});
         }).on('mouseleave', '#addStudent', function(){
             layer.close(tip_index);
         });
@@ -880,21 +881,26 @@
         });
 
         form.on('submit(bill_form_submit)', function(data){
-            console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
-            if(data.field.ts==null||data.field.ts==""){
+            var paramDesc=data.field.cdesc.trim(); //行程描述
+            var paramFeeDesc=data.field.preditfeedesc.trim();//预算描述
+            if(paramDesc.length>300){
+                layer.msg("行程描述超出字数限制");
+            }else if(data.field.ts==null||data.field.ts==""){
                 layer.msg("指导老师不能为空！");
-            }else if(upload_bill==null||upload_bill==""){
+            }else if(paramFeeDesc.length>300){
+                layer.msg("预算描述超出字数限制");
+            } else if(upload_bill==null||upload_bill==""){
                 layer.msg("入围名单不能为空！");
             }else {
                 var params = {
                     "ctid":data.field.ctid,
                     "cyear":data.field.cyear,
                     "clevel":data.field.clevel,
-                    "cdesc":data.field.cdesc,
+                    "cdesc":paramDesc,
                     "groupleader":data.field.groupleader,
                     "groupname":data.field.groupname,
                     "workName":data.field.workName,
-                    "preditfeedesc":data.field.preditfeedesc,
+                    "preditfeedesc":paramFeeDesc,
                     "predictfee":data.field.predictfee,
                     "attachfile":upload_bill,
                     "invitation":imgInvitationPath,

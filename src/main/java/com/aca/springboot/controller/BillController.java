@@ -53,7 +53,7 @@ public class BillController {
                             @RequestParam(value = "cdesc", required = false) String cdesc,
                             @RequestParam(value = "groupleader", required = false) String groupleader,
                             @RequestParam(value = "groupname", required = false,defaultValue = "个人") String groupname,
-                            @RequestParam(value = "workName", required = false,defaultValue = "考试") String workName,
+                            @RequestParam(value = "workName", required = false,defaultValue = "非作品类") String workName,
                             @RequestParam(value = "preditfeedesc", required = false) String preditfeedesc,
                             @RequestParam(value = "predictfee", required = false) String predictfee,
                             @RequestParam(value = "attachfile", required = false) String attachfile,
