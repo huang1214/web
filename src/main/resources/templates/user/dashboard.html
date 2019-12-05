@@ -209,7 +209,8 @@
     <!-- 中间的一个多块块条子 -->
 
 <!--  如果判断是学生，那么就显示学生信息块  -->
-    <div class="messagebox" th:if="${session.type} eq '1'">
+<div th:if="${session.type} eq '1'">
+    <div class="messagebox" >
         <div class="boxitem">
             <a href="">
                 <i class="layui-icon layui-icon-notice"></i>
@@ -253,6 +254,105 @@
             </a>
         </div>
     </div>
+    <div class="layui-container">
+        <div class="layui-row">
+            <div class="layui-col-md5">
+                <div>
+                    <ul class="layui-timeline">
+                        <li class="layui-timeline-item">
+                            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                            <div class="layui-timeline-content layui-text">
+                                <h3 class="layui-timeline-title">备案申请流程</h3>
+                            </div>
+                        </li>
+                        <li class="layui-timeline-item">
+                            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                            <div class="layui-timeline-content layui-text">
+                                <h3 class="layui-timeline-title">第一步：查看须知</h3>
+                                <p>
+                                    备案之前看看公告哦，政策助力，更有动力！
+                                    <i class="layui-icon">&#xe609;</i>
+                                </p>
+                            </div>
+                        </li>
+                        <li class="layui-timeline-item">
+                            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                            <div class="layui-timeline-content layui-text">
+                                <h3 class="layui-timeline-title">第二步：提交备案申请</h3>
+                                <p>认真填写申请，等待审核<i class="layui-icon">&#xe642;</i>
+                                </p>
+                            </div>
+                        </li>
+                        <li class="layui-timeline-item">
+                            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                            <div class="layui-timeline-content layui-text">
+                                <h3 class="layui-timeline-title">第三步：确认到账</h3>
+                                <p>
+                                    最后报销到账后别忘了确认哦<i class="layui-icon">&#x1005;</i>
+                                </p>
+                            </div>
+                        </li>
+                        <li class="layui-timeline-item">
+                            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                            <div class="layui-timeline-content layui-text">
+                                <div class="layui-timeline-title">结束</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="layui-col-md5">
+                <div>
+                    <ul class="layui-timeline">
+                        <li class="layui-timeline-item">
+                            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                            <div class="layui-timeline-content layui-text">
+                                <h3 class="layui-timeline-title">激励申请流程</h3>
+                            </div>
+                        </li>
+                        <li class="layui-timeline-item">
+                            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                            <div class="layui-timeline-content layui-text">
+                                <h3 class="layui-timeline-title">第一步：XXX</h3>
+                                <p>
+                                    备案之前看看公告哦，政策助力，更有动力！
+                                    <i class="layui-icon">&#xe609;</i>
+                                </p>
+                            </div>
+                        </li>
+                        <li class="layui-timeline-item">
+                            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                            <div class="layui-timeline-content layui-text">
+                                <h3 class="layui-timeline-title">第二步：XXX</h3>
+                                <p>认真填写申请，等待审核<i class="layui-icon">&#xe642;</i>
+                                </p>
+                            </div>
+                        </li>
+                        <li class="layui-timeline-item">
+                            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                            <div class="layui-timeline-content layui-text">
+                                <h3 class="layui-timeline-title">第三步：XXX</h3>
+                                <p>
+                                    最后报销到账后别忘了确认哦<i class="layui-icon">&#x1005;</i>
+                                </p>
+                            </div>
+                        </li>
+                        <li class="layui-timeline-item">
+                            <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                            <div class="layui-timeline-content layui-text">
+                                <div class="layui-timeline-title">XXX</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+</div>
+
+
+
+
 
 <!--  教师备案框  -->
     <div class="messagebox" th:if="${session.type} eq '2'">
@@ -289,7 +389,6 @@
                 <span>待审核激励<span class="layui-badge unReadApp">0</span></span>
             </a>
         </div>
-
         <div class="boxitem ">
             <a href="">
                 <i class="layui-icon layui-icon-chart"></i>
@@ -315,7 +414,6 @@
             </a>
         </div>
     </div>
-
 <!--    激励：-->
 <!--    教师、学生获奖表-->
 <!--    报销：-->
@@ -338,9 +436,7 @@
 <!--        </div>-->
     </div>
 </div>
-<!-- layui样式js -->
 
-<!-- 图表样式js-->
 <!--<script>-->
 <!--    // 基于准备好的dom，初始化echarts实例-->
 

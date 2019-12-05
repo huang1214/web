@@ -200,29 +200,33 @@
                 case 'ensure':
                     layer.prompt({
                         formType: 0,
-                        value: '0',
-                        title: '输入你最终到账金额'
+                        title: '输入你最终到账金额',
+                        maxlength: 7
                     }, function(value, index, elem){
-                        console.log("激发函数"+value);
                         layer.close(index);
-                        $.ajax(
-                            {
-                                url: '/bill/ackaccount?bid=' + data.bid+'&ack='+value,
-                                type: 'POST',   // 请求方式
-                                success: function (result) {
-                                    console.log(result); // 请求成功后的回调函数, result 为响应内容
-                                    if(result.code == 200){
-                                        layer.msg(result.message);
-                                    }else {
-                                        layer.msg("未知错误！");
+                        if (isNaN(value)) {
+                            layer.msg("必须是数字");
+                            return;
+                        } else {
+                            $.ajax(
+                                {
+                                    url: '/bill/ackaccount?bid=' + data.bid+'&ack='+value,
+                                    type: 'POST',   // 请求方式
+                                    success: function (result) {
+                                        console.log(result); // 请求成功后的回调函数, result 为响应内容
+                                        if(result.code == 200){
+                                            layer.msg(result.message);
+                                        }else {
+                                            layer.msg("未知错误！");
+                                        }
+                                        table_app.reload();   //表格重载
+                                    },
+                                    error: function () {
+                                        console.log('Send Request Fail..'); // 请求失败时的回调函数
                                     }
-                                    table_app.reload();   //表格重载
-                                },
-                                error: function () {
-                                    console.log('Send Request Fail..'); // 请求失败时的回调函数
                                 }
-                            }
-                        );
+                            );
+                        }
                     });
                     break;
             };

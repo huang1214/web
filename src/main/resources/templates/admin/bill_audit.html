@@ -51,7 +51,6 @@
     <!-- <table class="layui-hide" id="bill_state_detail" lay-filter="application_state_detail"></table>-->
 </div>
 <div id="layer_bill_detail">
-    <!-- <table class="layui-hide" ></table>-->
     <table class="layui-table" id="bill_detail_table" lay-filter="bill_detail" lay-size="lg">
         <colgroup>
             <col width="150">
@@ -293,9 +292,12 @@
             layer.confirm('你是否通过该条备案申请？', {
                 btn: ['通过','不通过'],title:'重要步骤',skin:'priorityTips',icon:7
             }, function(){
-                layer.prompt({title: '你需要做出相关说明', formType: 2}, function(text, index){
+                layer.prompt({
+                    title: '你需要做出相关说明',
+                    formType: 2,
+                    value:'同意所报备金额'
+                }, function(text, index){
                     layer.close(index);
-                    layer.msg('你通过了该备案：' +'<br>你最后写下了：'+text);
                     $.ajax(
                         {
                             url: '/bill/accept?bid=' +bid+'&note='+text,
@@ -318,7 +320,6 @@
             },function(){
                 layer.prompt({title: '请简述审核不通过的原因', formType: 2}, function(text, index){
                     layer.close(index);
-                    layer.msg('审核完毕！未通过原因：' +'<br>您最后写下了：'+text);
                     $.ajax(
                         {
                             url: '/bill/refuse?bid=' +bid+'&note='+text,
