@@ -19,6 +19,22 @@ public class Student {
     private String state;
     private String card_num;
 
+    @Override
+    public String toString() {
+        return "Student{" +
+                "sno='" + sno + '\'' +
+                ", sname='" + sname + '\'' +
+                ", ssex='" + ssex + '\'' +
+                ", sbirthday=" + sbirthday +
+                ", sdomitory='" + sdomitory + '\'' +
+                ", cno='" + cno + '\'' +
+                ", spwd='" + spwd + '\'' +
+                ", stel='" + stel + '\'' +
+                ", state='" + state + '\'' +
+                ", card_num='" + card_num + '\'' +
+                '}';
+    }
+
     public String getSno() {
         return sno;
     }

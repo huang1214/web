@@ -1,5 +1,6 @@
 package com.aca.springboot;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -15,6 +16,7 @@ import java.util.Locale;
 
 @SpringBootApplication
 @EnableSwagger2
+@MapperScan(basePackages = "com.aca.springboot.mapper")
 public class SpringBoot_aca_Application extends SpringBootServletInitializer
 {
 

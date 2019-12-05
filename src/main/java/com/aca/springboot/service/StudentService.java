@@ -6,6 +6,7 @@ import com.aca.springboot.mapper.StudentMapper;
 import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,7 +22,7 @@ import java.util.Map;
  */
 @Service
 public class StudentService {
-    @Resource
+    @Autowired
     StudentMapper studentMapper;
 
     /**

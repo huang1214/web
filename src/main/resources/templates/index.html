@@ -147,6 +147,12 @@
                         </dd>
                     </dl>
                 </li>
+                <!--获奖信息-->
+                <li th:if="${session.type} eq '3' " class="layui-nav-item">
+                    <a class="nav-item-side site-active" data-url="page/priceInfo" data-id="16"
+                       data-title="获奖信息" data-type="tabAdd"><i class="layui-icon">&#xe63c;</i>获奖信息
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

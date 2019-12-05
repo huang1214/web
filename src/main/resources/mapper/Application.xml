@@ -124,6 +124,72 @@
         </collection>
 
     </resultMap>
+    <resultMap id="AMPVOVO" type="com.aca.springboot.vo.AMPVO">
+        <id property="appid" column="APPID"></id>
+        <result property="ctid" column="CTID"></result>
+        <result property="applicantId" column="APPLICANTID"></result>
+        <result property="unit" column="UNIT"></result>
+        <result property="leader" column="LEADER"></result>
+        <result property="studentPrice" column="STUDENTPRICE"></result>
+        <result property="teacherPrice" column="TEACHERPRICE"></result>
+        <result property="awardTypeId" column="AWARDTYPEID"></result>
+        <result property="awardDate" column="AWARDDATE"></result>
+        <result property="applicantBankCard" column="APPLICANTBANKCARD"></result>
+        <result property="workName" column="WORKNAME"></result>
+        <result property="workBriefIntro" column="WORKBRIEFINTRO"></result>
+        <result property="status" column="STATUS"></result>
+        <result property="note" column="NOTE"></result>
+        <result property="certificateImg" column="CERTIFICATEIMG"></result>
+        <result property="getawardImg" column="GETAWARDIMG"></result>
+        <result property="highLight" column="HIGHLIGHT"></result>
+        <association property="com" javaType="com.aca.springboot.entities.Competition">
+            <id property="ctid" column="c_ctid"/>
+            <result property="ctname" column="ctname"/>
+            <result property="host_unit" column="host_unit"/>
+            <result property="com_type" column="com_type"/>
+            <result property="result_type" column="result_type"/>
+            <result property="reference_paper" column="reference_paper"/>
+        </association>
+        <association property="awar" javaType="com.aca.springboot.entities.Award">
+            <id property="atid" column="atid"></id>
+            <result property="com_type" column="com_type"/>
+            <result property="result_type" column="result_type"/>
+            <result property="level_type" column="level_type"/>
+            <result property="prize_type" column="prize_type"/>
+            <result property="teacher_price" column="teacher_price"/>
+            <result property="student_price" column="student_price"/>
+        </association>
+        <collection property="stus" ofType="com.aca.springboot.vo.StudentAMVO">
+            <id property="sno" column="sno"/>
+            <result property="sname" column="sname"/>
+            <result property="ssex" column="ssex"/>
+            <result property="sbirthday" column="sbirthday"/>
+            <result property="sdomitory" column="sdomitory"/>
+            <result property="cno" column="cno"/>
+            <result property="spwd" column="spwd"/>
+            <result property="stel" column="stel"/>
+            <result property="state" column="state"/>
+            <result property="card_num" column="card_num"/>
+            <result property="appOrder" column="APP_ORDER"/>
+            <result property="propertion" column="APP_PROPORTION"/>
+            <result property="money" column="APP_MONEY"/>
+        </collection>
+        <collection property="teas" ofType="com.aca.springboot.vo.TeacherAMVO">
+            <id property="tno" column="TNO"/>
+            <result property="tname" column="TNAME"/>
+            <result property="tsex" column="TSEX"/>
+            <result property="tbirthday" column="TBIRTHDAY"/>
+            <result property="dno" column="DNO"/>
+            <result property="ttel" column="TTEL"/>
+            <result property="ttitle" column="TTITLE"/>
+            <result property="tpwd" column="TPWD"/>
+            <result property="tstate" column="TSTATE"/>
+            <result property="card_num" column="TCARD_NUM"/>
+            <result property="appOrder" column="APP_ORDER"/>
+            <result property="propertion" column="APP_PROPORTION"/>
+            <result property="money" column="APP_MONEY"/>
+        </collection>
+    </resultMap>
     <!--插入新app-->
     <insert id="add" parameterType="com.aca.springboot.entities.Application">
         insert into Application(appId,ctid,applicantId,unit,leader,awardDate,applicantBankCard,workName,workBriefIntro,studentPrice,teacherPrice,awardTypeId,CERTIFICATEIMG,GETAWARDIMG,HIGHLIGHT,STATUS)
@@ -233,6 +299,30 @@
         select count(*) from application where STATUS=3 and APPID>#{start} and APPID&lt;#{end}
     </select>
 
+    <!--取得prizeInfo-->
+    <parameterMap id="get_app_prize_info_params" type="java.util.Map">
+    </parameterMap>
+    <select id="get_app_prize_info" parameterMap="get_app_prize_info_params" resultMap="AMPVOVO">
+SELECT * FROM
+    (
+    SELECT temp.*, ROWNUM RN
+    FROM (SELECT * FROM (
+
+    SELECT * from
+(
+(SELECT * FROM APPLICATION_MEMBER ORDER BY APP_ID ) AM LEFT JOIN APPLICATION A ON AM.APP_ID=A.APPID
+LEFT JOIN AWARD_TYPE AT ON AT.ATID=A.AWARDTYPEID
+LEFT JOIN COM_TABLE CT ON CT.CTID=A.CTID
+LEFT JOIN STUDENT S ON S.SNO = AM.APP_TM_ID
+LEFT JOIN (select TNO,TNAME,TSEX from TEACHER) T ON T.TNO = AM.APP_TM_ID
+) WHERE A.STATUS=#{status}
+
+    )) temp
+    WHERE ROWNUM &lt;= #{endIndex}
+    )
+    WHERE RN >=#{startIndex}
+
+    </select>
   <!--取得detail-->
     <parameterMap id="get_app_detail_params" type="java.util.Map">
     </parameterMap>

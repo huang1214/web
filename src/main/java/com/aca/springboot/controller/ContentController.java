@@ -71,5 +71,9 @@ public class ContentController {
     public String userInfo(){
         return "user/user_info";
     }
+    @RequestMapping("/priceInfo")
+    public String priceInfo(){
+        return "admin/priceInfo";
+    }
 }
 

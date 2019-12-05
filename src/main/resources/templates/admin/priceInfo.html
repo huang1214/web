@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>获奖信息</title>
+    <link rel="stylesheet" th:href="@{/asserts/js/layui/css/layui.css}" media="all">
+    <script th:src="@{/asserts/js/layui/layui.js}"></script>
+    <script th:src="@{/asserts/js/priceInfo.js}"></script>
+    <style>
+        .layui-input:focus, .layui-textarea:focus {
+            border-color: #5FB878 !important
+        }
+
+        #layer_application_detail {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="form-data">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 10px;">
+        <legend>文件管理</legend>
+    </fieldset>
+    <table class="layui-hide" id="application_state" lay-filter="application_operate"></table>
+</div>
+<script type="text/html" id="toolbar_topOp">
+    <div class="layui-input-inline layui-form" lay-filter="formTest">
+        <div style="display: inline-block" class="layui-form-item">
+            <select name="chooseYearBox" class="" id="chooseYearBtn" lay-filter="myselectyear">
+                <!--<option value="-1" selected>请选择</option>-->
+            </select>
+        </div>
+        <!--<div style="display: inline-block" class="layui-form-item">-->
+            <!--<select name="chooseBox" id="chooseTypeBtn" lay-filter="myselect">-->
+                <!--<option value="1">获奖证书</option>-->
+                <!--<option value="2">参赛报告</option>-->
+                <!--<option value="3">花絮</option>-->
+            <!--</select>-->
+        <!--</div>-->
+
+    </div>
+</script>
+<script type="text/html" id="bar">
+    {{#  if(d.fileCount > 0){ }}
+    <!--<button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="clean" id="btn_clean" name="btn_clean">清空-->
+    <!--</button>-->
+    <!--<button class="layui-btn layui-btn-xs" lay-event="download" id="btn_download" name="btn_download">下载-->
+    <!--</button>-->
+    {{#  } }}
+</script>
+
+</body>
+</html>

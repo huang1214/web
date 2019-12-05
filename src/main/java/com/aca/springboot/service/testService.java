@@ -21,7 +21,7 @@ import java.util.Map;
 
 @Service
 public class testService {
-    @Resource
+    @Autowired
     private ConsoleDataMapper consoleDataMapper;
 
     //表格初始化

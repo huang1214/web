@@ -232,6 +232,30 @@ public class ApplicationController {
     /*这以上是机智的我写的*/
 
     @ResponseBody
+    @RequestMapping("/list_prize")
+    public JsonMessage get_list_prize(@RequestParam(value = "page", required = false, defaultValue = "1") int pageNum,
+                                      @RequestParam(value = "limit", required = false, defaultValue = "10") int pageSize,
+                                      HttpSession session) {
+        //首先检查权限
+        Object user = session.getAttribute("loginUser");
+        Object type1 = session.getAttribute("type");
+        String sno = "";
+        if (null == user) {
+            JsonMessage j = new JsonMessage();
+            j.setCode(-1);
+            j.setMsg("未登录");
+            return j;
+        } else if ((int) type1 == 1 || (int) type1 == 2) {
+            JsonMessage j = new JsonMessage();
+            j.setCode(3);
+            j.setMsg("权限不足");
+            return j;
+        }
+        return applicationService.get_list_prize(3,pageNum, pageSize);
+    }
+
+
+    @ResponseBody
     @RequestMapping("/list_file")
     public JsonMessage get_list_file(@RequestParam(value = "type", required = false, defaultValue = "1") int type,
                                      @RequestParam(value = "year", required = false, defaultValue = "2019") String year,

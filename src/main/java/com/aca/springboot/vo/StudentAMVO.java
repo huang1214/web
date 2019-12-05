@@ -13,6 +13,15 @@ public class StudentAMVO extends Student {
     private int propertion;
     private int money;
 
+    @Override
+    public String toString() {
+        return super.toString()+"StudentAMVO{" +
+                "appOrder='" + appOrder + '\'' +
+                ", propertion=" + propertion +
+                ", money=" + money +
+                '}';
+    }
+
     public String getAppOrder() {
         return appOrder;
     }

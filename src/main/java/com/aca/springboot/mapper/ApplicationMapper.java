@@ -2,6 +2,7 @@ package com.aca.springboot.mapper;
 import com.aca.springboot.entities.Application;
 import com.aca.springboot.entities.ApplicationMember;
 
+import com.aca.springboot.vo.AMPVO;
 import com.aca.springboot.vo.AppComAppLeaderVO;
 import com.aca.springboot.vo.AppComDetailVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -46,4 +47,5 @@ public interface ApplicationMapper {
     int deleteApp(String appid);
     int deleteAppRes(String appid);
     Object selectMoney(Map map);
+    List<AMPVO> get_app_prize_info(Map map);
 }

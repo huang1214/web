@@ -5,9 +5,7 @@ import com.aca.springboot.entities.ApplicationMember;
 import com.aca.springboot.entities.JsonMessage;
 import com.aca.springboot.entities.Message;
 import com.aca.springboot.mapper.ApplicationMapper;
-import com.aca.springboot.vo.AppComAppLeaderVO;
-import com.aca.springboot.vo.AppComDetailVO;
-import com.aca.springboot.vo.FileNameVO;
+import com.aca.springboot.vo.*;
 import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -28,7 +26,7 @@ import java.util.zip.ZipOutputStream;
 
 @Service
 public class ApplicationService {
-    @Resource
+    @Autowired
     ApplicationMapper applicationMapper;
     @Value("${web.basePath}")
     private String basePath; //文件路径
@@ -58,7 +56,7 @@ public class ApplicationService {
 *//*        String strImg = new String(img);*//*
          *//*  map.put("certificateImg",strImg);*//*
         byte[] imgs=img;*/
-        System.out.println(app.toString());
+//        System.out.println(app.toString());
         return applicationMapper.add(app);
     }
 
@@ -173,7 +171,7 @@ public class ApplicationService {
         map.put("u_ctId", ctId);
         map.put("u_level_type", level_type);
         map.put("u_prize_type", prize_type);
-        System.out.println(map.toString());
+//        System.out.println(map.toString());
         applicationMapper.getawardtype(map);
         String rewardtype = (String) map.get("awardtype");
         return rewardtype;
@@ -252,6 +250,71 @@ public class ApplicationService {
     }
     /*这以上是机智的我写的*/
 
+    public JsonMessage get_list_prize(int status, int pageNum, int pageSize) {
+        Map map = new HashMap<String, String>();
+        map.put("status", status);
+        map.put("endIndex", pageNum * pageSize);
+        map.put("startIndex", (pageNum - 1) * pageSize + 1);
+        JsonMessage result = new JsonMessage();
+        List<AMPVO> application_list_m = applicationMapper.get_app_prize_info(map);
+//        System.out.println(application_list_m.toString());
+        JSONArray reA=new JSONArray();
+        for(int i =1;i<=application_list_m.size();i++){
+            AMPVO app = application_list_m.get(i - 1);
+            PrizeInfoVO prizeInfoVO=new PrizeInfoVO();
+            prizeInfoVO.setIndex(i);
+
+            for(StudentAMVO am:app.getStus()){
+                if (am.getSname()==null)
+                    continue;
+                String students = prizeInfoVO.getStudents();
+                prizeInfoVO.setStudents(students.length()==0 ? am.getSname():students+"、"+am.getSname());
+            }
+            for(TeacherAMVO am:app.getTeas()){
+                if(am.getTname()==null)
+                    continue ;
+                String students = prizeInfoVO.getTeachers();
+                prizeInfoVO.setTeachers(students.length() == 0 ? am.getTname() : students + "、" + am.getTname());
+            }
+            if(app.getAwar().getResult_type().equals("1")){
+                prizeInfoVO.setWorkName("考试");
+            }else{
+                prizeInfoVO.setWorkName(app.getWorkName());
+            };
+            StringBuffer sb=new StringBuffer("");
+            sb.append(app.getCom().getCtname());
+            switch (app.getAwar().getPrize_type()){
+                case "1":
+                    sb.append("特等奖");
+                    break;
+                case "2":
+                    sb.append("一等奖");
+                    break;
+                case "3":
+                    sb.append("二等奖");
+                    break;
+                case "4":
+                    sb.append("三等奖");
+                    break;
+                case "5":
+                    sb.append("优秀奖");
+                    break;
+                default:
+                    break;
+
+            }
+            prizeInfoVO.setPrizeName(sb.toString());
+            prizeInfoVO.setDate(app.getAwardDate());
+//            System.out.println(prizeInfoVO.toString());
+            reA.add(prizeInfoVO);
+        }
+        result.setCode(0);
+        result.setMsg("成功");
+//        result.setCount(applicationMapper.get_application_list_m_count(map));
+//        JSONArray jsonArray = new JSONArray((List) application_list_m);
+        result.setData(reA);
+        return result;
+    }
     public JsonMessage get_list_file(int type, String year, String op) {
         Map map = new HashMap<String, String>();
         JsonMessage result = new JsonMessage();
@@ -328,7 +391,7 @@ public class ApplicationService {
                     in.close();
                 }
                 out.close();
-                System.out.println("压缩完成.");
+//                System.out.println("压缩完成.");
                 map1.put("url", "/" + year + "/" + (type == 1 ? "cert" : (type == 2 ? "doc" : "package")) + "/" + pacFileName);
             }catch (FileNotFoundException fileNotFoundException) {
                 result.setCode(-1);
