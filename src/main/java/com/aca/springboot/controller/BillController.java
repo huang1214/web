@@ -168,6 +168,18 @@ public class BillController {
         acceptBillMessage.setMessage("同意申请");
         return acceptBillMessage;
     }
+    //通过报销审核
+    @PostMapping(value = "ackaccount")
+    @ResponseBody
+    public Message ensureAccount(@RequestParam(value = "bid", required = true) String bid,
+                              @RequestParam(value = "state", required = false,defaultValue = "3") String state,
+                              @RequestParam(value = "ack", required = false,defaultValue = "0") String ack){
+        Message acceptBillMessage=new Message();
+        billService.AckAccountBill(bid,state,ack);
+        acceptBillMessage.setCode(200);
+        acceptBillMessage.setMessage("确认成功！");
+        return acceptBillMessage;
+    }
     //拒绝报销审核
     @PostMapping(value = "refuse")
     @ResponseBody

@@ -20,7 +20,16 @@ public class Bill {
   private String attachfile;
   private String note;
   private String invitation;
+  private String ackAccount;
   private List<BillMember> billMembers;
+
+  public String getAckAccount() {
+    return ackAccount;
+  }
+
+  public void setAckAccount(String ackAccount) {
+    this.ackAccount = ackAccount;
+  }
 
   public String getInvitation() {
     return invitation;

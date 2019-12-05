@@ -43,8 +43,7 @@
                 ① 你在审核时对于不满足备案条件的申报应当给予“不通过”并给出原因<br>
                 ② 对于符合备案条件的申报，你应当给予“通过”。同时你可以对每项预算进行调整。
                 如：“2张南昌至北京高铁二等座1200元”，你可以写下：“2张南昌至北京车票600元”<br>
-                ③ 最后报销金额以你写下的为准<br>
-                ④ 字数在400字以内
+                ③ 最后报销金额以你写下的为准
             </div>
         </div>
     </div>
@@ -80,7 +79,7 @@
             <td id="cyear"></td>
         </tr>
         <tr>
-            <td>竞赛描述</td>
+            <td>行程描述</td>
             <td id="describeCompetition"></td>
         </tr>
         <tr>
@@ -98,6 +97,10 @@
         <tr>
             <td>预算描述</td>
             <td id="preditfeedesc"></td>
+        </tr>
+        <tr>
+            <td>实际到账</td>
+            <td id="trueProfit"></td>
         </tr>
         <tr>
             <td>申请状态</td>
@@ -188,6 +191,8 @@
                         }
                         else if (d.state==2) {
                             return '<span style="color: #5FB878;">审核通过</span>';
+                        }else {
+                            return '<span style="color: #009688;">已确认到账</span>';
                         }
                     }}
                     ,{fixed: 'right', title:'操作', align:'center',toolbar: '#bar',width:180}
@@ -360,6 +365,7 @@
             var com_type=document.getElementById('com_type');
             var clevel=document.getElementById('clevel');
             var predictfee=document.getElementById('predictfee');
+            var trueProfit=document.getElementById("trueProfit");
             var preditfeedesc=document.getElementById('preditfeedesc');
             var state=document.getElementById('state');
             var member=document.getElementById("member");
@@ -410,8 +416,15 @@
             ctname.innerHTML=data.competition.ctname;
             workName.innerHTML=data.workName;
             cyear.innerHTML=data.cyear+"年";
-            com_type.innerHTML=data.competition.com_type;
-            predictfee.innerHTML=data.predictfee;
+            var str_1=data.competition.com_type;
+            var competitionType = str_1.replace(/\s*/g,"");//去除空格，Oracle中char类型不满长度补空格
+            if(competitionType.length==2){
+                var str2=competitionType.substr(1,1);
+                com_type.innerHTML="重点竞赛"+str2+"类";
+            }else {
+                com_type.innerHTML="一般竞赛";
+            }
+            predictfee.innerHTML=data.predictfee+"元";
             preditfeedesc.innerHTML=data.preditfeedesc;
             member.innerHTML=tempMember;
             memberCaptainName.innerHTML=data.student.sname;
@@ -429,14 +442,19 @@
             if(data.state==0)
             {
                 state.innerHTML="未审核";
-            }
-            if(data.state==1)
+            }else if(data.state==1)
             {
                 state.innerHTML="未通过";
-            }
-            if(data.state==2)
+            }else if(data.state==2)
             {
                 state.innerHTML="已通过";
+            }else {
+                state.innerHTML="已确认";
+            }
+            if(data.ackAccount!=null){
+                trueProfit.innerHTML=data.ackAccount+"元";
+            }else {
+                trueProfit.innerHTML="等待确认";
             }
              if(data.note!= null)
              {

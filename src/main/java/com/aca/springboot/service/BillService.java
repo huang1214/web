@@ -177,7 +177,15 @@ public class BillService {
         map.put("NOTE",note);
         int res=billMapper.change_bill_state(map);
         return res;
-
+    }
+    //确认到账
+    public int AckAccountBill(String bid,String state,String ackAccount){
+        Map<String,String> map=new HashMap<>();
+        map.put("BID",bid);
+        map.put("STATE",state);
+        map.put("ACK_ACCOUNT",ackAccount);
+        int res=billMapper.AckAccount(map);
+        return res;
     }
     public int deleteBill(String bid){
         Map<String,String> map=new HashMap<>();
