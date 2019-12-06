@@ -59,56 +59,79 @@ public class BillController {
                             @RequestParam(value = "attachfile", required = false) String attachfile,
                             @RequestParam(value = "invitation", required = false,defaultValue = "") String invitation,
                             @RequestParam(value = "ts",required = false) String teachers,
-                            @RequestParam(value = "tms",required = false) String students
+                            @RequestParam(value = "tms",required = false) String students,
+                            HttpSession session
                             ){
-        System.out.println(ctid+"附件："+attachfile+"  邀请函："+invitation+"--"+teachers);
         Message addAwardMessage=new Message();
-        Bill bill=new Bill();
-        bill.setBid(TimeUtil.getBillNumber());  //获取报销编号
-        bill.setCtid(ctid);
-        bill.setCyear(cyear);
-        bill.setClevel(clevel);
-        bill.setCdesc(cdesc);
-        bill.setGroupleader(groupleader);
-        bill.setGroupname(groupname);
-        bill.setWorkName(workName);
-        bill.setInvitation(invitation);
-        bill.setPreditfeedesc(preditfeedesc);
-        bill.setState("0"); //初始状态都是未审核
-        bill.setPredictfee(predictfee);
-        bill.setAttachfile(attachfile);
-        teachers=teachers.substring(1);
-        students=students.substring(1);
-        String[] teacherList=teachers.split(",");
-        String[] studentList=students.split(",");
-        List<BillMember> billMembers=new ArrayList<>();
-        for(int i=0;i<teacherList.length;i++){
-            BillMember billMember=new BillMember();
-            billMember.setBillOrder(i);
-            billMember.setBillType(2);
-            billMember.setBillTmId(teacherList[i]);
-            billMembers.add(billMember);
-        }
-        for(int i=0;i<studentList.length;i++){
-            BillMember billMember=new BillMember();
-            billMember.setBillOrder(i);
-            billMember.setBillType(1);
-            billMember.setBillTmId(studentList[i]);
-            billMembers.add(billMember);
-        }
-        bill.setBillMembers(billMembers);
-        Bill bill1=billService.addBill(bill);
-        if(bill1==null){
-            addAwardMessage.setCode(200);
-            addAwardMessage.setMessage("提交申请成功！");
-            addAwardMessage.setData(bill);  //返回新增记录
+        int type = (int)session.getAttribute("type");
+        if(type==1){
+            Student student =(Student) session.getAttribute("loginUser");
+            String sno=student.getSno();
+            System.out.println("执行1："+sno);
+            boolean flag=false;
+            students=students.substring(1);
+            String[] studentList=students.split(",");
+            for(int i=0;i<studentList.length;i++){
+                if(sno.equals(studentList[i])){
+                    System.out.println("执行2："+sno);
+                    flag=true;
+                }
+            }
+            if(flag){
+                System.out.println("有你");
+                Bill bill=new Bill();
+                bill.setBid(TimeUtil.getBillNumber());  //获取报销编号
+                bill.setCtid(ctid);
+                bill.setCyear(cyear);
+                bill.setClevel(clevel);
+                bill.setCdesc(cdesc);
+                bill.setGroupleader(groupleader);
+                bill.setGroupname(groupname);
+                bill.setWorkName(workName);
+                bill.setInvitation(invitation);
+                bill.setPreditfeedesc(preditfeedesc);
+                bill.setState("0"); //初始状态都是未审核
+                bill.setPredictfee(predictfee);
+                bill.setAttachfile(attachfile);
+                teachers=teachers.substring(1);
+                String[] teacherList=teachers.split(",");
+                List<BillMember> billMembers=new ArrayList<>();
+                for(int i=0;i<teacherList.length;i++){
+                    BillMember billMember=new BillMember();
+                    billMember.setBillOrder(i);
+                    billMember.setBillType(2);
+                    billMember.setBillTmId(teacherList[i]);
+                    billMembers.add(billMember);
+                }
+                for(int i=0;i<studentList.length;i++){
+                    BillMember billMember=new BillMember();
+                    billMember.setBillOrder(i);
+                    billMember.setBillType(1);
+                    billMember.setBillTmId(studentList[i]);
+                    billMembers.add(billMember);
+                }
+                bill.setBillMembers(billMembers);
+                Bill bill1=billService.addBill(bill);
+                if(bill1==null){
+                    addAwardMessage.setCode(200);
+                    addAwardMessage.setMessage("提交申请成功！");
+                    addAwardMessage.setData(bill);  //返回新增记录
+                }else {
+                    addAwardMessage.setCode(201);
+                    addAwardMessage.setMessage("已经申请过了，不能重复申请！");
+                    addAwardMessage.setData(bill1);   //返回之前申请记录
+                }
+            }else {
+                System.out.println("没有你");
+                addAwardMessage.setCode(204);
+                addAwardMessage.setMessage("你不在队伍中，申请失败！");
+            }
+            return addAwardMessage;
         }else {
-            addAwardMessage.setCode(201);
-            addAwardMessage.setMessage("已经申请过了，不能重复申请！");
-            addAwardMessage.setData(bill1);   //返回之前申请记录
+            addAwardMessage.setCode(203);
+            addAwardMessage.setMessage("权限不足！");
+            return addAwardMessage;
         }
-       // mv.addObject("billData",addAwardMessage);
-        return addAwardMessage;
     }
     //获取该登录学生的所有报销记录,ok
     @GetMapping(value = "queryAll")
@@ -178,6 +201,19 @@ public class BillController {
         billService.AckAccountBill(bid,state,ack);
         acceptBillMessage.setCode(200);
         acceptBillMessage.setMessage("确认成功！");
+        return acceptBillMessage;
+    }
+    @PostMapping(value = "modify")
+    @ResponseBody
+    public Message modifyBill(@RequestParam(value = "bid", required = true) String bid,
+    @RequestParam(value = "state", required = false,defaultValue = "0") String state,
+    @RequestParam(value = "budget", required = false,defaultValue = "0") String budget,
+    @RequestParam(value = "budgetDetail", required = false,defaultValue = "0") String budgetDetail,
+    @RequestParam(value = "tripDetail", required = false,defaultValue = "0") String tripDetail){
+        Message acceptBillMessage=new Message();
+        billService.modifyBill(bid,state,budget,budgetDetail,tripDetail);
+        acceptBillMessage.setCode(200);
+        acceptBillMessage.setMessage("修改成功！");
         return acceptBillMessage;
     }
     //拒绝报销审核

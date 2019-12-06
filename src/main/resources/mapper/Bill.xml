@@ -267,6 +267,11 @@
     <update id="AckAccount" parameterType="java.util.Map">
         update bill set STATE = #{STATE},ACK_ACCOUNT = #{ACK_ACCOUNT} where BID = #{BID}
     </update>
+    <!--修改备案-->
+    <update id="modifyBill" parameterType="java.util.Map">
+        update bill set RESULT_TYPE='1', STATE = #{STATE},PREDITFEEDESC = #{PREDITFEEDESC},PREDICTFEE=#{PREDICTFEE}
+        ,CDESC=#{CDESC} where BID = #{BID}
+    </update>
 
     <!--删除bill表中信息-->
     <delete id="deleteBill" parameterType="java.util.Map">

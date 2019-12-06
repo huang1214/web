@@ -71,6 +71,8 @@ public interface BillMapper {
     public int change_bill_state(Map map);
     //确认到账
     public int AckAccount(Map map);
+    //修改备案
+    public int modifyBill(Map map);
 
     //删除报销表
     public int deleteBill(Map map);

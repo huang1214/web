@@ -241,7 +241,6 @@
                 }, function(){
                     layer.prompt({title: '你需要做出相关说明', formType: 2}, function(text, index){
                         layer.close(index);
-                        layer.msg('你通过了该备案：' +'<br>你最后写下了：'+text);
                         $.ajax(
                             {
                                 url: '/bill/accept?bid=' + data.bid+'&note='+text,
@@ -264,7 +263,6 @@
                 },function(){
                     layer.prompt({title: '请简述审核不通过的原因', formType: 2}, function(text, index){
                         layer.close(index);
-                        layer.msg('审核完毕！未通过原因：' +'<br>您最后写下了：'+text);
                         $.ajax(
                             {
                                 url: '/bill/refuse?bid=' + data.bid+'&note='+text,

@@ -187,6 +187,17 @@ public class BillService {
         int res=billMapper.AckAccount(map);
         return res;
     }
+    //修改备案
+    public int modifyBill(String bid,String state,String budget,String budgetDetail,String tripDetail){
+        Map<String,String> map=new HashMap<>();
+        map.put("BID",bid);
+        map.put("STATE",state);
+        map.put("PREDITFEEDESC",budgetDetail);
+        map.put("PREDICTFEE",budget);
+        map.put("CDESC",tripDetail);
+        int res=billMapper.modifyBill(map);
+        return res;
+    }
     public int deleteBill(String bid){
         Map<String,String> map=new HashMap<>();
         map.put("BID",bid);

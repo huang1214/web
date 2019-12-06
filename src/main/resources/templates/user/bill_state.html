@@ -14,7 +14,7 @@
             height: 120px;
             margin: 0 10px 10px 0;
         }
-        #layer_bill_detail{
+        #layer_bill_detail,#layer_bill_modify{
             display: none;
         }
     </style>
@@ -30,7 +30,29 @@
         <table class="layui-hide" id="bill_state" lay-filter="bill_operate">
         </table>
     </div>
-
+</div>
+<div id="layer_bill_modify">
+    <span style="color: #FF0000;margin-left: 10%">你有1次修改机会</span>
+    <div class="layui-form layui-form-pane" style="width: 80%;margin-left: 10%;margin-top: 20px">
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">行程描述</label>
+            <div class="layui-input-block">
+            <textarea id="cdesc" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">预算金额</label>
+            <div class="layui-input-block">
+                <input type="text" id="predictAmount"  autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">预算描述</label>
+            <div class="layui-input-block">
+                <textarea id="predictAmountDesc"  class="layui-textarea"></textarea>
+            </div>
+        </div>
+    </div>
 </div>
 <div id="layer_bill_detail">
     <table class="layui-table" id="bill_detail_table" lay-filter="bill_detail" lay-size="lg">
@@ -40,77 +62,77 @@
             <col>
         </colgroup>
         <thead>
-            <tr>
-                <td>备案编号</td>
-                <td id="bid"></td>
-            </tr>
+        <tr>
+            <td>备案编号</td>
+            <td id="bid"></td>
+        </tr>
         </thead>
         <tbody>
         <!--比赛信息-->
-            <tr>
-                <td>比赛名称</td>
-                <td id="ctname"></td>
-            </tr>
-            <tr>
-                <td>作品名称</td>
-                <td id="workName"></td>
-            </tr>
-            <tr>
-                <td>参赛年份</td>
-                <td id="cyear"></td>
-            </tr>
-            <tr>
-                <td>行程描述</td>
-                <td id="describeCompetition"></td>
-            </tr>
-            <tr>
-                <td>学科和科技竞赛分类</td>
-                <td id="com_type"></td>
-            </tr>
-            <tr>
-                <td>参赛级别类型</td>
-                <td id="clevel"></td>
-            </tr>
-            <tr>
-                <td>预算费用</td>
-                <td id="predictfee"></td>
-            </tr>
-            <tr>
-                <td>预算描述</td>
-                <td id="preditfeedesc"></td>
-            </tr>
+        <tr>
+            <td>比赛名称</td>
+            <td id="ctname"></td>
+        </tr>
+        <tr>
+            <td>作品名称</td>
+            <td id="workName"></td>
+        </tr>
+        <tr>
+            <td>参赛年份</td>
+            <td id="cyear"></td>
+        </tr>
+        <tr>
+            <td>行程描述</td>
+            <td id="describeCompetition"></td>
+        </tr>
+        <tr>
+            <td>学科和科技竞赛分类</td>
+            <td id="com_type"></td>
+        </tr>
+        <tr>
+            <td>参赛级别类型</td>
+            <td id="clevel"></td>
+        </tr>
+        <tr>
+            <td>预算费用</td>
+            <td id="predictfee"></td>
+        </tr>
+        <tr>
+            <td>预算描述</td>
+            <td id="preditfeedesc"></td>
+        </tr>
         <tr>
             <td>实际到账</td>
             <td id="trueProfit"></td>
         </tr>
-            <tr>
-                <td>申请状态</td>
-                <td id="state"></td>
-            </tr>
-            <tr>
-                <td>项目成员</td>
-                <td id="member"></td>
-            </tr>
-            <tr>
-                <td>团队负责人姓名</td>
-                <td id="memberCaptainName"></td>
-            </tr>
-            <tr>
-                <td>团队负责人编号</td>
-                <td id="memberCaptainNum"></td>
-            </tr>
-            <tr>
-                <td>指导老师</td>
-                <td id="teacher"></td>
-            </tr>
-            <tr>
-                <td>入围名单</td>
-                <td id="evidence"></td>
-            </tr>
-            <tr>
-                <td>邀请函</td>
-                <td id="invitation"></td>
-            </tr>
+        <tr>
+            <td>申请状态</td>
+            <td id="state"></td>
+        </tr>
+        <tr>
+            <td>项目成员</td>
+            <td id="member"></td>
+        </tr>
+        <tr>
+            <td>团队负责人姓名</td>
+            <td id="memberCaptainName"></td>
+        </tr>
+        <tr>
+            <td>团队负责人编号</td>
+            <td id="memberCaptainNum"></td>
+        </tr>
+        <tr>
+            <td>指导老师</td>
+            <td id="teacher"></td>
+        </tr>
+        <tr>
+            <td>入围名单</td>
+            <td id="evidence"></td>
+        </tr>
+        <tr>
+            <td>邀请函</td>
+            <td id="invitation"></td>
+        </tr>
         <tr>
             <td>审核信息</td>
             <td id="note"></td>
@@ -125,6 +147,9 @@
     <button class="layui-btn layui-btn-normal layui-btn-xs" lay-event="detail" id="btn_detail" name="btn_detail">查看详情</button>
     {{#  if(d.state == 2){ }}
     <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="ensure" id="btn_ensure" name="btn_ensure">到账确认</button>
+    {{#  } }}
+    {{#  if(d.state == 1){ }}
+    <button class="layui-btn layui-btn-warm layui-btn-xs" lay-event="modify" id="btn_modify" name="btn_modify">修改</button>
     {{#  } }}
 </script>
 <script type="text/html" id="toolbar_billState">
@@ -228,6 +253,53 @@
                             );
                         }
                     });
+                    break;
+                case 'modify':
+                    if(data.resultType!=null){
+                        layer.msg("修改次数已达上限");
+                    }else {
+                        var cdesc=document.getElementById('cdesc');
+                        var predictAmount=document.getElementById('predictAmount');
+                        var predictAmountDesc=document.getElementById('predictAmountDesc');
+                        cdesc.innerHTML=data.cdesc;
+                        predictAmount.value=data.predictfee;
+                        predictAmountDesc.innerHTML=data.preditfeedesc;
+                        layer.open({
+                            type: 1
+                            ,title: '修改备案'  //弹出层标题
+                            ,area: ['800px', '400px']   //设置弹出层大小[宽，高]
+                            ,offset: 'auto'   //设置弹出层位置
+                            ,content:$("#layer_bill_modify")
+                            ,btn: ['提交', '取消']
+                            ,shade: 0 //不显示遮罩
+                            ,yes: function (index, layero) {  //确定按钮回调方法， 需要手动关闭弹出层
+                                layer.closeAll();
+                                console.log(cdesc.value);
+                                console.log(predictAmount.value);
+                                console.log(predictAmountDesc.value);
+                                $.ajax(
+                                    {
+                                        url: '/bill/modify?bid=' + data.bid+'&budget='+predictAmount.value+'&budgetDetail='+predictAmountDesc.value+'&tripDetail='+cdesc.value,
+                                        type: 'POST',   // 请求方式
+                                        success: function (result) {
+                                            console.log(result); // 请求成功后的回调函数, result 为响应内容
+                                            if(result.code == 200){
+                                                layer.msg(result.message);
+                                            }else {
+                                                layer.msg("未知错误！");
+                                            }
+                                            table_app.reload();   //表格重载
+                                        },
+                                        error: function () {
+                                            console.log('Send Request Fail..'); // 请求失败时的回调函数
+                                        }
+                                    }
+                                );
+                            }
+                            ,btn2: function(index, layero){
+                            }
+                        });
+                    }
                     break;
             };
 
