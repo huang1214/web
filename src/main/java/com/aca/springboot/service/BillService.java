@@ -73,6 +73,7 @@ public class BillService {
         jsonMessage.setData(new JSONArray(listBill));
         return jsonMessage;
     }
+    //获取备案详细信息
     public Message queryDetail(String bid){
         Map map=new HashMap();
         map.put("BID",bid);
@@ -83,7 +84,6 @@ public class BillService {
         message.setCode(200);
         return message;
     }
-
     //返回该生报销记录,分页带状态
     public JsonMessage queryAllBillWithPageState(String sno,int pageNum,int pageSize,String state){
         //设置从第几页查询N条
@@ -95,7 +95,7 @@ public class BillService {
         map.put("RIGHT",right);
         map.put("STATE",state);
         List listBill=billMapper.getBillListByState(map);
-        int count=billMapper.getBillCountNotState(map); //总条数
+        int count=billMapper.getBillCount(map); //总条数带状态
         JsonMessage jsonMessage=new JsonMessage();
         jsonMessage.setCode(0);
         jsonMessage.setMsg("查询成功");
@@ -112,7 +112,6 @@ public class BillService {
         map.put("RIGHT",right);
         List listBill=billMapper.get_all_bill_list(map);
         int count=billMapper.getBillCountAdminNotState(); //总条数
-        System.out.println(count);
         JsonMessage jsonMessage=new JsonMessage();
         jsonMessage.setCode(0);
         jsonMessage.setMsg("查询成功");
@@ -129,8 +128,7 @@ public class BillService {
         map.put("RIGHT",right);
         map.put("STATE",state);
         List listBill=billMapper.getAllBillListState(map);
-        int count=billMapper.getBillCountAdminNotState(); //总条数
-        System.out.println(count);
+        int count=billMapper.getBillCountAdmin(map); //总条数带状态
         JsonMessage jsonMessage=new JsonMessage();
         jsonMessage.setCode(0);
         jsonMessage.setMsg("查询成功");

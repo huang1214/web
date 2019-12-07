@@ -74,7 +74,7 @@ public interface BillMapper {
     //删除报销对应表
     public int deleteBillMember(Map map);
 
-    //获取仪表盘信息
+    //获取仪表盘信息，获取用户带状态备案数量
     public Integer getBillCount(Map map);
 
     //获取仪表盘信息,管理员

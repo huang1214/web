@@ -134,11 +134,11 @@ public class BillController {
     @ResponseBody
     public JsonMessage getAllBillByID(@RequestParam(value = "limit",required = false,defaultValue = "10")int pageSize,
                                       @RequestParam(value = "page",required = false,defaultValue = "1")int pageNum,
-                                      @RequestParam(value = "type", required = false, defaultValue = "3") String state,
+                                      @RequestParam(value = "type", required = false, defaultValue = "4") String state,
                                       HttpSession session){
        Student student =(Student) session.getAttribute("loginUser");
        String sno=student.getSno();
-       if(state.equals("3")){
+       if(state.equals("4")){
            return billService.queryAllBillWithPage(sno,pageNum,pageSize);
        }else {
            return billService.queryAllBillWithPageState(sno,pageNum,pageSize,state);
@@ -174,10 +174,9 @@ public class BillController {
     @ResponseBody
     public JsonMessage getAllBill(@RequestParam(value = "limit",required = false,defaultValue = "1")int pageSize,
                               @RequestParam(value = "page",required = false,defaultValue = "1")int pageNum,
-                              @RequestParam(value = "type", required = false, defaultValue = "3") String state){
-        System.out.println(state);
+                              @RequestParam(value = "type", required = false, defaultValue = "4") String state){
         JsonMessage billListAdminMessage;
-        if(state.equals("3")){
+        if(state.equals("4")){
             billListAdminMessage=billService.queryAllBill(pageNum,pageSize);
         }else {
             billListAdminMessage=billService.queryAllBillState(pageNum,pageSize,state);

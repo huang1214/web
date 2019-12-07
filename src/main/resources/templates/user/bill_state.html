@@ -155,10 +155,11 @@
 <script type="text/html" id="toolbar_billState">
     <div class="layui-input-inline layui-form" lay-filter="selectForm">
         <select name="chooseBox" id="chooseTypeBtn" lay-filter="stateSelect">
-            <option value="3">全部备案</option>
+            <option value="4">全部备案</option>
             <option value="0">待审核</option>
             <option value="1">未通过</option>
             <option value="2">已通过</option>
+            <option value="3">已核销</option>
         </select>
     </div>
 </script>
@@ -175,7 +176,7 @@
             ,url: ' /bill/queryAll'//数据接口
             ,page: true //开启分页
             ,toolbar:"#toolbar_billState"
-            ,where:{'type':"3"}
+            ,where:{'type':"4"}
             ,loading: true
             ,cols: [
                 [ //表头
@@ -194,7 +195,7 @@
                         else if (d.state==2) {
                             return '<span style="color: #5FB878;">审核通过</span>';
                         }else {
-                            return '<span style="color: #009688;">已确认到账</span>';
+                            return '<span style="color: #009688;">已核销</span>';
                         }
                     }}
                     ,{fixed: 'right', title:'操作',align:'center', toolbar: '#bar',width:180}
@@ -422,7 +423,7 @@
             {
                 state.innerHTML="已通过";
             }else {
-                state.innerHTML="已确认";
+                state.innerHTML="已核销";
             }
             if(data.ackAccount!=null){
                 trueProfit.innerHTML=data.ackAccount+"元";
