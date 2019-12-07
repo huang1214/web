@@ -3,6 +3,7 @@ package com.aca.springboot.service;
 import com.aca.springboot.entities.Bill;
 import com.aca.springboot.entities.BillMember;
 import com.aca.springboot.entities.JsonMessage;
+import com.aca.springboot.entities.Message;
 import com.aca.springboot.mapper.BillMapper;
 import com.aca.springboot.vo.BillVO;
 import com.alibaba.fastjson.JSONArray;
@@ -64,12 +65,6 @@ public class BillService {
         map.put("LEFT",left);
         map.put("RIGHT",right);
         List listBill=billMapper.get_bill_list(map);
-        List listBill2=billMapper.get_bill_list2(map);
-        for(int i=0;i<listBill.size();i++){
-            BillVO temp1=(BillVO) listBill.get(i);
-            BillVO temp2=(BillVO) listBill2.get(i);
-            temp1.setTeachers(temp2.getTeachers());
-        }
         int count=billMapper.getBillCountNotState(map); //总条数
         JsonMessage jsonMessage=new JsonMessage();
         jsonMessage.setCode(0);
@@ -78,6 +73,17 @@ public class BillService {
         jsonMessage.setData(new JSONArray(listBill));
         return jsonMessage;
     }
+    public Message queryDetail(String bid){
+        Map map=new HashMap();
+        map.put("BID",bid);
+        Message message=new Message();
+        BillVO billVO=billMapper.get_bill_list2(map);
+        message.setData(billVO);
+        message.setMessage("获取成功！");
+        message.setCode(200);
+        return message;
+    }
+
     //返回该生报销记录,分页带状态
     public JsonMessage queryAllBillWithPageState(String sno,int pageNum,int pageSize,String state){
         //设置从第几页查询N条
@@ -89,12 +95,6 @@ public class BillService {
         map.put("RIGHT",right);
         map.put("STATE",state);
         List listBill=billMapper.getBillListByState(map);
-        List listBill2=billMapper.getBillListByState2(map);
-        for(int i=0;i<listBill.size();i++){
-            BillVO temp1=(BillVO) listBill.get(i);
-            BillVO temp2=(BillVO) listBill2.get(i);
-            temp1.setTeachers(temp2.getTeachers());
-        }
         int count=billMapper.getBillCountNotState(map); //总条数
         JsonMessage jsonMessage=new JsonMessage();
         jsonMessage.setCode(0);
@@ -111,12 +111,6 @@ public class BillService {
         map.put("LEFT",left);
         map.put("RIGHT",right);
         List listBill=billMapper.get_all_bill_list(map);
-        List listBill2=billMapper.get_all_bill_list2(map);
-        for(int i=0;i<listBill.size();i++){
-            BillVO temp1=(BillVO) listBill.get(i);
-            BillVO temp2=(BillVO) listBill2.get(i);
-            temp1.setTeachers(temp2.getTeachers());
-        }
         int count=billMapper.getBillCountAdminNotState(); //总条数
         System.out.println(count);
         JsonMessage jsonMessage=new JsonMessage();
@@ -135,12 +129,6 @@ public class BillService {
         map.put("RIGHT",right);
         map.put("STATE",state);
         List listBill=billMapper.getAllBillListState(map);
-        List listBill2=billMapper.getAllBillListState2(map);
-        for(int i=0;i<listBill.size();i++){
-            BillVO temp1=(BillVO) listBill.get(i);
-            BillVO temp2=(BillVO) listBill2.get(i);
-            temp1.setTeachers(temp2.getTeachers());
-        }
         int count=billMapper.getBillCountAdminNotState(); //总条数
         System.out.println(count);
         JsonMessage jsonMessage=new JsonMessage();

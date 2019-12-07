@@ -49,23 +49,17 @@ public interface BillMapper {
      */
     public int addBillMember(BillMember billMember);
 
-    //获取报销列表，不带老师信息
+    //用户获取报销列表
     public List<BillVO> get_bill_list(Map map);
-    //获取报销列表，带老师信息
-    public List<BillVO> get_bill_list2(Map map);
-    //获取报销列表，不带老师信息，带状态
+    //获取报销列表详细
+    public BillVO get_bill_list2(Map map);
+    //用户获取报销列表，带状态
     public List<BillVO> getBillListByState(Map map);
-    //获取报销列表，带老师信息，带状态
-    public List<BillVO> getBillListByState2(Map map);
 
-    //管理员获取全部的报销列表，不带老师信息
+    //管理员获取全部的报销列表
     public List<BillVO> get_all_bill_list(Map map);
-    //管理员获取全部的报销列表,带老师信息
-    public List<BillVO> get_all_bill_list2(Map map);
-    //管理员获取全部的报销列表，不带老师信息,带状态
+    //管理员获取全部的报销列表,带状态
     public List<BillVO> getAllBillListState(Map map);
-    //管理员获取全部的报销列表，带老师信息,带状态
-    public List<BillVO> getAllBillListState2(Map map);
 
     //修改状态
     public int change_bill_state(Map map);

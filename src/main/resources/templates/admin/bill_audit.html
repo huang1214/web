@@ -203,38 +203,50 @@
             var data = obj.data; //获得当前行数据
             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
             if(layEvent === 'detail'){ //查看详情
-                if(data.state==0){
-                    layer.open({
-                        type: 1
-                        ,title: '查看详细信息'  //弹出层标题
-                        ,area: ['800px', '400px']   //设置弹出层大小[宽，高]
-                        ,offset: 'auto'   //设置弹出层位置 //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
-                        ,content:$("#layer_bill_detail")
-                        ,shade: 0 //不显示遮罩
-                        ,skin: 'buttonStyle'
-                        ,btn:['审核']
-                        ,yes: function () {  //确定按钮回调方法， 需要手动关闭弹出层
-                            layer.closeAll();
-                            review(data.bid);
+                $.ajax(
+                    {
+                        url: '/bill/queryDetail?bid=' + data.bid,
+                        type: 'GET',   // 请求方式
+                        success: function (result) {
+                            result.data.student=data.student;
+                            if(data.state==0){
+                                layer.open({
+                                    type: 1
+                                    ,title: '查看详细信息'  //弹出层标题
+                                    ,area: ['800px', '400px']   //设置弹出层大小[宽，高]
+                                    ,offset: 'auto'   //设置弹出层位置 //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+                                    ,content:$("#layer_bill_detail")
+                                    ,shade: 0 //不显示遮罩
+                                    ,skin: 'buttonStyle'
+                                    ,btn:['审核']
+                                    ,yes: function () {  //确定按钮回调方法， 需要手动关闭弹出层
+                                        layer.closeAll();
+                                        review(data.bid);
+                                    }
+                                    ,end:function(){
+                                    }
+                                });
+                            }else {
+                                layer.open({
+                                    type: 1
+                                    ,title: '查看详细信息'  //弹出层标题
+                                    ,area: ['800px', '400px']   //设置弹出层大小[宽，高]
+                                    ,offset: 'auto'   //设置弹出层位置 //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+                                    ,content:$("#layer_bill_detail")
+                                    ,shade: 0 //不显示遮罩
+                                    ,btn:['确认']
+                                    ,yes: function () {  //确定按钮回调方法， 需要手动关闭弹出层
+                                        layer.closeAll();
+                                    }
+                                });
+                            }
+                            setTableValue(result.data);//动态向表格赋值
+                        },
+                        error: function () {
+                            layer.msg("网络出错啦＞﹏＜");
                         }
-                        ,end:function(){
-                        }
-                    });
-                }else {
-                    layer.open({
-                        type: 1
-                        ,title: '查看详细信息'  //弹出层标题
-                        ,area: ['800px', '400px']   //设置弹出层大小[宽，高]
-                        ,offset: 'auto'   //设置弹出层位置 //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
-                        ,content:$("#layer_bill_detail")
-                        ,shade: 0 //不显示遮罩
-                        ,btn:['确认']
-                        ,yes: function () {  //确定按钮回调方法， 需要手动关闭弹出层
-                            layer.closeAll();
-                        }
-                    });
-                }
-                setTableValue(data);//动态向表格赋值
+                    }
+                );
             }else if(layEvent === 'admin_audit'){ //确定该条申请结果
                 layer.confirm('你是否通过该条备案申请？', {
                     btn: ['通过','不通过'],title:'重要步骤',skin:'priorityTips',icon:7

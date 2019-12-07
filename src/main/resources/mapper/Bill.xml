@@ -41,18 +41,6 @@
             <result property="state" column="S1_STATE"/>
             <result property="card_num" column="S1_CARD_NUM"/>
         </association>
-        <collection property="students" javaType="java.util.ArrayList" ofType="com.aca.springboot.entities.Student">
-            <id property="sno" column="S2_SNO"/>
-            <result property="sname" column="S2_SNAME"/>
-            <result property="ssex" column="S2_SSEX"/>
-            <result property="sbirthday" column="S2_SBIRTHDAY"/>
-            <result property="sdomitory" column="S2_SDOMITORY"/>
-            <result property="cno" column="S2_CNO"/>
-            <result property="spwd" column="S2_SPWD"/>
-            <result property="stel" column="S2_STEL"/>
-            <result property="state" column="S2_STATE"/>
-            <result property="card_num" column="S2_CARD_NUM"/>
-        </collection>
     </resultMap>
     <resultMap id="BVO2" type="com.aca.springboot.vo.BillVO">
         <id property="bid" column="BID"/>
@@ -79,18 +67,18 @@
             <result property="result_type" column="C_RESULT_TYPE"/>
             <result property="reference_paper" column="reference_paper"/>
         </association>
-        <association property="student"  javaType="com.aca.springboot.entities.Student">
-            <id property="sno" column="S1_SNO"/>
-            <result property="sname" column="S1_SNAME"/>
-            <result property="ssex" column="S1_SSEX"/>
-            <result property="sbirthday" column="S1_SBIRTHDAY"/>
-            <result property="sdomitory" column="S1_SDOMITORY"/>
-            <result property="cno" column="S1_CNO"/>
-            <result property="spwd" column="S1_SPWD"/>
-            <result property="stel" column="S1_STEL"/>
-            <result property="state" column="S1_STATE"/>
-            <result property="card_num" column="S1_CARD_NUM"/>
-        </association>
+        <collection property="students" javaType="java.util.ArrayList" ofType="com.aca.springboot.entities.Student">
+            <id property="sno" column="S2_SNO"/>
+            <result property="sname" column="S2_SNAME"/>
+            <result property="ssex" column="S2_SSEX"/>
+            <result property="sbirthday" column="S2_SBIRTHDAY"/>
+            <result property="sdomitory" column="S2_SDOMITORY"/>
+            <result property="cno" column="S2_CNO"/>
+            <result property="spwd" column="S2_SPWD"/>
+            <result property="stel" column="S2_STEL"/>
+            <result property="state" column="S2_STATE"/>
+            <result property="card_num" column="S2_CARD_NUM"/>
+        </collection>
         <collection property="teachers" javaType="java.util.ArrayList" ofType="com.aca.springboot.entities.Teacher">
             <id property="tno" column="T1_TNO"/>
             <result property="tname" column="T1_TNAME"/>
@@ -133,13 +121,9 @@
         ,C.CTID C_CTID,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE C_RESULT_TYPE,C.REFERENCE_PAPER
         ,S1.SNO S1_SNO,S1.SNAME S1_SNAME,S1.SSEX S1_SSEX,S1.SBIRTHDAY S1_SBIRTHDAY,S1.SDOMITORY S1_SDOMITORY
         ,S1.CNO S1_CNO,S1.SPWD S1_SPWD,S1.STEL S1_STEL,S1.STATE S1_STATE,S1.CARD_NUM S1_CARD_NUM
-        ,S2.SNO S2_SNO,S2.SNAME S2_SNAME,S2.SSEX S2_SSEX,S2.SBIRTHDAY S2_SBIRTHDAY,S2.SDOMITORY S2_SDOMITORY
-        ,S2.CNO S2_CNO,S2.SPWD S2_SPWD,S2.STEL S2_STEL,S2.STATE S2_STATE,S2.CARD_NUM S2_CARD_NUM
         from (select * from BILL
         where BID IN (SELECT BILL_ID FROM BILL_MEMBER WHERE BILL_TM_ID = #{SNO} ) ) B
-        JOIN  BILL_MEMBER BM on BM.BILL_ID = B.BID
         JOIN com_table  C ON B.ctid=C.ctid
-        join STUDENT S2 on BM.BILL_TM_ID = S2.SNO
         join STUDENT S1 on B.GROUPLEADER = S1.SNO) temp )
         WHERE rn>=#{LEFT} AND rn &lt;=#{RIGHT}
     </select>
@@ -150,113 +134,50 @@
         ,C.CTID C_CTID,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE C_RESULT_TYPE,C.REFERENCE_PAPER
         ,S1.SNO S1_SNO,S1.SNAME S1_SNAME,S1.SSEX S1_SSEX,S1.SBIRTHDAY S1_SBIRTHDAY,S1.SDOMITORY S1_SDOMITORY
         ,S1.CNO S1_CNO,S1.SPWD S1_SPWD,S1.STEL S1_STEL,S1.STATE S1_STATE,S1.CARD_NUM S1_CARD_NUM
-        ,S2.SNO S2_SNO,S2.SNAME S2_SNAME,S2.SSEX S2_SSEX,S2.SBIRTHDAY S2_SBIRTHDAY,S2.SDOMITORY S2_SDOMITORY
-        ,S2.CNO S2_CNO,S2.SPWD S2_SPWD,S2.STEL S2_STEL,S2.STATE S2_STATE,S2.CARD_NUM S2_CARD_NUM
         from (select * from BILL
         where BID IN (SELECT BILL_ID FROM BILL_MEMBER WHERE BILL_TM_ID = #{SNO} ) AND STATE=#{STATE} ) B
-        JOIN  BILL_MEMBER BM on BM.BILL_ID = B.BID
         JOIN com_table  C ON B.ctid=C.ctid
-        join STUDENT S2 on BM.BILL_TM_ID = S2.SNO
         join STUDENT S1 on B.GROUPLEADER = S1.SNO) temp )
         WHERE rn>=#{LEFT} AND rn &lt;=#{RIGHT}
     </select>
     <select id="get_bill_list2" parameterMap="get_bill_list_params" resultMap="BVO2">
-        SELECT * FROM (SELECT ROWNUM rn, temp.* FROM (SELECT
+        SELECT
         B.BID, B.CTID, B.CYEAR, B.CLEVEL,B.CDESC, B.GROUPLEADER, B.GROUPNAME, B.RESULT_TYPE, B.WORK_NAME
         ,B.PREDITFEEDESC, B.PREDICTFEE,B.STATE,B.ATTACHFILE,B.NOTE,B.INVITATION,B.ACK_ACCOUNT
         ,C.CTID C_CTID,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE C_RESULT_TYPE,C.REFERENCE_PAPER
-        ,S1.SNO S1_SNO,S1.SNAME S1_SNAME,S1.SSEX S1_SSEX,S1.SBIRTHDAY S1_SBIRTHDAY,S1.SDOMITORY S1_SDOMITORY
-        ,S1.CNO S1_CNO,S1.SPWD S1_SPWD,S1.STEL S1_STEL,S1.STATE S1_STATE,S1.CARD_NUM S1_CARD_NUM
+        ,S2.SNO S2_SNO,S2.SNAME S2_SNAME,S2.SSEX S2_SSEX,S2.SBIRTHDAY S2_SBIRTHDAY,S2.SDOMITORY S2_SDOMITORY
+        ,S2.CNO S2_CNO,S2.SPWD S2_SPWD,S2.STEL S2_STEL,S2.STATE S2_STATE,S2.CARD_NUM S2_CARD_NUM
         ,T.TNO T1_TNO,T.TNAME T1_TNAME,T.TSEX T1_TSEX,T.TBIRTHDAY T1_TBIRTHDAY,T.DNO T1_DNO
         ,T.TTEL T1_TTEL,T.TTITLE T1_TTITLE,T.TPWD T1_TPWD,T.TSTATE T1_TSTATE,T.CARD_NUM T1_CARD_NUM
-        from (select * from BILL
-        where BID IN (SELECT BILL_ID FROM BILL_MEMBER WHERE BILL_TM_ID = #{SNO} ) ) B
-        JOIN  BILL_MEMBER BM on BM.BILL_ID = B.BID
+        FROM (SELECT * FROM BILL_MEMBER WHERE BILL_ID=#{BID}) BM
+        LEFT JOIN (SELECT*FROM BILL WHERE BID=#{BID}) B ON B.BID=BM.BILL_ID
         JOIN com_table  C ON B.ctid=C.ctid
-        JOIN TEACHER T ON BM.BILL_TM_ID=T.TNO
-        join STUDENT S1 on B.GROUPLEADER = S1.SNO) temp )
-        WHERE rn>=#{LEFT} AND rn &lt;=#{RIGHT}
-    </select>
-    <select id="getBillListByState2" parameterMap="get_bill_list_params" resultMap="BVO2">
-        SELECT * FROM (SELECT ROWNUM rn, temp.* FROM (SELECT
-        B.BID, B.CTID, B.CYEAR, B.CLEVEL,B.CDESC, B.GROUPLEADER, B.GROUPNAME, B.RESULT_TYPE, B.WORK_NAME
-        ,B.PREDITFEEDESC, B.PREDICTFEE,B.STATE,B.ATTACHFILE,B.NOTE,B.INVITATION,B.ACK_ACCOUNT
-        ,C.CTID C_CTID,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE C_RESULT_TYPE,C.REFERENCE_PAPER
-        ,S1.SNO S1_SNO,S1.SNAME S1_SNAME,S1.SSEX S1_SSEX,S1.SBIRTHDAY S1_SBIRTHDAY,S1.SDOMITORY S1_SDOMITORY
-        ,S1.CNO S1_CNO,S1.SPWD S1_SPWD,S1.STEL S1_STEL,S1.STATE S1_STATE,S1.CARD_NUM S1_CARD_NUM
-        ,T.TNO T1_TNO,T.TNAME T1_TNAME,T.TSEX T1_TSEX,T.TBIRTHDAY T1_TBIRTHDAY,T.DNO T1_DNO
-        ,T.TTEL T1_TTEL,T.TTITLE T1_TTITLE,T.TPWD T1_TPWD,T.TSTATE T1_TSTATE,T.CARD_NUM T1_CARD_NUM
-        from (select * from BILL
-        where BID IN (SELECT BILL_ID FROM BILL_MEMBER WHERE BILL_TM_ID = #{SNO} ) AND STATE=#{STATE} ) B
-        JOIN  BILL_MEMBER BM on BM.BILL_ID = B.BID
-        JOIN com_table  C ON B.ctid=C.ctid
-        JOIN TEACHER T ON BM.BILL_TM_ID=T.TNO
-        join STUDENT S1 on B.GROUPLEADER = S1.SNO) temp )
-        WHERE rn>=#{LEFT} AND rn &lt;=#{RIGHT}
+        LEFT JOIN STUDENT S2 on BM.BILL_TM_ID = S2.SNO
+        LEFT JOIN TEACHER T ON BM.BILL_TM_ID=T.TNO
     </select>
 
     <!--管理员获取全部的竞赛信息-->
     <select id="get_all_bill_list" parameterMap="get_bill_list_params" resultMap="BVO">
-        SELECT * FROM (SELECT ROWNUM rn, b.* FROM (select
-        B.BID, B.CTID, B.CYEAR, B.CLEVEL,B.CDESC, B.GROUPLEADER, B.GROUPNAME, B.RESULT_TYPE, B.WORK_NAME
-        ,B.PREDITFEEDESC, B.PREDICTFEE,B.STATE,B.ATTACHFILE,B.NOTE,B.INVITATION,B.ACK_ACCOUNT
-        ,C.CTID C_CTID,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE C_RESULT_TYPE,C.REFERENCE_PAPER
-        ,S1.SNO S1_SNO,S1.SNAME S1_SNAME,S1.SSEX S1_SSEX,S1.SBIRTHDAY S1_SBIRTHDAY,S1.SDOMITORY S1_SDOMITORY
-        ,S1.CNO S1_CNO,S1.SPWD S1_SPWD,S1.STEL S1_STEL,S1.STATE S1_STATE,S1.CARD_NUM S1_CARD_NUM
-        ,S2.SNO S2_SNO,S2.SNAME S2_SNAME,S2.SSEX S2_SSEX,S2.SBIRTHDAY S2_SBIRTHDAY,S2.SDOMITORY S2_SDOMITORY
-        ,S2.CNO S2_CNO,S2.SPWD S2_SPWD,S2.STEL S2_STEL,S2.STATE S2_STATE,S2.CARD_NUM S2_CARD_NUM
-        from  BILL B
-        JOIN BILL_MEMBER BM on BM.BILL_ID = B.BID
-        JOIN  com_table  C ON B.ctid=C.ctid
-        join STUDENT S2 on BM.BILL_TM_ID = S2.SNO
-        join STUDENT S1 on B.GROUPLEADER = S1.SNO ) b)
-        WHERE rn>=#{LEFT} AND rn &lt;=#{RIGHT}
-    </select>
-    <select id="getAllBillListState" parameterMap="get_bill_list_params" resultMap="BVO">
-        SELECT * FROM (SELECT ROWNUM rn, b.* FROM (select
-        B.BID, B.CTID, B.CYEAR, B.CLEVEL,B.CDESC, B.GROUPLEADER, B.GROUPNAME, B.RESULT_TYPE, B.WORK_NAME
-        ,B.PREDITFEEDESC, B.PREDICTFEE,B.STATE,B.ATTACHFILE,B.NOTE,B.INVITATION,B.ACK_ACCOUNT
-        ,C.CTID C_CTID,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE C_RESULT_TYPE,C.REFERENCE_PAPER
-        ,S1.SNO S1_SNO,S1.SNAME S1_SNAME,S1.SSEX S1_SSEX,S1.SBIRTHDAY S1_SBIRTHDAY,S1.SDOMITORY S1_SDOMITORY
-        ,S1.CNO S1_CNO,S1.SPWD S1_SPWD,S1.STEL S1_STEL,S1.STATE S1_STATE,S1.CARD_NUM S1_CARD_NUM
-        ,S2.SNO S2_SNO,S2.SNAME S2_SNAME,S2.SSEX S2_SSEX,S2.SBIRTHDAY S2_SBIRTHDAY,S2.SDOMITORY S2_SDOMITORY
-        ,S2.CNO S2_CNO,S2.SPWD S2_SPWD,S2.STEL S2_STEL,S2.STATE S2_STATE,S2.CARD_NUM S2_CARD_NUM
-        from  (select * from BILL where STATE=#{STATE}) B
-        JOIN BILL_MEMBER BM on BM.BILL_ID = B.BID
-        JOIN  com_table  C ON B.ctid=C.ctid
-        join STUDENT S2 on BM.BILL_TM_ID = S2.SNO
-        join STUDENT S1 on B.GROUPLEADER = S1.SNO ) b)
-        WHERE rn>=#{LEFT} AND rn &lt;=#{RIGHT}
-    </select>
-    <select id="get_all_bill_list2" parameterMap="get_bill_list_params" resultMap="BVO2">
         SELECT * FROM (SELECT ROWNUM rn, temp.* FROM (SELECT
         B.BID, B.CTID, B.CYEAR, B.CLEVEL,B.CDESC, B.GROUPLEADER, B.GROUPNAME, B.RESULT_TYPE, B.WORK_NAME
         ,B.PREDITFEEDESC, B.PREDICTFEE,B.STATE,B.ATTACHFILE,B.NOTE,B.INVITATION,B.ACK_ACCOUNT
         ,C.CTID C_CTID,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE C_RESULT_TYPE,C.REFERENCE_PAPER
         ,S1.SNO S1_SNO,S1.SNAME S1_SNAME,S1.SSEX S1_SSEX,S1.SBIRTHDAY S1_SBIRTHDAY,S1.SDOMITORY S1_SDOMITORY
         ,S1.CNO S1_CNO,S1.SPWD S1_SPWD,S1.STEL S1_STEL,S1.STATE S1_STATE,S1.CARD_NUM S1_CARD_NUM
-        ,T.TNO T1_TNO,T.TNAME T1_TNAME,T.TSEX T1_TSEX,T.TBIRTHDAY T1_TBIRTHDAY,T.DNO T1_DNO
-        ,T.TTEL T1_TTEL,T.TTITLE T1_TTITLE,T.TPWD T1_TPWD,T.TSTATE T1_TSTATE,T.CARD_NUM T1_CARD_NUM
         from BILL B
-        JOIN  BILL_MEMBER BM on BM.BILL_ID = B.BID
         JOIN com_table  C ON B.ctid=C.ctid
-        JOIN TEACHER T ON BM.BILL_TM_ID=T.TNO
         join STUDENT S1 on B.GROUPLEADER = S1.SNO) temp )
         WHERE rn>=#{LEFT} AND rn &lt;=#{RIGHT}
     </select>
-    <select id="getAllBillListState2" parameterMap="get_bill_list_params" resultMap="BVO2">
+    <select id="getAllBillListState" parameterMap="get_bill_list_params" resultMap="BVO">
         SELECT * FROM (SELECT ROWNUM rn, temp.* FROM (SELECT
         B.BID, B.CTID, B.CYEAR, B.CLEVEL,B.CDESC, B.GROUPLEADER, B.GROUPNAME, B.RESULT_TYPE, B.WORK_NAME
         ,B.PREDITFEEDESC, B.PREDICTFEE,B.STATE,B.ATTACHFILE,B.NOTE,B.INVITATION,B.ACK_ACCOUNT
         ,C.CTID C_CTID,C.CTNAME,C.HOST_UNIT,C.COM_TYPE,C.RESULT_TYPE C_RESULT_TYPE,C.REFERENCE_PAPER
         ,S1.SNO S1_SNO,S1.SNAME S1_SNAME,S1.SSEX S1_SSEX,S1.SBIRTHDAY S1_SBIRTHDAY,S1.SDOMITORY S1_SDOMITORY
         ,S1.CNO S1_CNO,S1.SPWD S1_SPWD,S1.STEL S1_STEL,S1.STATE S1_STATE,S1.CARD_NUM S1_CARD_NUM
-        ,T.TNO T1_TNO,T.TNAME T1_TNAME,T.TSEX T1_TSEX,T.TBIRTHDAY T1_TBIRTHDAY,T.DNO T1_DNO
-        ,T.TTEL T1_TTEL,T.TTITLE T1_TTITLE,T.TPWD T1_TPWD,T.TSTATE T1_TSTATE,T.CARD_NUM T1_CARD_NUM
         from (select * from BILL where STATE=#{STATE}) B
-        JOIN  BILL_MEMBER BM on BM.BILL_ID = B.BID
         JOIN com_table  C ON B.ctid=C.ctid
-        JOIN TEACHER T ON BM.BILL_TM_ID=T.TNO
         join STUDENT S1 on B.GROUPLEADER = S1.SNO) temp )
         WHERE rn>=#{LEFT} AND rn &lt;=#{RIGHT}
     </select>

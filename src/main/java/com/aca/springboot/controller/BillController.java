@@ -67,18 +67,15 @@ public class BillController {
         if(type==1){
             Student student =(Student) session.getAttribute("loginUser");
             String sno=student.getSno();
-            System.out.println("执行1："+sno);
             boolean flag=false;
             students=students.substring(1);
             String[] studentList=students.split(",");
             for(int i=0;i<studentList.length;i++){
                 if(sno.equals(studentList[i])){
-                    System.out.println("执行2："+sno);
                     flag=true;
                 }
             }
             if(flag){
-                System.out.println("有你");
                 Bill bill=new Bill();
                 bill.setBid(TimeUtil.getBillNumber());  //获取报销编号
                 bill.setCtid(ctid);
@@ -122,7 +119,6 @@ public class BillController {
                     addAwardMessage.setData(bill1);   //返回之前申请记录
                 }
             }else {
-                System.out.println("没有你");
                 addAwardMessage.setCode(204);
                 addAwardMessage.setMessage("你不在队伍中，申请失败！");
             }
@@ -147,6 +143,15 @@ public class BillController {
        }else {
            return billService.queryAllBillWithPageState(sno,pageNum,pageSize,state);
        }
+    }
+    //获取某条备案的详细记录
+    @GetMapping(value = "queryDetail")
+    @ResponseBody
+    public Message getDetail(@RequestParam(value = "bid",required = false,defaultValue = "10")String bid){
+
+            return billService.queryDetail(bid);
+
+
     }
     //获取该登录学生的所有报销记录,分页
 //    @GetMapping(value = "query/{sno}/{currPage}")

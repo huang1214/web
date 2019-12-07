@@ -207,20 +207,33 @@
             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
             switch(layEvent){
                 case 'detail':
-                    layer.open({
-                        type: 1
-                        ,title: '查看详细信息'  //弹出层标题
-                        ,area: ['800px', '400px']   //设置弹出层大小[宽，高]
-                        ,offset: 'auto'   //设置弹出层位置 //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
-                        ,content:$("#layer_bill_detail")
-                        ,shade: 0 //不显示遮罩
-                        ,yes: function () {  //确定按钮回调方法， 需要手动关闭弹出层
-                            layer.closeAll();
+                    $.ajax(
+                        {
+                            url: '/bill/queryDetail?bid=' + data.bid,
+                            type: 'GET',   // 请求方式
+                            success: function (result) {
+                               result.data.student=data.student;
+                                layer.open({
+                                     type: 1
+                                     ,title: '查看详细信息'  //弹出层标题
+                                     ,area: ['800px', '400px']   //设置弹出层大小[宽，高]
+                                     ,offset: 'auto'   //设置弹出层位置 //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+                                     ,content:$("#layer_bill_detail")
+                                     ,btn: ['关闭']
+                                     ,shade: 0 //不显示遮罩
+                                     ,yes: function () {  //确定按钮回调方法， 需要手动关闭弹出层
+                                         layer.closeAll();
+                                     }
+                                     ,end:function(){
+                                     }
+                                 });
+                                 setTableValue(result.data);//动态向表格赋值
+                            },
+                            error: function () {
+                                layer.msg("网络出错啦＞﹏＜");
+                            }
                         }
-                        ,end:function(){
-                        }
-                    });
-                    setTableValue(data);//动态向表格赋值
+                    );
                     break;
                 case 'ensure':
                     layer.prompt({
@@ -274,9 +287,6 @@
                             ,shade: 0 //不显示遮罩
                             ,yes: function (index, layero) {  //确定按钮回调方法， 需要手动关闭弹出层
                                 layer.closeAll();
-                                console.log(cdesc.value);
-                                console.log(predictAmount.value);
-                                console.log(predictAmountDesc.value);
                                 $.ajax(
                                     {
                                         url: '/bill/modify?bid=' + data.bid+'&budget='+predictAmount.value+'&budgetDetail='+predictAmountDesc.value+'&tripDetail='+cdesc.value,
