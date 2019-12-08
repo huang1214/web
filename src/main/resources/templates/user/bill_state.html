@@ -158,7 +158,7 @@
             <option value="4">全部备案</option>
             <option value="0">待审核</option>
             <option value="1">未通过</option>
-            <option value="2">已通过</option>
+            <option value="2">待核销</option>
             <option value="3">已核销</option>
         </select>
     </div>
@@ -169,6 +169,7 @@
         var layer = layui.layer;
         var form = layui.form;
         var $ = layui.jquery;
+        var selectValue="4";//全局下拉值
         //显示表单状态基本信息
         var table_app=table.render({
             elem: '#bill_state'
@@ -193,7 +194,7 @@
                             return '<span style="color: #FF5722;">审核未通过</span>';
                         }
                         else if (d.state==2) {
-                            return '<span style="color: #5FB878;">审核通过</span>';
+                            return '<span style="color: #5FB878;">待核销</span>';
                         }else {
                             return '<span style="color: #009688;">已核销</span>';
                         }
@@ -252,16 +253,19 @@
                                     url: '/bill/ackaccount?bid=' + data.bid+'&ack='+value,
                                     type: 'POST',   // 请求方式
                                     success: function (result) {
-                                        console.log(result); // 请求成功后的回调函数, result 为响应内容
                                         if(result.code == 200){
                                             layer.msg(result.message);
                                         }else {
                                             layer.msg("未知错误！");
                                         }
                                         table_app.reload();   //表格重载
+                                        form.val('selectForm',{
+                                            chooseBox:selectValue
+                                        });
+                                        form.render('select');
                                     },
                                     error: function () {
-                                        console.log('Send Request Fail..'); // 请求失败时的回调函数
+                                        layer.msg("网络出错啦＞﹏＜"); // 请求失败时的回调函数
                                     }
                                 }
                             );
@@ -293,16 +297,19 @@
                                         url: '/bill/modify?bid=' + data.bid+'&budget='+predictAmount.value+'&budgetDetail='+predictAmountDesc.value+'&tripDetail='+cdesc.value,
                                         type: 'POST',   // 请求方式
                                         success: function (result) {
-                                            console.log(result); // 请求成功后的回调函数, result 为响应内容
                                             if(result.code == 200){
                                                 layer.msg(result.message);
                                             }else {
                                                 layer.msg("未知错误！");
                                             }
                                             table_app.reload();   //表格重载
+                                            form.val('selectForm',{
+                                                chooseBox:selectValue
+                                            });
+                                            form.render('select');
                                         },
                                         error: function () {
-                                            console.log('Send Request Fail..'); // 请求失败时的回调函数
+                                            layer.msg("网络出错啦＞﹏＜"); // 请求失败时的回调函数
                                         }
                                     }
                                 );
@@ -316,22 +323,21 @@
 
         });
         form.on('select(stateSelect)', function(data){
-            console.log(data.value); //得到被选中的值
+            selectValue=data.value; //被选中的值
             table_app.reload({
                 where: { //设定异步数据接口的额外参数，任意设
-                    type: data.value
+                    type: selectValue
                 }
                 ,page: {
                     curr: 1 //重新从第 1 页开始
                 }
             });
-            form.val('selectForm',{
-                chooseBox:data.value
+            form.val('selectForm',{   //select下拉框需要重新渲染样式，否则就会造成绑值不上的假象
+                chooseBox:selectValue
             });
+            form.render('select');
         });
-        form.render();
         function setTableValue(data){//参数为该列的数据
-            console.log(data);
             var bid=document.getElementById('bid');
             var ctname=document.getElementById('ctname');
             var workName=document.getElementById('workName');
@@ -421,7 +427,7 @@
                 state.innerHTML="未通过";
             }else if(data.state==2)
             {
-                state.innerHTML="已通过";
+                state.innerHTML="待核销";
             }else {
                 state.innerHTML="已核销";
             }

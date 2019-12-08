@@ -686,10 +686,8 @@
             document.getElementById('tms').value = "";
             // $('#tms').value = "";
             $(".tmsBox").each(function (index,item) {
-                // alert(item.value);
                 var val1=item.value;
                 var aa=val1.split(":")[0];
-                // alert(aa)
                 document.getElementById('tms').value += ","+aa;
             });
         });
@@ -705,7 +703,6 @@
 
         $('#btn_search_student').on('click', function () {
             var search_sno = $('#search_sno').val();
-            console.log(search_sno);
             if(search_sno == ""){
                 layer.msg('输入不能为空');
             }else {
@@ -854,7 +851,6 @@
             ,done: function(res){
                 $("#fileState").html("<span style='color: #5FB878;'>上传成功</span>");
                 upload_bill=res.data.name;
-                console.log(upload_bill);
             }
             ,error: function(){
                 $("#fileState").html("<span style='color: #5FB878;'>上传失败</span>");
@@ -872,7 +868,6 @@
                 //上传完毕回调
                 img_bill_url = "/" +res.data.year+"/billfile/"+res.data.name;
                 imgInvitationPath=res.data.name;
-                console.log(imgInvitationPath);
                 document.getElementById("imgInvitation").src = img_bill_url;
             }
             ,error: function(){
@@ -915,7 +910,6 @@
                     data: params,
                     dataType: 'json',
                     success: function (result) {
-                        console.log(result);//在浏览器中打印服务端返回的数据(调试用)
                         if(result.code == 200){
                             layer.alert(result.message,{icon:1});
                         }else if(result.code == 204){
@@ -925,7 +919,7 @@
                         }
                     },
                     error : function() {
-                        alert("网络超时！");
+                        layer.msg("网络出错啦＞﹏＜");
                     }
                 });
             }
