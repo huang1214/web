@@ -17,12 +17,12 @@ layui.use(['table','layer','form','jquery'], function(){
             ,loading: true
             ,cols: [
                 [
-                    {title: '序号', width:170,templet: '<div>{{d.index}}</div>',fixed: 'left'}
-                    ,{title: '指导老师', minWidth:200,templet: '<div>{{d.teachers}}</div>'}
-                    ,{title: '参赛学生', minWidth:200,templet: '<div>{{d.students}}</div>'}
-                    ,{title: '作品名称', minWidth:200,templet: '<div>{{d.workName}}</div>'}
-                    ,{title: '获奖名称', minWidth:200,templet: '<div>{{d.prizeName}}</div>'}
-                    ,{title: '获奖时间', minWidth:200,templet: '<div>{{d.date}}</div>'}
+                    {field:'index',title: '序号', width:170,templet: '<div>{{d.index}}</div>',fixed: 'left'}
+                    ,{field:'teachers',title: '指导老师', minWidth:200,templet: '<div>{{d.teachers}}</div>'}
+                    ,{field:'students',title: '参赛学生', minWidth:200,templet: '<div>{{d.students}}</div>'}
+                    ,{field:'workName',title: '作品名称', minWidth:200,templet: '<div>{{d.workName}}</div>'}
+                    ,{field:'prizeName',title: '获奖名称', minWidth:200,templet: '<div>{{d.prizeName}}</div>'}
+                    ,{field:'date',title: '获奖时间', minWidth:200,templet: '<div>{{(d.date)}}</div>'}
                 ]
             ]
             ,done:function (res, curr, count) {
